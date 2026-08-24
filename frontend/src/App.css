@@ -263,6 +263,12 @@
   width: 80px;
 }
 
+.leaderboard-trophy {
+  color: #f4b400;
+  font-size: 3rem;
+  filter: drop-shadow(0 5px 8px rgba(244, 180, 0, 0.2));
+}
+
 .rank-badge {
   display: inline-grid;
   width: 38px;
@@ -336,6 +342,10 @@
   color: #f4b400;
   font-size: 1.05rem;
   filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.25));
+}
+
+.leaderboard-score {
+  font-size: 1.05rem;
 }
 
 .frame-rank-2 .medal-crown {
@@ -516,6 +526,133 @@
 
   .responsive-data-table .empty-row td::before {
     display: none;
+  }
+
+  .leaderboard-header {
+    margin-bottom: 1.5rem !important;
+  }
+
+  .leaderboard-header h1 {
+    font-size: clamp(1.65rem, 7vw, 2rem);
+  }
+
+  .leaderboard-header p {
+    max-width: 330px;
+    margin-right: auto;
+    margin-bottom: 0;
+    margin-left: auto;
+    font-size: 0.96rem;
+    line-height: 1.45;
+  }
+
+  .leaderboard-trophy {
+    font-size: 2.35rem;
+  }
+
+  .leaderboard-card {
+    padding: 8px !important;
+    border-radius: 22px !important;
+    background: rgba(255, 255, 255, 0.72);
+    box-shadow: 0 8px 28px rgba(31, 76, 53, 0.08) !important;
+  }
+
+  .leaderboard-table tbody tr:not(.empty-row) {
+    position: relative;
+    display: grid;
+    width: 100%;
+    min-height: 82px;
+    grid-template-columns: 44px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    padding: 12px;
+    overflow: visible;
+    border: 1px solid #e4ece7;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #fff 55%, #f7fbf8);
+    box-shadow: 0 3px 10px rgba(31, 76, 53, 0.05);
+  }
+
+  .leaderboard-table tbody tr:nth-child(1) {
+    border-color: rgba(244, 180, 0, 0.35);
+    background: linear-gradient(135deg, #fffdf5, #fff8d9);
+  }
+
+  .leaderboard-table tbody tr:nth-child(2) {
+    background: linear-gradient(135deg, #fff, #f1f5f7);
+  }
+
+  .leaderboard-table tbody tr:nth-child(3) {
+    background: linear-gradient(135deg, #fff, #fbf0e8);
+  }
+
+  .leaderboard-table tbody td {
+    display: block;
+    width: auto;
+    min-height: 0;
+    padding: 0 !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    text-align: left !important;
+  }
+
+  .leaderboard-table tbody td::before {
+    display: none;
+  }
+
+  .leaderboard-rank-cell {
+    grid-column: 1;
+  }
+
+  .leaderboard-user-cell {
+    min-width: 0;
+    grid-column: 2;
+  }
+
+  .leaderboard-score-cell {
+    grid-column: 3;
+    text-align: right !important;
+    white-space: nowrap;
+  }
+
+  .leaderboard-score-cell small {
+    display: block;
+    margin-left: 0 !important;
+    font-size: 0.7rem;
+    text-align: right;
+    text-transform: uppercase;
+  }
+
+  .leaderboard-score {
+    font-size: 1.08rem;
+  }
+
+  .leaderboard-table .rank-badge {
+    width: 40px;
+    height: 40px;
+  }
+
+  .leaderboard-user {
+    min-width: 0;
+    gap: 10px;
+  }
+
+  .leaderboard-user > span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .leaderboard-avatar-frame {
+    width: 50px;
+    height: 50px;
+    flex-basis: 50px;
+  }
+
+  .medal-crown {
+    top: -9px;
+    right: -4px;
+    font-size: 0.9rem;
   }
 
   .news-section {

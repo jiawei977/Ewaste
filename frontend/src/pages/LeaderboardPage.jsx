@@ -19,32 +19,32 @@ export default function LeaderboardPage() {
 
   return (
     <>
-      <header className="text-center mb-5">
-        <div className="display-4 mb-2"><i className="bi bi-trophy-fill text-warning" /></div>
+      <header className="leaderboard-header text-center mb-5">
+        <div className="leaderboard-trophy mb-2"><i className="bi bi-trophy-fill" /></div>
         <h1 className="h2 fw-bold mb-1">Global Leaderboard</h1>
         <p className="text-secondary">Celebrating our top eco-conscious contributors</p>
       </header>
 
       {error && <div className="alert alert-danger" role="alert">{error}</div>}
 
-      <section className="content-card card border-0 shadow-sm p-3 p-md-4 mx-auto">
+      <section className="content-card leaderboard-card card border-0 shadow-sm p-3 p-md-4 mx-auto">
         <div className="table-responsive">
-          <table className="table align-middle mb-0 responsive-data-table">
+          <table className="table align-middle mb-0 responsive-data-table leaderboard-table">
             <thead><tr><th className="rank-column">Rank</th><th>Eco-Warrior</th><th className="text-end">Impact Score</th></tr></thead>
             <tbody>
               {leaders.map((leader) => (
                 <tr key={`${leader.rank}-${leader.username}`}>
-                  <td data-label="Rank"><span className={`rank-badge rank-${Math.min(leader.rank, 4)}`}>{leader.rank}</span></td>
-                  <td className="fw-semibold" data-label="Eco-Warrior">
+                  <td className="leaderboard-rank-cell" data-label="Rank"><span className={`rank-badge rank-${Math.min(leader.rank, 4)}`}>{leader.rank}</span></td>
+                  <td className="leaderboard-user-cell fw-semibold" data-label="Eco-Warrior">
                     <div className="leaderboard-user">
                       <div className={`leaderboard-avatar-frame frame-rank-${Math.min(leader.rank, 4)}`}>
-                        {leader.rank <= 3 && <i className="bi bi-award-fill medal-crown" aria-hidden="true" />}
+                        {leader.rank <= 3 && <i className="bi bi-crown-fill medal-crown" aria-hidden="true" />}
                         <UserAvatar user={leader} className="leaderboard-avatar" />
                       </div>
                       <span>{leader.username}</span>
                     </div>
                   </td>
-                  <td className="text-end" data-label="Impact Score"><span className="fw-bold text-success">{leader.total_score.toLocaleString()}</span><small className="text-secondary ms-1">pts</small></td>
+                  <td className="leaderboard-score-cell text-end" data-label="Impact Score"><span className="leaderboard-score fw-bold text-success">{leader.total_score.toLocaleString()}</span><small className="text-secondary ms-1">pts</small></td>
                 </tr>
               ))}
               {!leaders.length && !error && <tr className="empty-row"><td className="text-center text-secondary py-5" colSpan="3">No recycling scores recorded yet.</td></tr>}
