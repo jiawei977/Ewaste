@@ -1,121 +1,101 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
+import { useEffect, useState } from 'react'
+import { BrowserRouter, Link, Navigate, Route, Routes } from 'react-router-dom'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+const futurePages = {
+  '/login': 'Login',
+  '/register': 'Register',
+  '/history': 'Recycling History',
+  '/leaderboard': 'Leaderboard',
+}
+
+function Layout({ children }) {
+  return (
+    <div className="app-shell">
+      <nav className="navbar navbar-expand navbar-dark bg-success shadow-sm">
+        <div className="container">
+          <Link className="navbar-brand fw-bold" to="/">
+            <i className="bi bi-recycle me-2" />
+            E-Waste Scanner
+          </Link>
+        </div>
+      </nav>
+      <main className="container py-5">{children}</main>
+    </div>
+  )
+}
+
+function HomePage() {
+  const [apiState, setApiState] = useState({ status: 'checking', message: 'Checking Flask API…' })
+
+  useEffect(() => {
+    const controller = new AbortController()
+
+    fetch('/api/health', { signal: controller.signal })
+      .then((response) => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`)
+        return response.json()
+      })
+      .then((data) => {
+        setApiState({
+          status: data.status === 'ok' ? 'connected' : 'error',
+          message: data.status === 'ok' ? 'React is connected to Flask.' : 'Flask returned an unexpected response.',
+        })
+      })
+      .catch((error) => {
+        if (error.name !== 'AbortError') {
+          setApiState({ status: 'error', message: 'Cannot reach Flask. Start app.py on port 5000.' })
+        }
+      })
+
+    return () => controller.abort()
+  }, [])
+
+  const alertClass = apiState.status === 'connected'
+    ? 'alert-success'
+    : apiState.status === 'error'
+      ? 'alert-danger'
+      : 'alert-secondary'
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <section className="mx-auto migration-card card border-0 shadow-sm p-4 p-md-5">
+      <div className="display-5 text-success mb-3">
+        <i className="bi bi-recycle" />
+      </div>
+      <h1 className="h2 fw-bold">React migration is ready</h1>
+      <p className="text-secondary mb-4">
+        The new frontend is running while the existing Flask and Jinja application remains available.
+      </p>
+      <div className={`alert ${alertClass} mb-0`} role="status">
+        {apiState.message}
+      </div>
+    </section>
+  )
+}
 
-      <div className="ticks"></div>
+function PlaceholderPage({ title }) {
+  return (
+    <section className="mx-auto migration-card card border-0 shadow-sm p-5">
+      <h1 className="h3 fw-bold">{title}</h1>
+      <p className="text-secondary mb-4">This page will be migrated in a later step.</p>
+      <Link className="btn btn-success" to="/">Back to migration status</Link>
+    </section>
+  )
+}
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+function App() {
+  return (
+    <BrowserRouter>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          {Object.entries(futurePages).map(([path, title]) => (
+            <Route key={path} path={path} element={<PlaceholderPage title={title} />} />
+          ))}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Layout>
+    </BrowserRouter>
   )
 }
 

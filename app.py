@@ -1,7 +1,7 @@
 import os
 import uuid
 import requests
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 from ultralytics import YOLO
 from PIL import Image
@@ -119,6 +119,11 @@ def get_global_monthly_total():
     cursor.close()
     conn.close()
     return result['total'] if result else 0
+
+
+@app.route('/api/health')
+def api_health():
+    return jsonify(status='ok', service='ewaste-flask-api')
 
 
 @app.route('/register', methods=['GET', 'POST'])
