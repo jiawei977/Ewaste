@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Rankings - E-Waste AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        :root {
+            --eco-primary: #10b981;
+            --eco-bg: #f8fafc;
+        }
+        body { background-color: var(--eco-bg); font-family: 'Inter', sans-serif; }
+        .navbar {
+            background: rgba(16, 185, 129, 0.95) !important;
+            backdrop-filter: blur(15px);
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+        }
+        .navbar-brand {
+            font-size: 1.4rem;
+            letter-spacing: -0.8px;
+        }
+        .nav-link {
+            color: rgba(255, 255, 255, 0.85) !important;
+            font-weight: 600;
+            padding: 0.6rem 1.1rem !important;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+        }
+        .nav-link:hover {
+            color: #fff !important;
+            background: rgba(255, 255, 255, 0.15);
+        }
+        .nav-link.active {
+            color: #fff !important;
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .card { border: none; border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        .rank-badge { 
+            width: 35px; height: 35px; 
+            display: flex; align-items: center; 
+            justify-content: center; 
+            border-radius: 50%; 
+            font-weight: 800; 
+            font-size: 0.9rem;
+        }
+        .rank-1 { background: linear-gradient(135deg, #ffd700, #ffb700); color: #000; box-shadow: 0 4px 10px rgba(255,215,0,0.3); }
+        .rank-2 { background: linear-gradient(135deg, #c0c0c0, #a8a8a8); color: #000; box-shadow: 0 4px 10px rgba(192,192,192,0.3); }
+        .rank-3 { background: linear-gradient(135deg, #cd7f32, #b87333); color: #fff; box-shadow: 0 4px 10px rgba(205,127,50,0.3); }
+        .table thead th { border: none; color: #6c757d; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+        .table tbody td { vertical-align: middle; padding: 1.2rem 0.75rem; border-bottom: 1px solid #f1f3f5; }
+        .username-text { font-weight: 600; color: #2d3436; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top mb-4">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{{ url_for('index') }}">
+                <i class="bi bi-recycle me-2"></i>E-Waste AI
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Scanner</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('history') }}">My Impact</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('leaderboard') }}">Global Ranking</a></li>
+                </ul>
+                <a class="btn btn-light btn-sm fw-bold px-3 rounded-pill" style="color: var(--eco-primary);" href="{{ url_for('logout') }}">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="text-center mb-5">
+            <div class="display-4 mb-2">🏆</div>
+            <h2 class="fw-800 mb-0">Global Leaderboard</h2>
+            <p class="text-muted">Celebrating our top eco-conscious contributors</p>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card p-4">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 80px;">Rank</th>
+                                    <th>Eco-Warrior</th>
+                                    <th class="text-end">Impact Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in leaders %}
+                                <tr>
+                                    <td>
+                                        <div class="rank-badge {% if loop.index == 1 %}rank-1{% elif loop.index == 2 %}rank-2{% elif loop.index == 3 %}rank-3{% else %}bg-light text-muted{% endif %}">
+                                            {{ loop.index }}
+                                        </div>
+                                    </td>
+                                    <td><span class="username-text">{{ user.username }}</span></td>
+                                    <td class="text-end">
+                                        <span class="fw-bold text-success">{{ "{:,}".format(user.total_score) }}</span>
+                                        <small class="text-muted ms-1">pts</small>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
