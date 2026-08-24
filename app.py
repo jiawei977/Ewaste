@@ -1,14 +1,17 @@
 import os
 import uuid
 import requests
-from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify, abort, send_from_directory
 from werkzeug.security import generate_password_hash, check_password_hash
-from werkzeug.utils import secure_filename
+from werkzeug.utils import safe_join, secure_filename
 from ultralytics import YOLO
 from PIL import Image
 import mysql.connector
 
 from auth import login_required
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+FRONTEND_DIST = os.path.join(BASE_DIR, 'frontend', 'dist')
 
 # MySQL database configuration
 def get_db_connection():
@@ -353,7 +356,7 @@ def api_news():
     return jsonify(articles=get_ewaste_news())
 
 
-@app.route('/register', methods=['GET', 'POST'])
+@app.route('/legacy/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         username = request.form.get('username')
@@ -374,7 +377,7 @@ def register():
     return render_template('register.html')
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/legacy/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         email = request.form.get('email')
@@ -392,13 +395,13 @@ def login():
     return render_template('login.html')
 
 
-@app.route('/logout')
+@app.route('/legacy/logout')
 def logout():
     session.clear()
     return redirect(url_for('login'))
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/legacy', methods=['GET', 'POST'])
 @login_required
 def index():
     detected_name = None
@@ -472,7 +475,7 @@ def index():
                          global_total=global_total,
                          global_target=global_target)
 
-@app.route('/confirm_recycle', methods=['POST'])
+@app.route('/legacy/confirm_recycle', methods=['POST'])
 @login_required
 def confirm_recycle():
     item_type = session.get('pending_item')
@@ -484,7 +487,7 @@ def confirm_recycle():
     session.pop('pending_points', None)
     return redirect(url_for('index'))
 
-@app.route('/history')
+@app.route('/legacy/history')
 @login_required
 def history():
     user_id = session.get('user_id')
@@ -507,7 +510,7 @@ def history():
     conn.close()
     return render_template('history.html', history=user_records, total=total_points)
 
-@app.route('/leaderboard')
+@app.route('/legacy/leaderboard')
 @login_required
 def leaderboard():
     conn = get_db_connection()
@@ -530,9 +533,29 @@ def leaderboard():
     return render_template('leaderboard.html', leaders=top_players)
 
 
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve_react_app(path):
+    """Serve the production React build and support BrowserRouter refreshes."""
+    if not os.path.isfile(os.path.join(FRONTEND_DIST, 'index.html')):
+        return jsonify(
+            error='React production build not found.',
+            instruction='Run npm.cmd run build inside the frontend directory.',
+        ), 503
+
+    requested_file = safe_join(FRONTEND_DIST, path) if path else None
+    if requested_file and os.path.isfile(requested_file):
+        return send_from_directory(FRONTEND_DIST, path)
+
+    if path.startswith('assets/') or os.path.splitext(path)[1]:
+        abort(404)
+
+    return send_from_directory(FRONTEND_DIST, 'index.html')
+
+
 
 
 if __name__ == '__main__':
     if not os.path.exists('uploads'): os.makedirs('uploads')
     if not os.path.exists('static/detections'): os.makedirs('static/detections')
-    app.run(debug=True, port=5000)
+    app.run(debug=os.environ.get('FLASK_DEBUG') == '1', port=5000)
