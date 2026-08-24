@@ -330,6 +330,29 @@ def api_leaderboard():
     )
 
 
+@app.route('/api/mission')
+def api_mission():
+    if 'user_id' not in session:
+        return jsonify(error='Authentication required.'), 401
+
+    target = 100
+    total = get_global_monthly_total()
+    return jsonify(
+        total=total,
+        target=target,
+        percentage=min(round(total / target * 100), 100),
+        completed=total >= target,
+    )
+
+
+@app.route('/api/news')
+def api_news():
+    if 'user_id' not in session:
+        return jsonify(error='Authentication required.'), 401
+
+    return jsonify(articles=get_ewaste_news())
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':

@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { useAuth } from '../auth-context'
 import { apiRequest } from '../api'
+import MonthlyMission from '../components/MonthlyMission'
+import NewsSection from '../components/NewsSection'
 
 export default function HomePage() {
   const { user } = useAuth()
@@ -12,6 +14,7 @@ export default function HomePage() {
   const [success, setSuccess] = useState('')
   const [analyzing, setAnalyzing] = useState(false)
   const [recording, setRecording] = useState(false)
+  const [missionRefresh, setMissionRefresh] = useState(0)
 
   useEffect(() => () => {
     if (previewUrl) URL.revokeObjectURL(previewUrl)
@@ -58,6 +61,7 @@ export default function HomePage() {
       setResult(null)
       setImage(null)
       setPreviewUrl('')
+      setMissionRefresh((current) => current + 1)
       if (imageInputRef.current) imageInputRef.current.value = ''
     } catch (requestError) {
       setError(requestError.message)
@@ -72,6 +76,8 @@ export default function HomePage() {
         <h1 className="display-5 fw-bold">Sustainable AI <span className="text-success">Scanning</span></h1>
         <p className="lead text-secondary">Hello, {user.username}. Upload an item to find the right disposal path.</p>
       </header>
+
+      <MonthlyMission refreshToken={missionRefresh} />
 
       <section className="scanner-card card border-0 shadow-sm p-4 p-md-5 mx-auto">
         {error && <div className="alert alert-danger" role="alert"><i className="bi bi-exclamation-circle me-2" />{error}</div>}
@@ -122,6 +128,8 @@ export default function HomePage() {
           </section>
         </div>
       )}
+
+      <NewsSection />
     </>
   )
 }
