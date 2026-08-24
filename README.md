@@ -1,6 +1,6 @@
 # E-Waste Scanner
 
-This branch contains a React frontend with a Flask API, YOLO detection, and MySQL storage. The previous Jinja interface remains temporarily available under `/legacy` during final migration testing.
+This branch contains a React frontend with a Flask API, YOLO detection, and MySQL storage.
 
 ## Development
 
@@ -43,5 +43,3 @@ To enable Flask debug mode temporarily in PowerShell:
 $env:FLASK_DEBUG = '1'
 python app.py
 ```
-
-The fallback Jinja interface is available at `http://localhost:5000/legacy/login` until it is retired.
