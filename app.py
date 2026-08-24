@@ -263,6 +263,73 @@ def api_recycle():
     )
 
 
+@app.route('/api/history')
+def api_history():
+    if 'user_id' not in session:
+        return jsonify(error='Authentication required.'), 401
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(
+        """
+        SELECT item_type, points, timestamp
+        FROM recycle_history
+        WHERE user_id = %s
+        ORDER BY timestamp DESC
+        """,
+        (session['user_id'],),
+    )
+    records = cursor.fetchall()
+    cursor.close()
+    conn.close()
+
+    history_records = [
+        {
+            'item_type': record['item_type'],
+            'points': int(record['points'] or 0),
+            'timestamp': record['timestamp'].isoformat(),
+        }
+        for record in records
+    ]
+    return jsonify(
+        history=history_records,
+        total_points=sum(record['points'] for record in history_records),
+    )
+
+
+@app.route('/api/leaderboard')
+def api_leaderboard():
+    if 'user_id' not in session:
+        return jsonify(error='Authentication required.'), 401
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(
+        """
+        SELECT u.username, SUM(rh.points) AS total_score
+        FROM users u
+        JOIN recycle_history rh ON u.user_id = rh.user_id
+        GROUP BY u.user_id, u.username
+        ORDER BY total_score DESC
+        LIMIT 10
+        """
+    )
+    leaders = cursor.fetchall()
+    cursor.close()
+    conn.close()
+
+    return jsonify(
+        leaders=[
+            {
+                'rank': index,
+                'username': leader['username'],
+                'total_score': int(leader['total_score'] or 0),
+            }
+            for index, leader in enumerate(leaders, start=1)
+        ]
+    )
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':

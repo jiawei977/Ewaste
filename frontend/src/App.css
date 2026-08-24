@@ -98,3 +98,86 @@
   border-radius: 16px;
   background: #f5f7f6;
 }
+
+.nav-page-link {
+  padding: 7px 10px;
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.nav-page-link:hover,
+.nav-page-link.active {
+  color: white;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.mobile-nav {
+  background: #2d6a4f;
+}
+
+.impact-card {
+  max-width: 380px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #40916c, #1b6549);
+}
+
+.content-card {
+  border-radius: 20px;
+}
+
+.content-card.mx-auto {
+  max-width: 850px;
+}
+
+.content-card .table > :not(caption) > * > * {
+  padding: 16px 12px;
+  border-color: #edf1ee;
+}
+
+.rank-column {
+  width: 80px;
+}
+
+.rank-badge {
+  display: inline-grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border-radius: 50%;
+  background: #edf1ee;
+  color: #6c757d;
+  font-weight: 700;
+}
+
+.rank-1 {
+  background: #ffd166;
+  color: #795600;
+}
+
+.rank-2 {
+  background: #d8e0e7;
+  color: #495057;
+}
+
+.rank-3 {
+  background: #dca574;
+  color: #633c1d;
+}
+
+@media (max-width: 575.98px) {
+  .navbar-brand {
+    font-size: 1rem;
+  }
+
+  .mobile-nav .nav-page-link {
+    padding-inline: 9px;
+    font-size: 0.82rem;
+  }
+
+  .content-card .table > :not(caption) > * > * {
+    padding: 12px 8px;
+  }
+}
