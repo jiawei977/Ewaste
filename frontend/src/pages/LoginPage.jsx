@@ -19,7 +19,7 @@ export default function LoginPage() {
   const { user, login } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
-  const [form, setForm] = useState({ email: '', password: '' })
+  const [form, setForm] = useState({ identifier: '', password: '' })
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
 
@@ -48,7 +48,7 @@ export default function LoginPage() {
       {location.state?.message && <div className="alert alert-success py-2">{location.state.message}</div>}
       {error && <div className="alert alert-danger py-2" role="alert">{error}</div>}
       <form onSubmit={handleSubmit}>
-        <input className="form-control mb-3" type="email" name="email" value={form.email} onChange={updateField} placeholder="Email Address" autoComplete="email" required />
+        <input className="form-control mb-3" type="text" name="identifier" value={form.identifier} onChange={updateField} placeholder="Username or email" autoComplete="username" aria-label="Username or email" required />
         <input className="form-control mb-4" type="password" name="password" value={form.password} onChange={updateField} placeholder="Password" autoComplete="current-password" required />
         <button className="btn btn-success w-100 mb-3" type="submit" disabled={submitting}>{submitting ? 'Signing in…' : 'Sign In'}</button>
       </form>

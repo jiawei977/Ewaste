@@ -111,6 +111,35 @@ def find_user_by_email(email):
     return user
 
 
+def find_user_by_username(username):
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT user_id, username, email, password, avatar_url FROM users WHERE username = %s", (username,))
+    user = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    return user
+
+
+def find_user_for_login(identifier):
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(
+        """
+        SELECT user_id, username, email, password, avatar_url
+        FROM users
+        WHERE email = %s OR username = %s
+        ORDER BY CASE WHEN email = %s THEN 0 ELSE 1 END
+        LIMIT 1
+        """,
+        (identifier, identifier, identifier),
+    )
+    user = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    return user
+
+
 def find_user_by_id(user_id):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
@@ -190,6 +219,8 @@ def api_register():
         return jsonify(error='Passwords do not match.'), 400
     if find_user_by_email(email):
         return jsonify(error='Email is already registered.'), 409
+    if find_user_by_username(username):
+        return jsonify(error='Username is already taken.'), 409
 
     create_user(username, email, password)
     return jsonify(message='Account created successfully. You can now sign in.'), 201
@@ -198,12 +229,12 @@ def api_register():
 @app.route('/api/auth/login', methods=['POST'])
 def api_login():
     payload = request.get_json(silent=True) or {}
-    email = str(payload.get('email', '')).strip()
+    identifier = str(payload.get('identifier', payload.get('email', ''))).strip()
     password = str(payload.get('password', ''))
-    user = find_user_by_email(email) if email and password else None
+    user = find_user_for_login(identifier) if identifier and password else None
 
     if user is None or not check_password_hash(user['password'], password):
-        return jsonify(error='Invalid email or password.'), 401
+        return jsonify(error='Invalid username, email, or password.'), 401
 
     session.clear()
     session['user_id'] = user['user_id']
