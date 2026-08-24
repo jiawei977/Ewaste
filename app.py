@@ -126,6 +126,64 @@ def api_health():
     return jsonify(status='ok', service='ewaste-flask-api')
 
 
+@app.route('/api/auth/session')
+def api_auth_session():
+    if 'user_id' not in session:
+        return jsonify(authenticated=False, user=None)
+
+    return jsonify(
+        authenticated=True,
+        user={
+            'user_id': session['user_id'],
+            'username': session['username'],
+        },
+    )
+
+
+@app.route('/api/auth/register', methods=['POST'])
+def api_register():
+    payload = request.get_json(silent=True) or {}
+    username = str(payload.get('username', '')).strip()
+    email = str(payload.get('email', '')).strip()
+    password = str(payload.get('password', ''))
+    confirm_password = str(payload.get('confirm_password', ''))
+
+    if not username or not email or not password or not confirm_password:
+        return jsonify(error='Please fill in all fields.'), 400
+    if password != confirm_password:
+        return jsonify(error='Passwords do not match.'), 400
+    if find_user_by_email(email):
+        return jsonify(error='Email is already registered.'), 409
+
+    create_user(username, email, password)
+    return jsonify(message='Account created successfully. You can now sign in.'), 201
+
+
+@app.route('/api/auth/login', methods=['POST'])
+def api_login():
+    payload = request.get_json(silent=True) or {}
+    email = str(payload.get('email', '')).strip()
+    password = str(payload.get('password', ''))
+    user = find_user_by_email(email) if email and password else None
+
+    if user is None or not check_password_hash(user['password'], password):
+        return jsonify(error='Invalid email or password.'), 401
+
+    session.clear()
+    session['user_id'] = user['user_id']
+    session['username'] = user['username']
+    return jsonify(
+        message='Signed in successfully.',
+        user={'user_id': user['user_id'], 'username': user['username']},
+    )
+
+
+@app.route('/api/auth/logout', methods=['POST'])
+def api_logout():
+    session.clear()
+    return jsonify(message='Signed out successfully.')
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':

@@ -6,3 +6,37 @@
 .migration-card {
   max-width: 640px;
 }
+
+.auth-panel {
+  max-width: 460px;
+}
+
+.auth-panel .card,
+.migration-card {
+  border-radius: 24px;
+}
+
+.auth-panel .form-control {
+  padding: 12px;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  background: #f8faf9;
+}
+
+.auth-panel .btn-success {
+  padding: 12px;
+  border: 0;
+  border-radius: 12px;
+  background: #40916c;
+  font-weight: 600;
+}
+
+.auth-panel .btn-success:hover,
+.auth-panel .btn-success:focus {
+  background: #2d6a4f;
+}
+
+.brand-icon {
+  color: #40916c;
+  font-size: 3rem;
+}
