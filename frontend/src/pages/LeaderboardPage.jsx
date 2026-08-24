@@ -28,17 +28,17 @@ export default function LeaderboardPage() {
 
       <section className="content-card card border-0 shadow-sm p-3 p-md-4 mx-auto">
         <div className="table-responsive">
-          <table className="table align-middle mb-0">
+          <table className="table align-middle mb-0 responsive-data-table">
             <thead><tr><th className="rank-column">Rank</th><th>Eco-Warrior</th><th className="text-end">Impact Score</th></tr></thead>
             <tbody>
               {leaders.map((leader) => (
                 <tr key={`${leader.rank}-${leader.username}`}>
-                  <td><span className={`rank-badge rank-${Math.min(leader.rank, 4)}`}>{leader.rank}</span></td>
-                  <td className="fw-semibold">{leader.username}</td>
-                  <td className="text-end"><span className="fw-bold text-success">{leader.total_score.toLocaleString()}</span><small className="text-secondary ms-1">pts</small></td>
+                  <td data-label="Rank"><span className={`rank-badge rank-${Math.min(leader.rank, 4)}`}>{leader.rank}</span></td>
+                  <td className="fw-semibold" data-label="Eco-Warrior">{leader.username}</td>
+                  <td className="text-end" data-label="Impact Score"><span className="fw-bold text-success">{leader.total_score.toLocaleString()}</span><small className="text-secondary ms-1">pts</small></td>
                 </tr>
               ))}
-              {!leaders.length && !error && <tr><td className="text-center text-secondary py-5" colSpan="3">No recycling scores recorded yet.</td></tr>}
+              {!leaders.length && !error && <tr className="empty-row"><td className="text-center text-secondary py-5" colSpan="3">No recycling scores recorded yet.</td></tr>}
             </tbody>
           </table>
         </div>

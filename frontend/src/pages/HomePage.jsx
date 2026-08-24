@@ -7,6 +7,7 @@ import NewsSection from '../components/NewsSection'
 export default function HomePage() {
   const { user } = useAuth()
   const imageInputRef = useRef(null)
+  const resultDialogRef = useRef(null)
   const [image, setImage] = useState(null)
   const [previewUrl, setPreviewUrl] = useState('')
   const [result, setResult] = useState(null)
@@ -19,6 +20,45 @@ export default function HomePage() {
   useEffect(() => () => {
     if (previewUrl) URL.revokeObjectURL(previewUrl)
   }, [previewUrl])
+
+  useEffect(() => {
+    if (!result) return undefined
+
+    const previousFocus = document.activeElement
+    const previousOverflow = document.body.style.overflow
+    const dialog = resultDialogRef.current
+    const focusableSelector = 'button:not([disabled]), a[href], input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    document.body.style.overflow = 'hidden'
+    dialog?.querySelector(focusableSelector)?.focus()
+
+    function handleKeyDown(event) {
+      if (event.key === 'Escape') {
+        setResult(null)
+        return
+      }
+
+      if (event.key !== 'Tab' || !dialog) return
+      const focusable = [...dialog.querySelectorAll(focusableSelector)]
+      if (!focusable.length) return
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first.focus()
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+      document.body.style.overflow = previousOverflow
+      if (previousFocus instanceof HTMLElement) previousFocus.focus()
+    }
+  }, [result])
 
   function selectImage(event) {
     const selectedImage = event.target.files?.[0] || null
@@ -72,7 +112,7 @@ export default function HomePage() {
 
   return (
     <>
-      <header className="text-center mb-5">
+      <header className="scanner-header text-center mb-4 mb-md-5">
         <h1 className="display-5 fw-bold">Sustainable AI <span className="text-success">Scanning</span></h1>
         <p className="lead text-secondary">Hello, {user.username}. Upload an item to find the right disposal path.</p>
       </header>
@@ -103,8 +143,8 @@ export default function HomePage() {
       </section>
 
       {result && (
-        <div className="result-backdrop" role="presentation">
-          <section className="result-dialog" role="dialog" aria-modal="true" aria-labelledby="scan-result-title">
+        <div className="result-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setResult(null) }}>
+          <section ref={resultDialogRef} className="result-dialog" role="dialog" aria-modal="true" aria-labelledby="scan-result-title" tabIndex="-1">
             <div className="d-flex justify-content-between align-items-center mb-3">
               <h2 className="h5 fw-bold mb-0" id="scan-result-title">Scan Complete</h2>
               <button className="btn-close" type="button" aria-label="Close" onClick={() => setResult(null)} />

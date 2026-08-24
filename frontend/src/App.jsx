@@ -22,15 +22,15 @@ function Layout({ children }) {
   const { user, logout } = useAuth()
   return (
     <div className="app-shell">
-      <nav className="navbar navbar-dark bg-success shadow-sm">
+      <nav className="navbar navbar-dark bg-success shadow-sm top-nav">
         <div className="container">
           <Link className="navbar-brand fw-bold" to="/"><i className="bi bi-recycle me-2" />E-Waste Scanner</Link>
           {user && (
             <div className="d-flex align-items-center gap-2 gap-md-3">
               <div className="d-none d-md-flex gap-1">
-                <NavItem to="/">Scanner</NavItem>
-                <NavItem to="/history">My Impact</NavItem>
-                <NavItem to="/leaderboard">Global Ranking</NavItem>
+                <NavItem to="/" icon="bi-camera">Scanner</NavItem>
+                <NavItem to="/history" icon="bi-graph-up-arrow">My Impact</NavItem>
+                <NavItem to="/leaderboard" icon="bi-trophy">Global Ranking</NavItem>
               </div>
               <button className="btn btn-sm btn-light fw-semibold" type="button" onClick={logout}>Logout</button>
             </div>
@@ -38,19 +38,24 @@ function Layout({ children }) {
         </div>
       </nav>
       {user && (
-        <nav className="mobile-nav d-flex d-md-none justify-content-center gap-1 p-2 shadow-sm">
-          <NavItem to="/">Scanner</NavItem>
-          <NavItem to="/history">My Impact</NavItem>
-          <NavItem to="/leaderboard">Ranking</NavItem>
+        <nav className="mobile-nav d-flex d-md-none justify-content-around shadow-lg" aria-label="Primary navigation">
+          <NavItem to="/" icon="bi-camera">Scanner</NavItem>
+          <NavItem to="/history" icon="bi-graph-up-arrow">My Impact</NavItem>
+          <NavItem to="/leaderboard" icon="bi-trophy">Ranking</NavItem>
         </nav>
       )}
-      <main className="container py-5">{children}</main>
+      <main className="container app-main py-3 py-md-5">{children}</main>
     </div>
   )
 }
 
-function NavItem({ to, children }) {
-  return <NavLink className={({ isActive }) => `nav-page-link ${isActive ? 'active' : ''}`} to={to} end={to === '/'}>{children}</NavLink>
+function NavItem({ to, icon, children }) {
+  return (
+    <NavLink className={({ isActive }) => `nav-page-link ${isActive ? 'active' : ''}`} to={to} end={to === '/'}>
+      <i className={`bi ${icon}`} aria-hidden="true" />
+      <span>{children}</span>
+    </NavLink>
+  )
 }
 
 function AppRoutes() {

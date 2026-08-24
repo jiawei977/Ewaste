@@ -1,6 +1,11 @@
 .app-shell {
   min-height: 100vh;
+  overflow-x: hidden;
   background: #f4f8f5;
+}
+
+.top-nav {
+  padding-top: max(0.5rem, env(safe-area-inset-top));
 }
 
 .migration-card {
@@ -110,6 +115,11 @@
 }
 
 .nav-page-link {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   padding: 7px 10px;
   border-radius: 10px;
   color: rgba(255, 255, 255, 0.8);
@@ -125,7 +135,26 @@
 }
 
 .mobile-nav {
+  position: fixed;
+  z-index: 1040;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 6px 8px max(6px, env(safe-area-inset-bottom));
   background: #2d6a4f;
+}
+
+.mobile-nav .nav-page-link {
+  min-width: 76px;
+  flex-direction: column;
+  gap: 0;
+  padding: 5px 8px;
+  line-height: 1.2;
+}
+
+.mobile-nav .nav-page-link .bi {
+  margin-bottom: 2px;
+  font-size: 1.1rem;
 }
 
 .impact-card {
@@ -209,16 +238,151 @@
 }
 
 @media (max-width: 575.98px) {
+  .app-main {
+    padding-right: 14px;
+    padding-bottom: calc(88px + env(safe-area-inset-bottom)) !important;
+    padding-left: 14px;
+  }
+
   .navbar-brand {
     font-size: 1rem;
   }
 
   .mobile-nav .nav-page-link {
-    padding-inline: 9px;
     font-size: 0.82rem;
   }
 
-  .content-card .table > :not(caption) > * > * {
-    padding: 12px 8px;
+  .scanner-header h1 {
+    font-size: clamp(2rem, 11vw, 2.8rem);
+  }
+
+  .scanner-header .lead {
+    font-size: 1rem;
+  }
+
+  .auth-panel .card,
+  .scanner-card,
+  .mission-card,
+  .content-card {
+    border-radius: 18px;
+  }
+
+  .auth-panel .card,
+  .scanner-card,
+  .mission-card {
+    padding: 20px !important;
+  }
+
+  .upload-area {
+    padding: 28px 14px;
+    border-radius: 16px;
+  }
+
+  .btn,
+  .form-control {
+    min-height: 44px;
+  }
+
+  .result-backdrop {
+    padding: 0;
+  }
+
+  .result-dialog {
+    width: 100%;
+    min-height: 100dvh;
+    max-height: 100dvh;
+    padding: max(20px, env(safe-area-inset-top)) 18px max(20px, env(safe-area-inset-bottom));
+    border-radius: 0;
+  }
+
+  .detected-image {
+    max-height: 32dvh;
+  }
+
+  .content-card {
+    padding: 14px !important;
+  }
+
+  .content-card .table-responsive {
+    overflow: visible;
+  }
+
+  .responsive-data-table thead {
+    display: none;
+  }
+
+  .responsive-data-table,
+  .responsive-data-table tbody,
+  .responsive-data-table tr,
+  .responsive-data-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .responsive-data-table tbody tr:not(.empty-row) {
+    margin-bottom: 12px;
+    padding: 8px 12px;
+    border: 1px solid #e5ece8;
+    border-radius: 14px;
+    background: #fff;
+  }
+
+  .responsive-data-table tbody tr:last-child {
+    margin-bottom: 0;
+  }
+
+  .responsive-data-table tbody td {
+    display: flex;
+    min-height: 44px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 8px 4px !important;
+    text-align: right !important;
+    border: 0;
+  }
+
+  .responsive-data-table tbody td::before {
+    content: attr(data-label);
+    color: #6c757d;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-align: left;
+    text-transform: uppercase;
+  }
+
+  .responsive-data-table .empty-row td {
+    display: block;
+    padding: 32px 8px !important;
+    text-align: center !important;
+  }
+
+  .responsive-data-table .empty-row td::before {
+    display: none;
+  }
+
+  .news-section {
+    margin-top: 2rem !important;
+    padding-top: 1rem !important;
+  }
+
+  .news-image {
+    height: 160px;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .app-main {
+    padding-bottom: calc(88px + env(safe-area-inset-bottom)) !important;
+  }
+}
+
+@media (max-height: 600px) and (orientation: landscape) {
+  .result-dialog {
+    max-height: calc(100dvh - 16px);
+  }
+
+  .detected-image {
+    max-height: 35dvh;
   }
 }

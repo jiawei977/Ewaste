@@ -34,18 +34,18 @@ export default function HistoryPage() {
       <section className="content-card card border-0 shadow-sm p-3 p-md-4">
         <h2 className="h4 fw-bold mb-4">Recycling History</h2>
         <div className="table-responsive">
-          <table className="table align-middle mb-0">
+          <table className="table align-middle mb-0 responsive-data-table">
             <thead><tr><th>Item Type</th><th>Reward</th><th className="text-end">Date</th></tr></thead>
             <tbody>
               {data.history.map((record, index) => (
                 <tr key={`${record.timestamp}-${index}`}>
-                  <td className="fw-semibold text-success"><i className="bi bi-cpu me-2" />{record.item_type}</td>
-                  <td><span className="badge rounded-pill text-bg-success">+{record.points} pts</span></td>
-                  <td className="text-end text-secondary small">{formatDate(record.timestamp)}</td>
+                  <td className="fw-semibold text-success" data-label="Item"><span><i className="bi bi-cpu me-2" />{record.item_type}</span></td>
+                  <td data-label="Reward"><span className="badge rounded-pill text-bg-success">+{record.points} pts</span></td>
+                  <td className="text-end text-secondary small" data-label="Date">{formatDate(record.timestamp)}</td>
                 </tr>
               ))}
               {!data.history.length && (
-                <tr><td className="text-center text-secondary py-5" colSpan="3">No items recycled yet. <Link to="/">Scan your first item.</Link></td></tr>
+                <tr className="empty-row"><td className="text-center text-secondary py-5" colSpan="3">No items recycled yet. <Link to="/">Scan your first item.</Link></td></tr>
               )}
             </tbody>
           </table>
