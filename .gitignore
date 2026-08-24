@@ -3,6 +3,7 @@ __pycache__/
 .env
 uploads/*
 static/detections/*
+static/avatars/*
 node_modules/
 frontend/dist/
 frontend/build/

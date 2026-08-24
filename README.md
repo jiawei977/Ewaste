@@ -61,6 +61,14 @@ python app.py
 
 Open `http://localhost:5000`. Flask serves `frontend/dist/index.html`, built assets, API endpoints, and backend static files from one origin.
 
+## User avatars
+
+For an existing database, run [`migrations/001_add_avatar_url.sql`](migrations/001_add_avatar_url.sql) once before starting the updated application. A new database created from `ewaste_db.sql` already includes the column.
+
+Users can upload JPEG, PNG, or WebP profile pictures up to 5 MB. Flask crops them to a square, stores them as 512 x 512 WebP files in `static/avatars`, and the frontend displays gold, silver, and bronze frames for the top three global ranks.
+
+The local avatar folder is ignored by Git. Before deploying this feature to Railway, mount persistent storage for `static/avatars` or move avatar files to object storage; files written only to a service's temporary filesystem can disappear after a redeploy.
+
 To enable Flask debug mode temporarily in PowerShell:
 
 ```powershell

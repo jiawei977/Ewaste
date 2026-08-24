@@ -26,5 +26,16 @@ export default function AuthProvider({ children }) {
     setUser(null)
   }
 
-  return <AuthContext.Provider value={{ user, loading, login, logout }}>{children}</AuthContext.Provider>
+  async function uploadAvatar(file) {
+    const formData = new FormData()
+    formData.append('avatar', file)
+    const data = await apiRequest('/api/profile/avatar', {
+      method: 'POST',
+      body: formData,
+    })
+    setUser(data.user)
+    return data.message
+  }
+
+  return <AuthContext.Provider value={{ user, loading, login, logout, uploadAvatar }}>{children}</AuthContext.Provider>
 }

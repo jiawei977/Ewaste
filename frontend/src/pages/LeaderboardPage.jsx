@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { apiRequest } from '../api'
 import PageLoading from '../components/PageLoading'
+import UserAvatar from '../components/UserAvatar'
 
 export default function LeaderboardPage() {
   const [leaders, setLeaders] = useState([])
@@ -34,7 +35,15 @@ export default function LeaderboardPage() {
               {leaders.map((leader) => (
                 <tr key={`${leader.rank}-${leader.username}`}>
                   <td data-label="Rank"><span className={`rank-badge rank-${Math.min(leader.rank, 4)}`}>{leader.rank}</span></td>
-                  <td className="fw-semibold" data-label="Eco-Warrior">{leader.username}</td>
+                  <td className="fw-semibold" data-label="Eco-Warrior">
+                    <div className="leaderboard-user">
+                      <div className={`leaderboard-avatar-frame frame-rank-${Math.min(leader.rank, 4)}`}>
+                        {leader.rank <= 3 && <i className="bi bi-award-fill medal-crown" aria-hidden="true" />}
+                        <UserAvatar user={leader} className="leaderboard-avatar" />
+                      </div>
+                      <span>{leader.username}</span>
+                    </div>
+                  </td>
                   <td className="text-end" data-label="Impact Score"><span className="fw-bold text-success">{leader.total_score.toLocaleString()}</span><small className="text-secondary ms-1">pts</small></td>
                 </tr>
               ))}

@@ -6,10 +6,13 @@ from flask import Flask, request, session, jsonify, abort, send_from_directory
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import safe_join, secure_filename
 from ultralytics import YOLO
+from PIL import Image, ImageOps, UnidentifiedImageError
 import mysql.connector
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 FRONTEND_DIST = os.path.join(BASE_DIR, 'frontend', 'dist')
+AVATAR_FOLDER = os.path.join(BASE_DIR, 'static', 'avatars')
+MAX_AVATAR_UPLOAD_SIZE = 5 * 1024 * 1024
 load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 # MySQL database configuration
@@ -101,11 +104,29 @@ def record_recycle_history(user_id, category, points):
 def find_user_by_email(email):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT user_id, username, email, password FROM users WHERE email = %s", (email,))
+    cursor.execute("SELECT user_id, username, email, password, avatar_url FROM users WHERE email = %s", (email,))
     user = cursor.fetchone()
     cursor.close()
     conn.close()
     return user
+
+
+def find_user_by_id(user_id):
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT user_id, username, avatar_url FROM users WHERE user_id = %s", (user_id,))
+    user = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    return user
+
+
+def public_user(user):
+    return {
+        'user_id': user['user_id'],
+        'username': user['username'],
+        'avatar_url': user.get('avatar_url'),
+    }
 
 
 def create_user(username, email, password):
@@ -147,13 +168,12 @@ def api_auth_session():
     if 'user_id' not in session:
         return jsonify(authenticated=False, user=None)
 
-    return jsonify(
-        authenticated=True,
-        user={
-            'user_id': session['user_id'],
-            'username': session['username'],
-        },
-    )
+    user = find_user_by_id(session['user_id'])
+    if user is None:
+        session.clear()
+        return jsonify(authenticated=False, user=None)
+
+    return jsonify(authenticated=True, user=public_user(user))
 
 
 @app.route('/api/auth/register', methods=['POST'])
@@ -190,7 +210,7 @@ def api_login():
     session['username'] = user['username']
     return jsonify(
         message='Signed in successfully.',
-        user={'user_id': user['user_id'], 'username': user['username']},
+        user=public_user(user),
     )
 
 
@@ -198,6 +218,57 @@ def api_login():
 def api_logout():
     session.clear()
     return jsonify(message='Signed out successfully.')
+
+
+@app.route('/api/profile/avatar', methods=['POST'])
+def api_upload_avatar():
+    if 'user_id' not in session:
+        return jsonify(error='Authentication required.'), 401
+
+    if request.content_length and request.content_length > MAX_AVATAR_UPLOAD_SIZE:
+        return jsonify(error='Avatar image must be 5 MB or smaller.'), 413
+
+    uploaded_file = request.files.get('avatar')
+    if uploaded_file is None or not uploaded_file.filename:
+        return jsonify(error='Please choose an avatar image.'), 400
+
+    try:
+        with Image.open(uploaded_file.stream) as source_image:
+            if source_image.format not in {'JPEG', 'PNG', 'WEBP'}:
+                return jsonify(error='Please upload a valid JPEG, PNG, or WebP image.'), 400
+            source_image.verify()
+        uploaded_file.stream.seek(0)
+        with Image.open(uploaded_file.stream) as source_image:
+            normalized_image = ImageOps.exif_transpose(source_image).convert('RGB')
+            avatar_image = ImageOps.fit(
+                normalized_image,
+                (512, 512),
+                method=Image.Resampling.LANCZOS,
+            )
+    except (UnidentifiedImageError, OSError, ValueError):
+        return jsonify(error='Please upload a valid JPEG, PNG, or WebP image.'), 400
+
+    os.makedirs(AVATAR_FOLDER, exist_ok=True)
+    avatar_filename = f"user_{session['user_id']}.webp"
+    avatar_path = os.path.join(AVATAR_FOLDER, avatar_filename)
+    temporary_path = f"{avatar_path}.{uuid.uuid4().hex}.tmp"
+    avatar_image.save(temporary_path, format='WEBP', quality=88, method=6)
+    os.replace(temporary_path, avatar_path)
+
+    avatar_version = uuid.uuid4().hex
+    avatar_url = f'/static/avatars/{avatar_filename}?v={avatar_version}'
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "UPDATE users SET avatar_url = %s WHERE user_id = %s",
+        (avatar_url, session['user_id']),
+    )
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    user = find_user_by_id(session['user_id'])
+    return jsonify(message='Profile picture updated.', user=public_user(user))
 
 
 @app.route('/api/detect', methods=['POST'])
@@ -321,10 +392,10 @@ def api_leaderboard():
     cursor = conn.cursor(dictionary=True)
     cursor.execute(
         """
-        SELECT u.username, SUM(rh.points) AS total_score
+        SELECT u.username, u.avatar_url, SUM(rh.points) AS total_score
         FROM users u
         JOIN recycle_history rh ON u.user_id = rh.user_id
-        GROUP BY u.user_id, u.username
+        GROUP BY u.user_id, u.username, u.avatar_url
         ORDER BY total_score DESC
         LIMIT 10
         """
@@ -338,6 +409,7 @@ def api_leaderboard():
             {
                 'rank': index,
                 'username': leader['username'],
+                'avatar_url': leader['avatar_url'],
                 'total_score': int(leader['total_score'] or 0),
             }
             for index, leader in enumerate(leaders, start=1)

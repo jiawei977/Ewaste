@@ -6,6 +6,7 @@ import HistoryPage from './pages/HistoryPage'
 import LeaderboardPage from './pages/LeaderboardPage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
+import AvatarUploader from './components/AvatarUploader'
 import './App.css'
 
 function LoadingPage() {
@@ -32,7 +33,11 @@ function Layout({ children }) {
                 <NavItem to="/history" icon="bi-graph-up-arrow">My Impact</NavItem>
                 <NavItem to="/leaderboard" icon="bi-trophy">Global Ranking</NavItem>
               </div>
-              <button className="btn btn-sm btn-light fw-semibold" type="button" onClick={logout}>Logout</button>
+              <AvatarUploader />
+              <button className="btn btn-sm btn-light fw-semibold logout-button" type="button" onClick={logout}>
+                <i className="bi bi-box-arrow-right d-sm-none" aria-hidden="true" />
+                <span className="d-none d-sm-inline">Logout</span>
+              </button>
             </div>
           )}
         </div>
