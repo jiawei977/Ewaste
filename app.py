@@ -1,6 +1,7 @@
 import os
 import uuid
 import requests
+from dotenv import load_dotenv
 from flask import Flask, request, session, jsonify, abort, send_from_directory
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import safe_join, secure_filename
@@ -9,6 +10,7 @@ import mysql.connector
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 FRONTEND_DIST = os.path.join(BASE_DIR, 'frontend', 'dist')
+load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 # MySQL database configuration
 def get_db_connection():
@@ -29,11 +31,24 @@ model = YOLO('best.pt')
 
 def get_ewaste_news():
     """Fetches latest e-waste and recycling news from NewsData.io."""
-    api_key = 'pub_8abef65c69e04e37ada1cb988af6cdf7'
+    api_key = os.environ.get('NEWSDATA_API_KEY')
+    if not api_key:
+        print('News API is disabled: NEWSDATA_API_KEY is not configured.')
+        return []
+
     # We broadened the query to 'e-waste OR recycling' and removed the strict category for more results
-    url = f'https://newsdata.io/api/1/news?apikey={api_key}&q=e-waste&language=en,ms&removeduplicate=1'
+    url = 'https://newsdata.io/api/1/news'
     try:
-        response = requests.get(url, timeout=5)
+        response = requests.get(
+            url,
+            params={
+                'apikey': api_key,
+                'q': 'e-waste',
+                'language': 'en,ms',
+                'removeduplicate': 1,
+            },
+            timeout=5,
+        )
         if response.status_code == 200:
             data = response.json()
             results = data.get('results', [])

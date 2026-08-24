@@ -2,6 +2,30 @@
 
 This branch contains a React frontend with a Flask API, YOLO detection, and MySQL storage.
 
+## Environment variables
+
+Copy the example file for local development:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Open `.env` and set:
+
+```env
+NEWSDATA_API_KEY=your_newsdata_key
+SECRET_KEY=your_random_flask_secret
+FLASK_DEBUG=1
+```
+
+The real `.env` file is ignored by Git. Generate a Flask secret with:
+
+```powershell
+python -c "import secrets; print(secrets.token_hex(32))"
+```
+
+For Railway, create the same `NEWSDATA_API_KEY` and `SECRET_KEY` variables in the web service's Variables section. Do not upload `.env` to Railway or GitHub.
+
 ## Development
 
 Run Flask from the project root:
