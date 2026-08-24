@@ -3,6 +3,7 @@ import { useAuth } from '../auth-context'
 import { apiRequest } from '../api'
 import MonthlyMission from '../components/MonthlyMission'
 import NewsSection from '../components/NewsSection'
+import ConfidenceRing from '../components/ConfidenceRing'
 
 export default function HomePage() {
   const { user } = useAuth()
@@ -124,9 +125,21 @@ export default function HomePage() {
         {success && <div className="alert alert-success" role="status"><i className="bi bi-check-circle me-2" />{success}</div>}
 
         <form onSubmit={analyzeImage}>
-          <label className="upload-area d-block text-center mb-4" htmlFor="imageInput">
+          <label className={`upload-area d-block text-center mb-4 ${analyzing ? 'is-scanning' : ''}`} htmlFor="imageInput">
             {previewUrl ? (
-              <img className="image-preview shadow-sm" src={previewUrl} alt="Selected item preview" />
+              <div className="scan-preview-wrap">
+                <img className="image-preview shadow-sm" src={previewUrl} alt="Selected item preview" />
+                {analyzing && (
+                  <div className="scan-overlay" aria-hidden="true">
+                    <span className="scan-corner corner-one" />
+                    <span className="scan-corner corner-two" />
+                    <span className="scan-corner corner-three" />
+                    <span className="scan-corner corner-four" />
+                    <span className="scan-line" />
+                    <span className="scan-status">Analyzing object…</span>
+                  </div>
+                )}
+              </div>
             ) : (
               <div>
                 <i className="bi bi-camera display-4 text-success d-block mb-2" />
@@ -151,8 +164,14 @@ export default function HomePage() {
             </div>
             <div className="text-center">
               <img className="detected-image img-fluid rounded-4 shadow-sm mb-3" src={result.annotated_image_url} alt={`Detected ${result.category}`} />
-              <h3 className="text-success fw-bold mb-1">{result.category}</h3>
-              <p className="small text-secondary">Confidence: {(result.confidence * 100).toFixed(1)}%</p>
+              <div className="scan-result-summary mb-3">
+                <div className="text-start">
+                  <span className="result-label">Detected item</span>
+                  <h3 className="text-success fw-bold mb-0">{result.category}</h3>
+                  <span className="points-preview">Worth {result.points} impact points</span>
+                </div>
+                <ConfidenceRing confidence={result.confidence} />
+              </div>
               <div className="guideline-box text-start mb-4">
                 <h4 className="small text-uppercase text-secondary fw-bold">How to recycle</h4>
                 <p className="mb-0">{result.guideline}</p>

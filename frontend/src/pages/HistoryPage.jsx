@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { apiRequest } from '../api'
 import PageLoading from '../components/PageLoading'
+import ImpactDashboard from '../components/ImpactDashboard'
+import EmptyState from '../components/EmptyState'
 
 export default function HistoryPage() {
   const [data, setData] = useState({ history: [], total_points: 0 })
@@ -26,10 +27,7 @@ export default function HistoryPage() {
 
       {error && <div className="alert alert-danger" role="alert">{error}</div>}
 
-      <section className="impact-card card border-0 shadow-sm text-center text-white p-4 mb-4">
-        <p className="mb-1 opacity-75">Total Impact Points</p>
-        <div className="display-5 fw-bold">{data.total_points.toLocaleString()} <i className="bi bi-star-fill fs-4 text-warning" /></div>
-      </section>
+      <ImpactDashboard history={data.history} totalPoints={data.total_points} />
 
       <section className="content-card card border-0 shadow-sm p-3 p-md-4">
         <h2 className="h4 fw-bold mb-4">Recycling History</h2>
@@ -45,7 +43,7 @@ export default function HistoryPage() {
                 </tr>
               ))}
               {!data.history.length && (
-                <tr className="empty-row"><td className="text-center text-secondary py-5" colSpan="3">No items recycled yet. <Link to="/">Scan your first item.</Link></td></tr>
+                <tr className="empty-row"><td colSpan="3"><EmptyState icon="bi-clock-history" title="Your impact journey starts here" message="Recycle your first electronic item to unlock charts and track your progress." actionLabel="Scan an item" actionTo="/" /></td></tr>
               )}
             </tbody>
           </table>

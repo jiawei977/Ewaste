@@ -330,8 +330,8 @@ def api_detect():
 
     best_idx = boxes.conf.argmax().item()
     confidence = boxes.conf[best_idx].item()
-    if confidence < 0.60:
-        return jsonify(error='No detection reached the required 60% confidence.', confidence=confidence), 422
+    if confidence < 0.30:
+        return jsonify(error='No detection reached the required 30% confidence.', confidence=confidence), 422
 
     class_id = int(boxes.cls[best_idx])
     guideline = fetch_guideline(class_id)
@@ -460,6 +460,37 @@ def api_mission():
         target=target,
         percentage=min(round(total / target * 100), 100),
         completed=total >= target,
+    )
+
+
+@app.route('/api/guidelines')
+def api_guidelines():
+    if 'user_id' not in session:
+        return jsonify(error='Authentication required.'), 401
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(
+        """
+        SELECT class_index, category, recycling_instruction, points
+        FROM recycling_guidelines
+        ORDER BY category
+        """
+    )
+    guidelines = cursor.fetchall()
+    cursor.close()
+    conn.close()
+
+    return jsonify(
+        guidelines=[
+            {
+                'class_index': guideline['class_index'],
+                'category': guideline['category'],
+                'instruction': guideline['recycling_instruction'],
+                'points': int(guideline['points'] or 0),
+            }
+            for guideline in guidelines
+        ]
     )
 
 

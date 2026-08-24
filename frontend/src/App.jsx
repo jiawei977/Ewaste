@@ -6,6 +6,7 @@ import HistoryPage from './pages/HistoryPage'
 import LeaderboardPage from './pages/LeaderboardPage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
+import GuidePage from './pages/GuidePage'
 import AvatarUploader from './components/AvatarUploader'
 import './App.css'
 
@@ -32,6 +33,7 @@ function Layout({ children }) {
                 <NavItem to="/" icon="bi-camera">Scanner</NavItem>
                 <NavItem to="/history" icon="bi-graph-up-arrow">My Impact</NavItem>
                 <NavItem to="/leaderboard" icon="bi-trophy">Global Ranking</NavItem>
+                <NavItem to="/guide" icon="bi-journal-check">Guide</NavItem>
               </div>
               <AvatarUploader />
               <button className="btn btn-sm btn-light fw-semibold logout-button" type="button" onClick={logout}>
@@ -47,6 +49,7 @@ function Layout({ children }) {
           <NavItem to="/" icon="bi-camera">Scanner</NavItem>
           <NavItem to="/history" icon="bi-graph-up-arrow">My Impact</NavItem>
           <NavItem to="/leaderboard" icon="bi-trophy">Ranking</NavItem>
+          <NavItem to="/guide" icon="bi-journal-check">Guide</NavItem>
         </nav>
       )}
       <main className="container app-main py-3 py-md-5">{children}</main>
@@ -74,6 +77,7 @@ function AppRoutes() {
         <Route path="/" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
         <Route path="/history" element={<ProtectedRoute><HistoryPage /></ProtectedRoute>} />
         <Route path="/leaderboard" element={<ProtectedRoute><LeaderboardPage /></ProtectedRoute>} />
+        <Route path="/guide" element={<ProtectedRoute><GuidePage /></ProtectedRoute>} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Layout>

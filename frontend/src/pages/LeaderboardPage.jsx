@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { apiRequest } from '../api'
 import PageLoading from '../components/PageLoading'
 import UserAvatar from '../components/UserAvatar'
+import EmptyState from '../components/EmptyState'
 
 export default function LeaderboardPage() {
   const [leaders, setLeaders] = useState([])
@@ -27,12 +28,15 @@ export default function LeaderboardPage() {
 
       {error && <div className="alert alert-danger" role="alert">{error}</div>}
 
-      <section className="content-card leaderboard-card card border-0 shadow-sm p-3 p-md-4 mx-auto">
+      {!!leaders.length && <Podium leaders={leaders.slice(0, 3)} />}
+
+      {(leaders.length > 3 || (!leaders.length && !error)) && <section className="content-card leaderboard-card card border-0 shadow-sm p-3 p-md-4 mx-auto">
+        {leaders.length > 3 && <h2 className="h5 fw-bold leaderboard-list-title">More top recyclers</h2>}
         <div className="table-responsive">
           <table className="table align-middle mb-0 responsive-data-table leaderboard-table">
             <thead><tr><th className="rank-column">Rank</th><th>Eco-Warrior</th><th className="text-end">Impact Score</th></tr></thead>
             <tbody>
-              {leaders.map((leader) => (
+              {leaders.slice(3).map((leader) => (
                 <tr key={`${leader.rank}-${leader.username}`}>
                   <td className="leaderboard-rank-cell" data-label="Rank"><span className={`rank-badge rank-${Math.min(leader.rank, 4)}`}>{leader.rank}</span></td>
                   <td className="leaderboard-user-cell fw-semibold" data-label="Eco-Warrior">
@@ -47,11 +51,30 @@ export default function LeaderboardPage() {
                   <td className="leaderboard-score-cell text-end" data-label="Impact Score"><span className="leaderboard-score fw-bold text-success">{leader.total_score.toLocaleString()}</span><small className="text-secondary ms-1">pts</small></td>
                 </tr>
               ))}
-              {!leaders.length && !error && <tr className="empty-row"><td className="text-center text-secondary py-5" colSpan="3">No recycling scores recorded yet.</td></tr>}
+              {!leaders.length && !error && <tr className="empty-row"><td colSpan="3"><EmptyState icon="bi-trophy" title="The podium is waiting" message="Complete a recycling scan to become the first ranked eco-warrior." actionLabel="Start scanning" actionTo="/" /></td></tr>}
             </tbody>
           </table>
         </div>
-      </section>
+      </section>}
     </>
+  )
+}
+
+function Podium({ leaders }) {
+  const orderedLeaders = [leaders[1], leaders[0], leaders[2]].filter(Boolean)
+  return (
+    <section className="podium" aria-label="Top three eco-warriors">
+      {orderedLeaders.map((leader) => (
+        <article className={`podium-place podium-place-${leader.rank}`} key={leader.rank}>
+          <span className="podium-crown"><i className="bi bi-crown-fill" /></span>
+          <div className={`podium-avatar-frame frame-rank-${leader.rank}`}>
+            <UserAvatar user={leader} className="podium-avatar" />
+          </div>
+          <strong className="podium-name">{leader.username}</strong>
+          <span className="podium-score">{leader.total_score.toLocaleString()} pts</span>
+          <div className="podium-step"><span>{leader.rank}</span></div>
+        </article>
+      ))}
+    </section>
   )
 }
