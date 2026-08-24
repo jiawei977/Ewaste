@@ -40,3 +40,61 @@
   color: #40916c;
   font-size: 3rem;
 }
+
+.scanner-card {
+  max-width: 640px;
+  border-radius: 24px;
+}
+
+.upload-area {
+  padding: 36px 20px;
+  cursor: pointer;
+  border: 2px dashed #b7d8c5;
+  border-radius: 20px;
+  background: #f8fcf9;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.upload-area:hover {
+  border-color: #40916c;
+  background: #f0f8f3;
+}
+
+.image-preview {
+  width: 100%;
+  max-height: 340px;
+  object-fit: contain;
+  border-radius: 16px;
+}
+
+.result-backdrop {
+  position: fixed;
+  z-index: 1050;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  overflow-y: auto;
+  background: rgba(18, 32, 24, 0.62);
+}
+
+.result-dialog {
+  width: min(100%, 540px);
+  max-height: calc(100vh - 40px);
+  padding: 24px;
+  overflow-y: auto;
+  border-radius: 24px;
+  background: white;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.22);
+}
+
+.detected-image {
+  max-height: 280px;
+  object-fit: contain;
+}
+
+.guideline-box {
+  padding: 16px;
+  border-radius: 16px;
+  background: #f5f7f6;
+}

@@ -3,6 +3,7 @@ import uuid
 import requests
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 from ultralytics import YOLO
 from PIL import Image
 import mysql.connector
@@ -182,6 +183,84 @@ def api_login():
 def api_logout():
     session.clear()
     return jsonify(message='Signed out successfully.')
+
+
+@app.route('/api/detect', methods=['POST'])
+def api_detect():
+    if 'user_id' not in session:
+        return jsonify(error='Authentication required.'), 401
+
+    session.pop('pending_item', None)
+    session.pop('pending_points', None)
+
+    image = request.files.get('image')
+    if image is None or not image.filename:
+        return jsonify(error='Please choose an image to analyze.'), 400
+
+    original_filename = secure_filename(image.filename)
+    if not original_filename:
+        return jsonify(error='The selected image has an invalid filename.'), 400
+
+    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+    upload_filename = f"{uuid.uuid4().hex}_{original_filename}"
+    image_path = os.path.join(app.config['UPLOAD_FOLDER'], upload_filename)
+    image.save(image_path)
+
+    results = model(image_path)
+    boxes = results[0].boxes
+    if len(boxes) == 0:
+        return jsonify(error='No e-waste item was detected. Please try a clearer image with one item.'), 422
+
+    best_idx = boxes.conf.argmax().item()
+    confidence = boxes.conf[best_idx].item()
+    if confidence < 0.60:
+        return jsonify(error='No detection reached the required 60% confidence.', confidence=confidence), 422
+
+    class_id = int(boxes.cls[best_idx])
+    guideline = fetch_guideline(class_id)
+    if guideline is None:
+        return jsonify(error='No recycling guideline was found for the detected item.'), 422
+
+    results[0].boxes = boxes[best_idx:best_idx + 1]
+    detections_folder = os.path.join('static', 'detections')
+    os.makedirs(detections_folder, exist_ok=True)
+    annotated_filename = f"detected_{uuid.uuid4().hex}_{original_filename}"
+    results[0].save(filename=os.path.join(detections_folder, annotated_filename))
+
+    session['pending_item'] = guideline['category']
+    session['pending_points'] = guideline.get('points', 0)
+
+    search_query = 'e-waste disposal'
+    maps_query = search_query.replace(' ', '+')
+    return jsonify(
+        category=guideline['category'],
+        confidence=confidence,
+        guideline=guideline['recycling_instruction'],
+        points=guideline.get('points', 0),
+        annotated_image_url=f'/static/detections/{annotated_filename}',
+        map_url=f'https://www.google.com/maps/search/{maps_query}',
+        centers_pdf_url='/static/centers.pdf',
+    )
+
+
+@app.route('/api/recycle', methods=['POST'])
+def api_recycle():
+    if 'user_id' not in session:
+        return jsonify(error='Authentication required.'), 401
+
+    item_type = session.get('pending_item')
+    points = session.get('pending_points', 0)
+    if not item_type:
+        return jsonify(error='There is no pending detection to recycle.'), 400
+
+    record_recycle_history(session['user_id'], item_type, points)
+    session.pop('pending_item', None)
+    session.pop('pending_points', None)
+    return jsonify(
+        message=f'Successfully recorded {item_type}. You earned {points} points.',
+        category=item_type,
+        points=points,
+    )
 
 
 @app.route('/register', methods=['GET', 'POST'])

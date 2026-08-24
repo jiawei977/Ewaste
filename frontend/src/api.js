@@ -1,8 +1,9 @@
 export async function apiRequest(path, options = {}) {
+  const hasJsonBody = options.body && !(options.body instanceof FormData)
   const response = await fetch(path, {
     ...options,
     headers: {
-      ...(options.body ? { 'Content-Type': 'application/json' } : {}),
+      ...(hasJsonBody ? { 'Content-Type': 'application/json' } : {}),
       ...options.headers,
     },
   })
