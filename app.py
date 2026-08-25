@@ -1,5 +1,6 @@
 import os
 import uuid
+import math
 import requests
 from dotenv import load_dotenv
 from flask import Flask, request, session, jsonify, abort, send_from_directory
@@ -7,6 +8,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import safe_join, secure_filename
 from ultralytics import YOLO
 from PIL import Image, ImageOps, UnidentifiedImageError
+from urllib.parse import urlencode
 import mysql.connector
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -463,15 +465,12 @@ def api_detect():
     session['pending_item'] = guideline['category']
     session['pending_points'] = guideline.get('points', 0)
 
-    search_query = 'e-waste disposal'
-    maps_query = search_query.replace(' ', '+')
     return jsonify(
         category=guideline['category'],
         confidence=confidence,
         guideline=guideline['recycling_instruction'],
         points=guideline.get('points', 0),
         annotated_image_url=f'/static/detections/{annotated_filename}',
-        map_url=f'https://www.google.com/maps/search/{maps_query}',
         centers_pdf_url='/static/centers.pdf',
     )
 
@@ -608,6 +607,86 @@ def api_guidelines():
             for guideline in guidelines
         ]
     )
+
+
+@app.route('/api/centres/nearest')
+def api_nearest_centres():
+    if 'user_id' not in session:
+        return jsonify(error='Authentication required.'), 401
+
+    try:
+        latitude = float(request.args.get('latitude', ''))
+        longitude = float(request.args.get('longitude', ''))
+    except (TypeError, ValueError):
+        return jsonify(error='Valid latitude and longitude are required.'), 400
+
+    if not math.isfinite(latitude) or not math.isfinite(longitude):
+        return jsonify(error='Valid latitude and longitude are required.'), 400
+    if not -90 <= latitude <= 90 or not -180 <= longitude <= 180:
+        return jsonify(error='The supplied location is outside the valid coordinate range.'), 400
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(
+        """
+        SELECT centre_id, name, address, state, latitude, longitude,
+               coordinate_quality, source_name, source_date
+        FROM recycling_centres
+        WHERE latitude IS NOT NULL AND longitude IS NOT NULL
+        """
+    )
+    centres = cursor.fetchall()
+    cursor.close()
+    conn.close()
+
+    nearest = []
+    for centre in centres:
+        distance = haversine_distance(
+            latitude,
+            longitude,
+            float(centre['latitude']),
+            float(centre['longitude']),
+        )
+        directions_query = urlencode({
+            'api': 1,
+            'origin': f'{latitude},{longitude}',
+            'destination': centre['address'],
+            'travelmode': 'driving',
+        })
+        nearest.append({
+            'centre_id': centre['centre_id'],
+            'name': centre['name'],
+            'address': centre['address'],
+            'state': centre['state'],
+            'distance_km': round(distance, 1),
+            'distance_is_estimate': centre['coordinate_quality'] == 'postcode',
+            'directions_url': f'https://www.google.com/maps/dir/?{directions_query}',
+            'source_name': centre['source_name'],
+            'source_date': centre['source_date'].isoformat() if centre['source_date'] else None,
+        })
+
+    nearest.sort(key=lambda centre: centre['distance_km'])
+    return jsonify(
+        centres=nearest[:5],
+        total_geocoded=len(nearest),
+        source_pdf_url='/static/centers.pdf',
+        attribution='Coordinates geocoded with OpenStreetMap Nominatim.',
+    )
+
+
+def haversine_distance(latitude_one, longitude_one, latitude_two, longitude_two):
+    earth_radius_km = 6371.0088
+    latitude_delta = math.radians(latitude_two - latitude_one)
+    longitude_delta = math.radians(longitude_two - longitude_one)
+    latitude_one_radians = math.radians(latitude_one)
+    latitude_two_radians = math.radians(latitude_two)
+    haversine = (
+        math.sin(latitude_delta / 2) ** 2
+        + math.cos(latitude_one_radians)
+        * math.cos(latitude_two_radians)
+        * math.sin(longitude_delta / 2) ** 2
+    )
+    return earth_radius_km * 2 * math.asin(math.sqrt(haversine))
 
 
 @app.route('/api/news')

@@ -16,6 +16,9 @@ export default function HomePage() {
   const [success, setSuccess] = useState('')
   const [analyzing, setAnalyzing] = useState(false)
   const [recording, setRecording] = useState(false)
+  const [findingCentres, setFindingCentres] = useState(false)
+  const [nearestCentres, setNearestCentres] = useState(null)
+  const [centreError, setCentreError] = useState('')
   const [missionRefresh, setMissionRefresh] = useState(0)
 
   useEffect(() => () => {
@@ -67,6 +70,8 @@ export default function HomePage() {
     setResult(null)
     setError('')
     setSuccess('')
+    setNearestCentres(null)
+    setCentreError('')
     setPreviewUrl(selectedImage ? URL.createObjectURL(selectedImage) : '')
   }
 
@@ -108,6 +113,25 @@ export default function HomePage() {
       setError(requestError.message)
     } finally {
       setRecording(false)
+    }
+  }
+
+  async function findNearestCentres() {
+    setFindingCentres(true)
+    setCentreError('')
+    setNearestCentres(null)
+    try {
+      const position = await getCurrentPosition()
+      const query = new URLSearchParams({
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      })
+      const data = await apiRequest(`/api/centres/nearest?${query}`)
+      setNearestCentres(data)
+    } catch (locationError) {
+      setCentreError(locationError.message)
+    } finally {
+      setFindingCentres(false)
     }
   }
 
@@ -176,11 +200,20 @@ export default function HomePage() {
                 <h4 className="small text-uppercase text-secondary fw-bold">How to recycle</h4>
                 <p className="mb-0">{result.guideline}</p>
               </div>
+              {centreError && (
+                <div className="nearest-centres-error text-start" role="alert">
+                  <i className="bi bi-exclamation-circle" />
+                  <div><strong>Location unavailable</strong><span>{centreError}</span></div>
+                </div>
+              )}
+              {nearestCentres && <NearestCentres data={nearestCentres} />}
               <div className="d-grid gap-2">
                 <button className="btn btn-success py-3 fw-bold" type="button" onClick={confirmRecycle} disabled={recording}>
                   <i className="bi bi-recycle me-2" />{recording ? 'Recording…' : `Recycle It! (+${result.points} points)`}
                 </button>
-                <a className="btn btn-outline-success py-3 fw-bold" href={result.map_url} target="_blank" rel="noreferrer"><i className="bi bi-geo-alt me-2" />Find Nearest Disposal Center</a>
+                <button className="btn btn-outline-success py-3 fw-bold" type="button" onClick={findNearestCentres} disabled={findingCentres}>
+                  {findingCentres ? <><span className="spinner-border spinner-border-sm me-2" />Finding nearby centres…</> : <><i className="bi bi-geo-alt me-2" />Find Nearest Verified Centres</>}
+                </button>
                 <a className="btn btn-outline-success py-3 fw-bold" href={result.centers_pdf_url} target="_blank" rel="noreferrer"><i className="bi bi-file-earmark-pdf me-2" />View Disposal Center List</a>
               </div>
             </div>
@@ -191,4 +224,45 @@ export default function HomePage() {
       <NewsSection />
     </>
   )
+}
+
+function NearestCentres({ data }) {
+  return (
+    <section className="nearest-centres text-start mb-4" aria-labelledby="nearest-centres-title">
+      <div className="nearest-centres-heading">
+        <div><span className="result-label">Government-listed locations</span><h4 id="nearest-centres-title">Nearest verified centres</h4></div>
+        <span className="verified-centres-badge"><i className="bi bi-patch-check-fill" /> Verified list</span>
+      </div>
+      <div className="nearest-centres-list">
+        {data.centres.map((centre, index) => (
+          <article className="nearest-centre" key={centre.centre_id}>
+            <span className="nearest-centre-rank">{index + 1}</span>
+            <div className="nearest-centre-copy">
+              <strong>{centre.name}</strong>
+              <span>{centre.address}</span>
+            </div>
+            <div className="nearest-centre-action">
+              <strong>~{centre.distance_km} km</strong>
+              <a href={centre.directions_url} target="_blank" rel="noreferrer">Directions <i className="bi bi-arrow-up-right" /></a>
+            </div>
+          </article>
+        ))}
+      </div>
+      <p className="centre-attribution"><i className="bi bi-info-circle" /> Distances are approximate; confirm the driving route in Google Maps. <a href={data.source_pdf_url} target="_blank" rel="noreferrer">Official PDF</a> · <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">© OpenStreetMap contributors</a></p>
+    </section>
+  )
+}
+
+function getCurrentPosition() {
+  return new Promise((resolve, reject) => {
+    if (!navigator.geolocation) {
+      reject(new Error('This browser does not support location access.'))
+      return
+    }
+    navigator.geolocation.getCurrentPosition(
+      resolve,
+      (error) => reject(new Error(error.code === 1 ? 'Location permission was denied. Enable it from your browser site controls and try again.' : 'Your current location could not be retrieved. Please try again.')),
+      { enableHighAccuracy: true, timeout: 12000, maximumAge: 300000 },
+    )
+  })
 }

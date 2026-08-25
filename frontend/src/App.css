@@ -674,6 +674,139 @@
   background: #f5f7f6;
 }
 
+.nearest-centres,
+.nearest-centres-error {
+  padding: 16px;
+  border: 1px solid #dce9e1;
+  border-radius: 16px;
+  background: #f8fbf9;
+}
+
+.nearest-centres-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 16px;
+  border-color: #f2c7c7;
+  color: #842029;
+  background: #fff7f7;
+}
+
+.nearest-centres-error div {
+  display: grid;
+}
+
+.nearest-centres-error span {
+  margin-top: 2px;
+  font-size: 0.78rem;
+}
+
+.nearest-centres-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.nearest-centres-heading h4 {
+  margin: 2px 0 0;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.verified-centres-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 8px;
+  border-radius: 999px;
+  color: #176843;
+  background: #dff3e7;
+  font-size: 0.65rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.nearest-centres-list {
+  display: grid;
+  gap: 8px;
+}
+
+.nearest-centre {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 9px;
+  padding: 11px;
+  border: 1px solid #e3ebe6;
+  border-radius: 13px;
+  background: white;
+}
+
+.nearest-centre-rank {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border-radius: 9px;
+  color: #236b4c;
+  background: #e4f3ea;
+  font-size: 0.75rem;
+  font-weight: 900;
+}
+
+.nearest-centre-copy {
+  display: grid;
+  min-width: 0;
+}
+
+.nearest-centre-copy strong {
+  font-size: 0.8rem;
+}
+
+.nearest-centre-copy span {
+  display: -webkit-box;
+  margin-top: 2px;
+  overflow: hidden;
+  color: #718078;
+  font-size: 0.68rem;
+  line-height: 1.35;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.nearest-centre-action {
+  display: grid;
+  justify-items: end;
+  white-space: nowrap;
+}
+
+.nearest-centre-action strong {
+  color: #198754;
+  font-size: 0.76rem;
+}
+
+.nearest-centre-action a {
+  margin-top: 5px;
+  color: #267454;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.centre-attribution {
+  margin: 12px 2px 0;
+  color: #7b8780;
+  font-size: 0.62rem;
+  line-height: 1.45;
+}
+
+.centre-attribution a {
+  color: #267454;
+  font-weight: 700;
+}
+
 .nav-page-link {
   display: inline-flex;
   min-height: 44px;
@@ -1345,6 +1478,31 @@
   .confidence-ring-inner {
     width: 59px;
     height: 59px;
+  }
+
+  .nearest-centres {
+    padding: 12px;
+  }
+
+  .nearest-centres-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .nearest-centre {
+    grid-template-columns: 28px minmax(0, 1fr);
+  }
+
+  .nearest-centre-action {
+    grid-column: 2;
+    grid-template-columns: 1fr auto;
+    justify-items: start;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .nearest-centre-action a {
+    margin-top: 0;
   }
 
   .settings-header {

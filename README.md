@@ -75,6 +75,16 @@ The current `ewaste_db.sql` creates the optional `user_profiles` table used by t
 
 Profile email addresses are read-only. Optional profile information is stored separately from login credentials, and the location setting stores only an enabled/disabled preference—not browser coordinates.
 
+## Verified recycling centres
+
+The nearest-centres feature uses the government-issued list in `static/centers.pdf`, updated 5 February 2021. The SQL dump contains all 127 extracted centres; 120 have cached coordinates and seven vague-address entries remain in the official PDF only.
+
+Distances are calculated locally by Flask with the Haversine formula. Address-level coordinates are used when available; otherwise the UI explicitly labels the result as an estimate based on the postcode area. Google Maps is used only when the user chooses Directions. Browser coordinates are sent to Flask for that request and are not stored.
+
+Coordinates were generated once with OpenStreetMap Nominatim under its usage policy and are cached in the database. © OpenStreetMap contributors. The reproducible extraction/geocoding scripts and intermediate data are in `scripts/` and `data/`.
+
+For an existing database, run `migrations/004_add_recycling_centres.sql` once. A complete import of `ewaste_db.sql` already contains the table and seed records.
+
 To enable Flask debug mode temporarily in PowerShell:
 
 ```powershell

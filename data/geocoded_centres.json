@@ -1,0 +1,1142 @@
+[
+  {
+    "state": "KEDAH",
+    "name": "Trashforcash (M) Sdn Bhd",
+    "address": "Lot 1821, Batu 8 Mukim Tajar, Jalan Dato Kumbar, 06500 Alor Setar, Kedah, KEDAH, Malaysia",
+    "latitude": 6.1194917,
+    "longitude": 100.4286048,
+    "geocoded_label": "06500, Kota Setar, Kedah, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "KEDAH",
+    "name": "Green Resource Recovery Sdn Bhd",
+    "address": "Plot 19, Darul Aman Industrial Estate, Bandar Darul Aman, 06000 Jitra Kedah, KEDAH, Malaysia",
+    "latitude": 6.257299,
+    "longitude": 100.4122585,
+    "geocoded_label": "06000, Kubang Pasu, Kedah, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "KEDAH",
+    "name": "Senheng Alor Setar",
+    "address": "2&2A, 3&3A, Pekan Simpang Kuala Off Lebuh Raya Sultan Abdul Halim 05400 Alor Setar, Kedah, KEDAH, Malaysia",
+    "latitude": 6.0870487,
+    "longitude": 100.3659854,
+    "geocoded_label": "05400, Kota Setar, Kedah, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "KEDAH",
+    "name": "Senheng Jitra",
+    "address": "34, Pekan Jitra 3, 06000 Jitra, Kedah, KEDAH, Malaysia",
+    "latitude": 6.2611466,
+    "longitude": 100.4187817,
+    "geocoded_label": "Pekan Jitra 3, Kampung Seberang, Jitra, Kubang Pasu, Kedah, 06000, Malaysia"
+  },
+  {
+    "state": "KEDAH",
+    "name": "Senheng Sungai Petani",
+    "address": "207 & 208 207 & 208, Jalan Legenda 7 Legenda Heights, 08000 Sungai Petani, Kedah, KEDAH, Malaysia",
+    "latitude": 5.6296458,
+    "longitude": 100.512277,
+    "geocoded_label": "08000, Kuala Muda, Kedah, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "PUTRAJAYA",
+    "name": "Fasiliti Inovasi Kitar Semula (FIKS) Presint 5 (Cawangan AFES)",
+    "address": "No. 1, Fasiliti Inovasi Kitar Semula (FIKS), Jalan P5B, Presint 5, 62200 Putrajaya, PUTRAJAYA, Malaysia",
+    "latitude": 2.897111,
+    "longitude": 101.6677605,
+    "geocoded_label": "62200, Putrajaya, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "PUTRAJAYA",
+    "name": "Pusat Kitar Semula Presint 8 (Cawangan AFES)",
+    "address": "Berdekatan Pusat Kejiranan Presint 8, PUTRAJAYA, Malaysia",
+    "latitude": null,
+    "longitude": null,
+    "geocoded_label": null,
+    "coordinate_quality": null
+  },
+  {
+    "state": "PUTRAJAYA",
+    "name": "Pusat Kitar Semula Presint 9 (Cawangan AFES)",
+    "address": "Pusat Kitar Semula Komuniti, Jalan P9B, 62250 Wilayah Persekutuan Putrajaya, PUTRAJAYA, Malaysia",
+    "latitude": 2.9324938,
+    "longitude": 101.6769121,
+    "geocoded_label": "62250, Putrajaya, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "PUTRAJAYA",
+    "name": "Pusat Kitar Semula Presint 11 (Cawangan AFES)",
+    "address": "Berdekatan Pusat Kejiranan Presint 11, PUTRAJAYA, Malaysia",
+    "latitude": null,
+    "longitude": null,
+    "geocoded_label": null,
+    "coordinate_quality": null
+  },
+  {
+    "state": "PUTRAJAYA",
+    "name": "Pusat Kitar Semula Presint 14 (Cawangan AFES)",
+    "address": "Park & Ride Presint 14, PUTRAJAYA, Malaysia",
+    "latitude": null,
+    "longitude": null,
+    "geocoded_label": null,
+    "coordinate_quality": null
+  },
+  {
+    "state": "PUTRAJAYA",
+    "name": "Pusat Kitar Semula Prseint 16 (Cawangan AFES)",
+    "address": "Bersebelahan Pasar Awam Presint 16, PUTRAJAYA, Malaysia",
+    "latitude": null,
+    "longitude": null,
+    "geocoded_label": null,
+    "coordinate_quality": null
+  },
+  {
+    "state": "PUTRAJAYA",
+    "name": "Pusat Kitar Semula Presint",
+    "address": "18 (Cawangan AFES) Berhadapan Futsal 1 Malaysia, Presint 18, PUTRAJAYA, Malaysia",
+    "latitude": null,
+    "longitude": null,
+    "geocoded_label": null,
+    "coordinate_quality": null
+  },
+  {
+    "state": "PUTRAJAYA",
+    "name": "SenQ Alamanda Shopping Centre",
+    "address": "Lot G29-31, Ground Floor Alamanda Putrajaya Jalan Alamanda, Presint 1 6200 Putrajaya, PUTRAJAYA, Malaysia",
+    "latitude": null,
+    "longitude": null,
+    "geocoded_label": null,
+    "coordinate_quality": null
+  },
+  {
+    "state": "SELANGOR",
+    "name": "Cyberjaya Recycling Centre (Cawangan AFES)",
+    "address": "Cyberjaya Recycling Centre, 63000 Cyberjaya, Selangor, SELANGOR, Malaysia",
+    "latitude": 2.9221684,
+    "longitude": 101.6490229,
+    "geocoded_label": "63000, Cyberjaya, Sepang, Selangor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "SELANGOR",
+    "name": "ERTH",
+    "address": "G-3A, Ground Floor, Kanvas Retail & Prima 15 Jalan Teknokrat 6 63000 Cyberjaya, SELANGOR, Malaysia",
+    "latitude": 2.9221684,
+    "longitude": 101.6490229,
+    "geocoded_label": "63000, Cyberjaya, Sepang, Selangor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "SELANGOR",
+    "name": "Bumi Waste Management (M) Sdn Bhd",
+    "address": "No. 5, Jalan 6, Hi-Tech 5, Industrial Park Sungai Lalang, 43500 Semenyih, Selangor, SELANGOR, Malaysia",
+    "latitude": 2.9323188,
+    "longitude": 101.8588839,
+    "geocoded_label": "43500, Majlis Perbandaran Kajang, Hulu Langat, Selangor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "SELANGOR",
+    "name": "T-Pot Electrical & Electronics Sdn Bhd",
+    "address": "No 2, Jalan Termostat 34/7, Bukit Kemuning Light Industrial Park, Seksyen 34, 40470 Shah Alam Selangor, SELANGOR, Malaysia",
+    "latitude": 3.0216737,
+    "longitude": 101.5128105,
+    "geocoded_label": "40470, Shah Alam, Petaling, Selangor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "SELANGOR",
+    "name": "Tan Boon Ming Sdn Bhd",
+    "address": "No. 37 & 39, Jalan Mewah 25/63, Taman Sri Muda, 40400 Shah Alam, Selangor, SELANGOR, Malaysia",
+    "latitude": 3.031164,
+    "longitude": 101.5355739,
+    "geocoded_label": "Jalan Mewah 25/63, Seksyen 25, Taman Sri Muda, Shah Alam, Klang, Selangor, 40400, Malaysia"
+  },
+  {
+    "state": "SELANGOR",
+    "name": "Tan Boon Ming Sdn Bhd Dpulze Shopping Centre",
+    "address": "LG-23, Dpulze Shopping Centre, Lingkaran Cyber Point Timur, Cyber12, 63000 Cyberjaya, Selangor, SELANGOR, Malaysia",
+    "latitude": 2.9221684,
+    "longitude": 101.6490229,
+    "geocoded_label": "63000, Cyberjaya, Sepang, Selangor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "SELANGOR",
+    "name": "Tan Boon Ming Sdn Bhd",
+    "address": "Lot 33, Jalan Delima, Subang Hi-Tech Industrial Park, 40000 Shah Alam, Selangor, SELANGOR, Malaysia",
+    "latitude": 3.0722412,
+    "longitude": 101.5022645,
+    "geocoded_label": "40000, Shah Alam, Petaling, Selangor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "SELANGOR",
+    "name": "Tan Boon Ming 3 Damansara",
+    "address": "No 3, Jln SS20/27, Lot L1-3A, 1st floor, Damansara Utama, 47400 Petaling Jaya, SELANGOR, Malaysia",
+    "latitude": 3.1319752,
+    "longitude": 101.6213257,
+    "geocoded_label": "47400, Petaling Jaya, Petaling, Selangor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "SELANGOR",
+    "name": "Tan Boon Ming Central i- City Shopping Centre",
+    "address": "LG-03, Level Lower Ground Sentral i-City, Plot 1, Jln Multimedia, Seksyen 7, 40000 Shah Alam, SELANGOR, Malaysia",
+    "latitude": 3.0722412,
+    "longitude": 101.5022645,
+    "geocoded_label": "40000, Shah Alam, Petaling, Selangor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "SELANGOR",
+    "name": "Grand Senheng Shah Alam 105",
+    "address": "No. 105, Jalan Pelabur B 23/B, Section 23, 40300 Shah Alam, Selangor, SELANGOR, Malaysia",
+    "latitude": 3.0450079,
+    "longitude": 101.5259226,
+    "geocoded_label": "Jalan Pelabur B 23/B, Seksyen 23, Shah Alam, Petaling, Selangor, 40300, Malaysia"
+  },
+  {
+    "state": "SELANGOR",
+    "name": "Senheng USJ Taipan",
+    "address": "21, Jalan USJ 10/1F Taman Uep 47620 Subang Jaya, Selangor, SELANGOR, Malaysia",
+    "latitude": 3.04963,
+    "longitude": 101.5750897,
+    "geocoded_label": "47620, UEP Subang Jaya, Puchong, Majlis Bandaraya Subang Jaya, Petaling, Selangor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "SELANGOR",
+    "name": "Senheng Sungai Buloh",
+    "address": "No. 39-G, 39-I, 40-G & 40-I, Jalan Nautika U20/A, Sekyen U20, Pusat Komersil TSB, 40160 Shah Alam, Selangor, SELANGOR, Malaysia",
+    "latitude": 3.1837197,
+    "longitude": 101.5190579,
+    "geocoded_label": "40160, Elmina, Sungai Buloh, Shah Alam, Petaling, Selangor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "SELANGOR",
+    "name": "Senheng Kompleks PKNS",
+    "address": "G-60F, Tingkat Bawah, Kompleks PKNS Shah Alam, Persiaran Tasik, Seksyen 14, 40000 Shah Alam Selangor, SELANGOR, Malaysia",
+    "latitude": 3.0722412,
+    "longitude": 101.5022645,
+    "geocoded_label": "40000, Shah Alam, Petaling, Selangor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "SELANGOR",
+    "name": "Grand Senheng Rawang",
+    "address": "No. 53, 55 & 57, Jalan Bandar Rawang 2 48000 Rawang Selangor Darul Ehsan, SELANGOR, Malaysia",
+    "latitude": 3.3157138,
+    "longitude": 101.5588922,
+    "geocoded_label": "48000, Majlis Perbandaran Selayang, Gombak, Selangor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "SELANGOR",
+    "name": "Grand Senheng Kajang",
+    "address": "No 62-64, Jalan Raja Haroun, Bandar Kajang, 43000 Kajang, Selangor Darul Ehsan, SELANGOR, Malaysia",
+    "latitude": 2.9906569,
+    "longitude": 101.7827939,
+    "geocoded_label": "43000, Majlis Perbandaran Kajang, Hulu Langat, Selangor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "SELANGOR",
+    "name": "Senheng Pusat Bandar Baru Bangi",
+    "address": "35 & 36G, Jalan Medan PB4 Seksyen 9, Pusat Bandar Baru Bangi 43650 Selangor, SELANGOR, Malaysia",
+    "latitude": 2.9504694,
+    "longitude": 101.7787584,
+    "geocoded_label": "43650, Bandar Baru Bangi, Majlis Perbandaran Kajang, Hulu Langat, Selangor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "SELANGOR",
+    "name": "Senheng Kelana Jaya",
+    "address": "F14 & F15 Giant Hypermarket Jalan SS6/12, Kelana Jaya 47301 Petaling Jaya., SELANGOR, Malaysia",
+    "latitude": 3.1123118,
+    "longitude": 101.5947533,
+    "geocoded_label": "47301, SS 25, Petaling Jaya, Petaling, Selangor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "SELANGOR",
+    "name": "SenQ IOI Mall",
+    "address": "Lot F23-23A, IOI Mall Batu 9, Jalan Puchong Bandar Puchong Jaya 47100 Selangor, SELANGOR, Malaysia",
+    "latitude": 2.9926065,
+    "longitude": 101.6256704,
+    "geocoded_label": "47100, Majlis Bandaraya Subang Jaya, Petaling, Selangor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "SELANGOR",
+    "name": "Senheng Cheras Balakong",
+    "address": "No.13A-G,13A-1,13A- 2,15G,15-1 & 15-2 Jalan C 180/1, Dataran C180 Jalan Balakong, Batu 11 43200 Cheras, Selangor, SELANGOR, Malaysia",
+    "latitude": 2.9918365,
+    "longitude": 101.720677,
+    "geocoded_label": "Universiti Putra Malaysia, Lebuhraya Sungai Besi, Seri Serdang, Seri Kembangan, Majlis Bandaraya Subang Jaya, Petaling, Selangor, 43400, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "SELANGOR",
+    "name": "Senheng Bandar Puteri Puchong",
+    "address": "No 34 (GF & 3F) and 36 (GF), Jalan Puteri 2/5 Bandar Puteri, 47100 Puchong, Selangor, SELANGOR, Malaysia",
+    "latitude": 2.9926065,
+    "longitude": 101.6256704,
+    "geocoded_label": "47100, Majlis Bandaraya Subang Jaya, Petaling, Selangor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "SELANGOR",
+    "name": "Senheng SS2, PJ",
+    "address": "No.23-G, 25-G, 25-1 & 25-2 Jalan SS2/75 47300 Petaling Jaya, Selangor, SELANGOR, Malaysia",
+    "latitude": 3.1014392,
+    "longitude": 101.6180308,
+    "geocoded_label": "47300, Petaling Jaya, Petaling, Selangor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "SELANGOR",
+    "name": "Senheng Kuala Selangor",
+    "address": "PT1616 – NO 9 – NO 13, Jalan Medan Niaga 2 Medan Niaga Kuala Selangor 45000 Kuala Selangor, Selangor, SELANGOR, Malaysia",
+    "latitude": 3.316591,
+    "longitude": 101.2783142,
+    "geocoded_label": "45000, Kuala Selangor, Selangor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "SELANGOR",
+    "name": "Grand Senheng Semenyih",
+    "address": "2G, 2A-G Jalan TPS 1/2 Taman Pelangi Semenyih 43500 Semenyih, Selangor, SELANGOR, Malaysia",
+    "latitude": 2.9323188,
+    "longitude": 101.8588839,
+    "geocoded_label": "43500, Majlis Perbandaran Kajang, Hulu Langat, Selangor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "SELANGOR",
+    "name": "Grand Senheng Pendamaran 89-91-93",
+    "address": "89, 91 & 93, Jln. Batu Unjur Taman Chi Liung, Pandamaran 42000 Port Klang, Selangor, SELANGOR, Malaysia",
+    "latitude": 3.0188012,
+    "longitude": 101.4126812,
+    "geocoded_label": "42000, Bandaraya Klang, Klang, Selangor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "SELANGOR",
+    "name": "Senheng Bangi",
+    "address": "15,17 & 19, Jalan 4/12, Seksyen 4 43650 Bandar Baru Bangi, Selangor, SELANGOR, Malaysia",
+    "latitude": 2.9504694,
+    "longitude": 101.7787584,
+    "geocoded_label": "43650, Bandar Baru Bangi, Majlis Perbandaran Kajang, Hulu Langat, Selangor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "SELANGOR",
+    "name": "Senheng Klang Bukit Tinggi",
+    "address": "NO. 43, 45, 47, Jalan Batu Nilam 5 Bandar Bukit Tinggi 41200 Klang, Selangor, SELANGOR, Malaysia",
+    "latitude": 3.0029108,
+    "longitude": 101.4405996,
+    "geocoded_label": "41200, Bandar Bukit Tinggi, Bandaraya Klang, Klang, Selangor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "SELANGOR",
+    "name": "Senheng Sri Gombak",
+    "address": "No. 1, Jalan Sg. 1/9 Taman Sri Gombak 68100 Batu Caves, Selangor, SELANGOR, Malaysia",
+    "latitude": 3.2346656,
+    "longitude": 101.6759378,
+    "geocoded_label": "68100, Majlis Perbandaran Selayang, Gombak, Selangor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "SELANGOR",
+    "name": "Grand Senheng Setia Alam",
+    "address": "LOT 6-1, 6-2, 7, 7-1,7-2, 8, 8- 1 No. 1 Jalan Setia Prima WU13/W Seksyen U13, Setia Alam 40170 Shah Alam, Selangor, SELANGOR, Malaysia",
+    "latitude": 3.1172248,
+    "longitude": 101.4691211,
+    "geocoded_label": "40170, Shah Alam, Petaling, Selangor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "SELANGOR",
+    "name": "Grand Senheng Selayang Utama",
+    "address": "3A,4A,5A,6A,7A,8A,9A,7,8,9 Jalan SU12 Taman Selayang Utama 68100, Selangor, SELANGOR, Malaysia",
+    "latitude": 3.2346656,
+    "longitude": 101.6759378,
+    "geocoded_label": "68100, Majlis Perbandaran Selayang, Gombak, Selangor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "SELANGOR",
+    "name": "SenQ The Mines",
+    "address": "Lot L2-01B (1.01B, First Floor) MINES Shopping Fair Jalan Dulang, MINES Resort City 43300 Seri Kembangan, Selangor, SELANGOR, Malaysia",
+    "latitude": 3.0233659,
+    "longitude": 101.701834,
+    "geocoded_label": "43300, Kampung Baru Seri Kembangan, Seri Kembangan, Majlis Bandaraya Subang Jaya, Petaling, Selangor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "SELANGOR",
+    "name": "SenQ 1 Utama LG 102,1 Utama Shopping Centre Lebuh Bandar Utama, Bandar Utama",
+    "address": "47800 Petaling Jaya, Selangor, SELANGOR, Malaysia",
+    "latitude": 3.1515221,
+    "longitude": 101.6103205,
+    "geocoded_label": "47800, Petaling Jaya, Petaling, Selangor, Malaysia",
+    "coordinate_quality": "address"
+  },
+  {
+    "state": "SELANGOR",
+    "name": "E Plus Resources",
+    "address": "Lot 10480 B1 & B2, Jalan Kebun Nenas, 41200 Klang, Selangor, SELANGOR, Malaysia",
+    "latitude": 3.3314558,
+    "longitude": 101.2513058,
+    "geocoded_label": "Kuala Selangor, Selangor, 45000, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "SELANGOR",
+    "name": "ICYCLE Malaysia Sdn Bhd Sungai Chua Warehouse",
+    "address": "No. 12, Jalan SC 2, Pusat Perindustrian Sungai Chua, 43000 Kajang, Selangor, SELANGOR, Malaysia",
+    "latitude": 2.9906569,
+    "longitude": 101.7827939,
+    "geocoded_label": "43000, Majlis Perbandaran Kajang, Hulu Langat, Selangor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "SELANGOR",
+    "name": "Shan Poornam Metals Sdn Bhd (Selangor)",
+    "address": "No 6, Jalan Wawasan 2B/KU 7, Sungai Kapar Indah Industrial Park, 42200 Klang, Selangor, SELANGOR, Malaysia",
+    "latitude": 3.106634,
+    "longitude": 101.3868767,
+    "geocoded_label": "42200, Bandaraya Klang, Klang, Selangor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "KUALA LUMPUR",
+    "name": "Pusat Kitar Semula Jalan Bonus, KL (Cawangan Alam Flora Environmental Solution)",
+    "address": "Jalan Bonus 6, KL @ Berhampiran Semua House Jalan TAR, KUALA LUMPUR, Malaysia",
+    "latitude": null,
+    "longitude": null,
+    "geocoded_label": null,
+    "coordinate_quality": null
+  },
+  {
+    "state": "KUALA LUMPUR",
+    "name": "Tan Boon Ming Sdn Bhd",
+    "address": "PS-4,5,6,7 & 8, Taman Evergreen, Batu 4, Jln Klang Lama, 58100 Kuala Lumpur, KUALA LUMPUR, Malaysia",
+    "latitude": 3.0974035,
+    "longitude": 101.68382,
+    "geocoded_label": "58100, Kuala Lumpur, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "KUALA LUMPUR",
+    "name": "Tan Boon Ming Sdn Bhd Bangsar Village",
+    "address": "Unit No. LG-6, Lower Ground Floor, Jalan Telawi Satu, Bangsar Baru, 59100 Kuala Lumpur, KUALA LUMPUR, Malaysia",
+    "latitude": 3.1288913,
+    "longitude": 101.6682309,
+    "geocoded_label": "59100, Kuala Lumpur, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "KUALA LUMPUR",
+    "name": "Tan Boon Ming Sdn Bhd Cheras Sentral Cheras Sentral Shopping Mall, KM10,",
+    "address": "56000 Cheras, Kuala Lumpur, KUALA LUMPUR, Malaysia",
+    "latitude": 3.1003089,
+    "longitude": 101.7328705,
+    "geocoded_label": "Argon (Malaysia) Sdn. Bhd., Jalan Midah 5, Taman Midah, Bandar Tun Razak, Cheras, Kuala Lumpur, 56000, Malaysia",
+    "coordinate_quality": "address"
+  },
+  {
+    "state": "KUALA LUMPUR",
+    "name": "Yayasan Taiwan Buddhist Tzu Chi KL Jing Si Hall, 359, Jalan Kepong,",
+    "address": "52000 Kuala Lumpur, KUALA LUMPUR, Malaysia",
+    "latitude": 3.2071696,
+    "longitude": 101.6593157,
+    "geocoded_label": "52000, Kuala Lumpur, Malaysia",
+    "coordinate_quality": "address"
+  },
+  {
+    "state": "KUALA LUMPUR",
+    "name": "Recircle Sdn Bhd",
+    "address": "No. 560 A-1, Jalan E3/5, Taman Ehsan Kepong, 52100 Kuala Lumpur, KUALA LUMPUR, Malaysia",
+    "latitude": 3.2098929,
+    "longitude": 101.6402088,
+    "geocoded_label": "52100, Kuala Lumpur, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "KUALA LUMPUR",
+    "name": "Ecocytion Trading",
+    "address": "No 145, Jalan 14, Perindustrian Ehsan Jaya, Kepong, 52100 KL, KUALA LUMPUR, Malaysia",
+    "latitude": 3.2098929,
+    "longitude": 101.6402088,
+    "geocoded_label": "52100, Kuala Lumpur, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "KUALA LUMPUR",
+    "name": "SenQ Leisure Mall Cheras",
+    "address": "L1 34, Level 1, Cheras Leisure Mall Jalan Manis 6, Taman Segar Cheras 56100 Kuala Lumpur, KUALA LUMPUR, Malaysia",
+    "latitude": 3.1058077,
+    "longitude": 101.7414202,
+    "geocoded_label": "56100, Cheras, Kuala Lumpur, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "KUALA LUMPUR",
+    "name": "SenQ Melawati Mall",
+    "address": "LOT LG – 17 & 18, UP2-01, Melawati Mall 355, Jalan Bandar Melawati, Pusat Bandar Melawati 53100 Kuala Lumpur, KUALA LUMPUR, Malaysia",
+    "latitude": 3.1533264,
+    "longitude": 101.6927379,
+    "geocoded_label": "Bank Negara, Jalan Dato Onn, Bukit Bintang, Kuala Lumpur, 50580, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "KUALA LUMPUR",
+    "name": "Senheng Kepong 40-42",
+    "address": "40 & 40-1, 42&42-1, Block C Vista Magna, Batu 7, Jalan Kepong 52100 Kepong, Kuala Lumpur, KUALA LUMPUR, Malaysia",
+    "latitude": 3.2098929,
+    "longitude": 101.6402088,
+    "geocoded_label": "52100, Kuala Lumpur, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "KUALA LUMPUR",
+    "name": "Grand Senheng 42-44",
+    "address": "42 & 44, Jalan Pandan 3/2 Pandan Jaya 55100 Cheras, Kuala Lumpur, KUALA LUMPUR, Malaysia",
+    "latitude": 3.1457209,
+    "longitude": 101.7148266,
+    "geocoded_label": "55100, Kuala Lumpur, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "KUALA LUMPUR",
+    "name": "Senheng Taman Connaught 171/3",
+    "address": "171 & 173, Jalan Sarjana Taman Connaught Off Jalan Cheras, 56000 Kuala Lumpur, KUALA LUMPUR, Malaysia",
+    "latitude": 3.0698375,
+    "longitude": 101.7403011,
+    "geocoded_label": "56000, Alam Damai, Kuala Lumpur, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "KUALA LUMPUR",
+    "name": "Senheng Gombak Diamond Square No. 15 & 17 Jalan 2/50, Bt. 3 ½, Jalan Gombak",
+    "address": "53000 Setapak, Kuala Lumpur, KUALA LUMPUR, Malaysia",
+    "latitude": 3.1897127,
+    "longitude": 101.7055155,
+    "geocoded_label": "Pos Malaysia Setapak, JKR3499, Jalan Pahang, Kampung Puah Seberang, Kuala Lumpur, 53300, Malaysia",
+    "coordinate_quality": "address"
+  },
+  {
+    "state": "KUALA LUMPUR",
+    "name": "Senheng Sri Rampai",
+    "address": "61-63, Jalan 46A/26 Rampai Town Centre 53300 Kuala Lumpur, KUALA LUMPUR, Malaysia",
+    "latitude": 3.2017874,
+    "longitude": 101.7261762,
+    "geocoded_label": "53300, Kuala Lumpur, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "KUALA LUMPUR",
+    "name": "Senheng Permaisuri",
+    "address": "No. 69 & 71, Dataran Dwitasik Jalan Dwitasik 1 Bandar Seri Permaisuri 56000 Cheras, Kuala Lumpur, KUALA LUMPUR, Malaysia",
+    "latitude": 3.0698375,
+    "longitude": 101.7403011,
+    "geocoded_label": "56000, Alam Damai, Kuala Lumpur, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "KUALA LUMPUR",
+    "name": "Senheng Sri Petaling 95-",
+    "address": "97-99 95-97-99, Jln 1/149D 57000 Sri Petaling, Kuala Lumpur, KUALA LUMPUR, Malaysia",
+    "latitude": 3.0648044,
+    "longitude": 101.7007186,
+    "geocoded_label": "Jalan 1/149E, Taman Bukit Intan, Sri Petaling, Kuala Lumpur, 57000, Malaysia",
+    "coordinate_quality": "address"
+  },
+  {
+    "state": "KUALA LUMPUR",
+    "name": "Alif Marketing",
+    "address": "No 44, Jalan 10/152, Taman Perindustrian OUG Jalan Puchong Bt. 6 58200 Kuala Lumpur, KUALA LUMPUR, Malaysia",
+    "latitude": 3.0798747,
+    "longitude": 101.672424,
+    "geocoded_label": "58200, Kuala Lumpur, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "MELAKA",
+    "name": "AEON Bandaraya Melaka (Cawangan Meriahtek)",
+    "address": "2, Jalan Lagenda, Taman 1 Lagenda, 75400 Melaka, MELAKA, Malaysia",
+    "latitude": 2.213149,
+    "longitude": 102.2459311,
+    "geocoded_label": "Jalan Lagenda, Taman 1 Lagenda, Kampung Mata Kuching, Bandaraya Melaka, Melaka Tengah, Melaka, 75400, Malaysia",
+    "coordinate_quality": "address"
+  },
+  {
+    "state": "MELAKA",
+    "name": "TESCO Cheng (Cawangan Meriahtek)",
+    "address": "No. 1, Jalan Inang 3, Taman Paya Rumput, 75460 Melaka, MELAKA, Malaysia",
+    "latitude": 2.2807637,
+    "longitude": 102.2167167,
+    "geocoded_label": "Jalan Inang 3, Taman Paya Rumput Jaya, Bandaraya Melaka, Melaka Tengah, Melaka, 76450, Malaysia",
+    "coordinate_quality": "address"
+  },
+  {
+    "state": "MELAKA",
+    "name": "Senheng Melaka 16-18",
+    "address": "16-18, Jalan Seri Mangga 1/2 Taman Seri Mangga 75250 Melaka, MELAKA, Malaysia",
+    "latitude": 2.2333765,
+    "longitude": 102.2245504,
+    "geocoded_label": "Jalan Seri Mangga 1/2, Taman Seri Mangga, Malim Jaya, Bandaraya Melaka, Melaka Tengah, Melaka, 75250, Malaysia",
+    "coordinate_quality": "address"
+  },
+  {
+    "state": "MELAKA",
+    "name": "Grand Senheng 1 Lagenda",
+    "address": "Lot No. 2, Jalan Lagenda 3 Taman 1 Lagenda 75400 Melaka, MELAKA, Malaysia",
+    "latitude": 2.2147937,
+    "longitude": 102.2495823,
+    "geocoded_label": "75400, Melaka Tengah, Melaka, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "MELAKA",
+    "name": "Senheng Bandar Utama Cheng M",
+    "address": "No.75 & 75-1, Jalan Inang 4 Taman Paya Rumput Utama 76450 Melaka, MELAKA, Malaysia",
+    "latitude": 2.2887687,
+    "longitude": 102.2107321,
+    "geocoded_label": "76450, Melaka Tengah, Melaka, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "JOHOR",
+    "name": "Shan Poornam Metals (Johor) Sdn Bhd",
+    "address": "No 39, Jalan Murni 4, Taman Perindustrian Murni Senai, 81400 Senai Johor, JOHOR, Malaysia",
+    "latitude": 1.6154978,
+    "longitude": 103.6694031,
+    "geocoded_label": "Jalan Murni 4, Taman Perindustrian Murni Senai, Kulai, Johor, 81000, Malaysia",
+    "coordinate_quality": "address"
+  },
+  {
+    "state": "JOHOR",
+    "name": "MEP Enviro Technology Sdn Bhd",
+    "address": "111, Jalan Murni 5, Taman Perindustrian Murni Senai, 81400 Senai Johor, JOHOR, Malaysia",
+    "latitude": 1.6174952,
+    "longitude": 103.6699143,
+    "geocoded_label": "Jalan Murni 5, Taman Perindustrian Murni Senai, Kulai, Johor, 81000, Malaysia",
+    "coordinate_quality": "address"
+  },
+  {
+    "state": "JOHOR",
+    "name": "SenQ Sutera Mall",
+    "address": "L2-036 Sutera Mall No. 1 Jalan Sutera Tanjung 8/4 Taman Sutera Utama 81300 Skudai, Johor Bahru., JOHOR, Malaysia",
+    "latitude": 1.5619902,
+    "longitude": 103.619596,
+    "geocoded_label": "81300, Iskandar Puteri, Johor Bahru, Johor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "JOHOR",
+    "name": "Grand Senheng Kluang",
+    "address": "No. 15 Ground Floor & First Floor, Jalan Ciku, 86000 Kluang, Johor, JOHOR, Malaysia",
+    "latitude": 2.0343004,
+    "longitude": 103.3273065,
+    "geocoded_label": "86000, Kluang, Johor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "JOHOR",
+    "name": "Grand Senheng Taman Setia Indah",
+    "address": "No. 16, 16A, 18,18A, 20, 20A Jalan Setia 7/18, Taman Setia Indah 81100 Johor Bahru, JOHOR, Malaysia",
+    "latitude": 1.5452459,
+    "longitude": 103.7584638,
+    "geocoded_label": "81100, Johor Bahru, Johor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "JOHOR",
+    "name": "Senheng Bandar Utama, Segamat",
+    "address": "No. 12 (Ground Floor) & No. 13 (Ground & First Floor), Jalan Susur 2/1, Taman Utama Bandar Baru, 85000 Segamat, Johor, JOHOR, Malaysia",
+    "latitude": 2.5041612,
+    "longitude": 102.8390492,
+    "geocoded_label": "85000, Segamat, Johor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "JOHOR",
+    "name": "SenQ Batu Pahat Mall",
+    "address": "Lot No. 1.61, First Floor, 303B Jalan Kluang 83000 Batu Pahat, Johor, JOHOR, Malaysia",
+    "latitude": 1.846123,
+    "longitude": 102.9506741,
+    "geocoded_label": "83000, Batu Pahat, Johor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "JOHOR",
+    "name": "Senheng Kulai Jaya",
+    "address": "No.229, Jalan Kenanga 29/2 Indahpura, 80100, Kulai Jaya, Johor., JOHOR, Malaysia",
+    "latitude": 1.4688389,
+    "longitude": 103.7445967,
+    "geocoded_label": "80100, Johor Bahru, Johor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "JOHOR",
+    "name": "Senheng Bakri Muar",
+    "address": "No. 82-46_No. 82-49 Jalan Bakri 2 Taman Kampung Kenanga Tun Dr. Ismail 84000 Muar, Johor, JOHOR, Malaysia",
+    "latitude": 2.0439338,
+    "longitude": 102.5873825,
+    "geocoded_label": "84000, Muar, Johor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "JOHOR",
+    "name": "Grand Senheng Tun Aminah, Skudai",
+    "address": "No. 47, 47A, 47B, Jalan Pendekar 15 Taman Ungku Tun Aminah 81300 Skudai, Johor, JOHOR, Malaysia",
+    "latitude": 1.5619902,
+    "longitude": 103.619596,
+    "geocoded_label": "81300, Iskandar Puteri, Johor Bahru, Johor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "JOHOR",
+    "name": "Grand Senheng Muar",
+    "address": "31-3G & 31-4G, Jalan Ali 84000 Muar, Johor, JOHOR, Malaysia",
+    "latitude": 2.0466711,
+    "longitude": 102.5690232,
+    "geocoded_label": "Jalan Ali, Muar, Johor, 84000, Malaysia",
+    "coordinate_quality": "address"
+  },
+  {
+    "state": "JOHOR",
+    "name": "SenQ AEON Bukit Indah",
+    "address": "Lot S01, Second Floor AEON Bukit Indah Shopping Center No 8, Jalan Indah 15/2, Bukit Indah 81200 Johor Bahru, Johor, JOHOR, Malaysia",
+    "latitude": 1.5048344,
+    "longitude": 103.7157498,
+    "geocoded_label": "81200, Johor Bahru, Johor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "JOHOR",
+    "name": "SenQ AEON Tebrau City",
+    "address": "LOT S67,2nd Floor,JUSCO Shopping Centre NO 1, Jalan Desa Tebrau Taman Desa Tebrau, 81100 Johor Bahru, JOHOR, Malaysia",
+    "latitude": 1.5452459,
+    "longitude": 103.7584638,
+    "geocoded_label": "81100, Johor Bahru, Johor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "JOHOR",
+    "name": "SenQ AEON Kempas",
+    "address": "Lot F25, First Floor,PTD 156356 Jalan Dato Onn Utama, AEON Mall Kempas 81100 Bandar Dato Onn,Johor Bahru, Johor., JOHOR, Malaysia",
+    "latitude": 1.5452459,
+    "longitude": 103.7584638,
+    "geocoded_label": "81100, Johor Bahru, Johor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "JOHOR",
+    "name": "SenQ Paradigm Mall JB",
+    "address": "3F-01, Paradigm Mall Johor Bahru Jalan Skudai, 81200 Johor Bahru, Johor., JOHOR, Malaysia",
+    "latitude": 1.5048344,
+    "longitude": 103.7157498,
+    "geocoded_label": "81200, Johor Bahru, Johor, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "JOHOR",
+    "name": "ICYCLE Malaysia Sdn Bhd",
+    "address": "Level 11, Tower B, Medina 9, Sentral 12, Iskandar Puteri, 79259 Nusajaya Johor, JOHOR, Malaysia",
+    "latitude": 2.1548839,
+    "longitude": 102.7279725,
+    "geocoded_label": "Kulliyyah of Languages and Management, International Islamic University Malaysia, Persiaran Sarjana, Bandar Universiti Pagoh, Pagoh, Muar, Johor, 84600, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "NEGERI SEMBILAN",
+    "name": "3R Quest Sdn Bhd",
+    "address": "Lot 1620, Jalan Perusahaan 2/1, Kawasan Perindustrian Chembong, 71300 Rembau Negeri Sembilan, NEGERI SEMBILAN, Malaysia",
+    "latitude": 2.5861235,
+    "longitude": 102.0904224,
+    "geocoded_label": "71300, Rembau, Negeri Sembilan, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "NEGERI SEMBILAN",
+    "name": "SenQ AEON Seremban",
+    "address": "2 1st Floor, Jusco Seremban 2 Shopping Centre, 112 Persiaran S2 B1 Seremban 2, 70200 Seremban, Negeri Sembilan, NEGERI SEMBILAN, Malaysia",
+    "latitude": 2.7277192,
+    "longitude": 101.928104,
+    "geocoded_label": "70200, Seremban, Negeri Sembilan, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "NEGERI SEMBILAN",
+    "name": "SenQ Nilai",
+    "address": "F20 & F21, 1st Floor, Aeon Mall Nilai Persiaran Pusat Bandar, Putra Point 71800 Bandar Baru Nilai, NEGERI SEMBILAN, Malaysia",
+    "latitude": 2.8285679,
+    "longitude": 101.7891887,
+    "geocoded_label": "71800, Seremban, Negeri Sembilan, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "NEGERI SEMBILAN",
+    "name": "Senheng Bandar Baru Nilai",
+    "address": "9895 & 9896, Jalan BBN 1/3J Putra Point, Fasa 1, Bandar Baru Nilai 71800 Nilai, Negeri Sembilan, NEGERI SEMBILAN, Malaysia",
+    "latitude": 2.8285679,
+    "longitude": 101.7891887,
+    "geocoded_label": "71800, Seremban, Negeri Sembilan, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "NEGERI SEMBILAN",
+    "name": "Grand Senheng Senawang",
+    "address": "No.93,94,95 (Ground/1st Floor) Jalan BPS 5, Bandar Prima Senawang 70450 Seremban, Negeri Sembilan, NEGERI SEMBILAN, Malaysia",
+    "latitude": 2.6971931,
+    "longitude": 101.9948053,
+    "geocoded_label": "70450, Seremban, Negeri Sembilan, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "PAHANG",
+    "name": "Grand Senheng Temerloh",
+    "address": "No 90, 91 & 92, Jalan Tengku Ismail 28000 Temerloh, Pahang, PAHANG, Malaysia",
+    "latitude": 3.4653119,
+    "longitude": 102.4016385,
+    "geocoded_label": "28000, Temerloh, Pahang, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "PAHANG",
+    "name": "Grand Senheng Kuantan",
+    "address": "B104, B106, B108, B110 & B112, Jalan Tun Ismail, Sri Dagangan Kuantan 25000 Kuantan, Pahang., PAHANG, Malaysia",
+    "latitude": 3.8125083,
+    "longitude": 103.3287076,
+    "geocoded_label": "25000, Kuantan, Pahang, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "PAHANG",
+    "name": "Senheng Kuantan Bukit Ubi",
+    "address": "Ground Floor E897, 899, 901 Jalan Bukit Ubi 25000 Kuantan, Pahang, PAHANG, Malaysia",
+    "latitude": 3.8125083,
+    "longitude": 103.3287076,
+    "geocoded_label": "25000, Kuantan, Pahang, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "PAHANG",
+    "name": "Senheng Bentong P10 (Ground & Second Floor) & P11 (Ground Floor) Jalan MGI Pusat Perniagaan Mutiara Gemilang",
+    "address": "28700 Bentong, Pahang, PAHANG, Malaysia",
+    "latitude": 3.5067702,
+    "longitude": 101.9221716,
+    "geocoded_label": "28700, Bentong, Pahang, Malaysia",
+    "coordinate_quality": "address"
+  },
+  {
+    "state": "TERENGGANU",
+    "name": "Grand Senheng Kemaman",
+    "address": "PT 11268 (G, 1st)- PT 11269 (G, 1st), PT11270 (1st) Taman Cukai Utama Jalan Kubang Kurus 24000 Kemaman, Terengganu, TERENGGANU, Malaysia",
+    "latitude": 5.3296461,
+    "longitude": 103.1383265,
+    "geocoded_label": "Kuala Terengganu, Terengganu, 20300, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "TERENGGANU",
+    "name": "Senheng Dungun",
+    "address": "Lot 11777 & 11778 GM8428 Jalan Pak Sabah Mukim, Kuala Dungun 23000 Dungun, Terengganu, TERENGGANU, Malaysia",
+    "latitude": 5.3296461,
+    "longitude": 103.1383265,
+    "geocoded_label": "Kuala Terengganu, Terengganu, 20300, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "TERENGGANU",
+    "name": "Senheng Kuala Terengganu",
+    "address": "1049-1, G/ Floor, Wisma Ladang, Jalan Sultan Sulaiman, 20000 Kuala Terengganu, TERENGGANU, Malaysia",
+    "latitude": 5.3348096,
+    "longitude": 103.1420325,
+    "geocoded_label": "20000, Kuala Terengganu, Terengganu, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "TERENGGANU",
+    "name": "SenQ KTCC Mall",
+    "address": "Lot 1-25, First Floor, KTCC Mall, Muara Selatan, 20000 Kuala Terengganu, TERENGGANU, Malaysia",
+    "latitude": 5.3348096,
+    "longitude": 103.1420325,
+    "geocoded_label": "20000, Kuala Terengganu, Terengganu, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "KELANTAN",
+    "name": "Senheng Tanah Merah",
+    "address": "Lot 243, Jalan Hospital 17500 Tanah Merah, Kelantan, KELANTAN, Malaysia",
+    "latitude": 5.8231406,
+    "longitude": 102.0980987,
+    "geocoded_label": "17500, Tanah Merah, Kelantan, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "KELANTAN",
+    "name": "Senheng Kubang Kerian",
+    "address": "PT1607 & PT 1608 (Ground Floor) Jalan KK 6, Bandar Baru Kubang Kerian 16150 Kota Bharu, Kelantan, KELANTAN, Malaysia",
+    "latitude": 6.0637129,
+    "longitude": 102.2834907,
+    "geocoded_label": "16150, Kota Bharu, Kelantan, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "KELANTAN",
+    "name": "SenQ KB Mall",
+    "address": "Lot 3.1 & 3.1A, 3rd Floor KB Mall Jalan Hamzah 15050 Kota Bharu, Kelantan, KELANTAN, Malaysia",
+    "latitude": 6.115413,
+    "longitude": 102.2364278,
+    "geocoded_label": "15050, Kota Bharu, Kelantan, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "KELANTAN",
+    "name": "SenQ AEON Mall Kota Bharu",
+    "address": "F19 AEON Mall Kota Bharu Lembah Sireh, 15050 Kota Bharu,Kelantan, KELANTAN, Malaysia",
+    "latitude": 6.115413,
+    "longitude": 102.2364278,
+    "geocoded_label": "15050, Kota Bharu, Kelantan, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "KELANTAN",
+    "name": "Senheng Kota Bharu",
+    "address": "4064A & B, Jalan Sultan Yahya Petra 15150 Kota Bharu, Kelantan, KELANTAN, Malaysia",
+    "latitude": 6.1013257,
+    "longitude": 102.242907,
+    "geocoded_label": "15150, Kota Bharu, Kelantan, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "PULAU PINANG",
+    "name": "ICT Digital Mall @",
+    "address": "KOMTAR Komtar Level 3, 10000 Georgetown, PULAU PINANG, Malaysia",
+    "latitude": 5.4166376,
+    "longitude": 100.3303781,
+    "geocoded_label": "10000, Central George Town, Timur Laut, George Town, Pulau Pinang, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "PULAU PINANG",
+    "name": "Pusat Sumber Alam Sekitar Taman Sri Rambai FASA 4",
+    "address": "No. 7, Tingkat Binjai 20, Taman Sri Rambai, 14000 Bukit Mertajam, Pulau Pinang, PULAU PINANG, Malaysia",
+    "latitude": 5.3397087,
+    "longitude": 100.478668,
+    "geocoded_label": "14000, Seberang Perai Tengah, Seberang Perai, Pulau Pinang, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "PULAU PINANG",
+    "name": "Senheng Farlim",
+    "address": "288 B-1-10 & 11 Ground Floor (Fortune Court), Jalan Thean Teik, Farlim, 11500 Pulau Pinang, PULAU PINANG, Malaysia",
+    "latitude": 5.3978305,
+    "longitude": 100.2873831,
+    "geocoded_label": "11500, Bukit Jambul, Timur Laut, George Town, Pulau Pinang, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "PULAU PINANG",
+    "name": "SenQ Gurney Plaza",
+    "address": "170-07-08, Plaza Gurney, Persiaran Gurney, 10250 Pulau Pinang., PULAU PINANG, Malaysia",
+    "latitude": 5.4341651,
+    "longitude": 100.3127648,
+    "geocoded_label": "10250, Central George Town, Timur Laut, George Town, Pulau Pinang, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "PULAU PINANG",
+    "name": "SenQ Queensbay Mall",
+    "address": "Queensbay Mall 2F-07, 2nd Floor, Queensbay Mall 100, Persiaran Bayan Indah, Sungai Nibong, 11900 Bayan Lepas, Pulau Pinang, PULAU PINANG, Malaysia",
+    "latitude": 5.3286105,
+    "longitude": 100.2686936,
+    "geocoded_label": "11900, Sungai Ara, Barat Daya, George Town, Pulau Pinang, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "PULAU PINANG",
+    "name": "Senheng TESCO Tg Pinang",
+    "address": "Lot No. F4, F5 & F6, 1st Floor, Kawasan Tebusguna Bandar Tg Pinang, Jalan Tg Tokong, Jalan Seri Tg Pinang, Daerah Timur Laut, 10470 Pulau Pinang, PULAU PINANG, Malaysia",
+    "latitude": 5.4514418,
+    "longitude": 100.3065861,
+    "geocoded_label": "10470, Tanjong Tokong, Timur Laut, George Town, Pulau Pinang, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "PULAU PINANG",
+    "name": "Grand Senheng The Golden Triangle",
+    "address": "Lot 29-1-23, 29-1-23A & 29-1-25. (Ground & 1st floor) The Golden Triangle, Jalan Paya Terubong, Relau 11900 Bayan Lepas, Pulau Pinang, PULAU PINANG, Malaysia",
+    "latitude": 5.3286105,
+    "longitude": 100.2686936,
+    "geocoded_label": "11900, Sungai Ara, Barat Daya, George Town, Pulau Pinang, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "PULAU PINANG",
+    "name": "Senheng Raja Uda",
+    "address": "45,47 & 49, Jalan Raja Uda , 12300 Butterworth, Pulau Pinang, PULAU PINANG, Malaysia",
+    "latitude": 5.4257787,
+    "longitude": 100.3830857,
+    "geocoded_label": "12300, Bandar Butterworth, Seberang Perai Utara, Seberang Perai, Pulau Pinang, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "PULAU PINANG",
+    "name": "Senheng Bukit Mertajam",
+    "address": "11, 12 & 12A, Precint 1 @ Sunway Wellesley, Jalan Muthu Palaniapan, 14000 Bukit Mertajam, Pulau Pinang, PULAU PINANG, Malaysia",
+    "latitude": 5.3397087,
+    "longitude": 100.478668,
+    "geocoded_label": "14000, Seberang Perai Tengah, Seberang Perai, Pulau Pinang, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "PULAU PINANG",
+    "name": "SenQ Sunway Carnival Mall",
+    "address": "S23 Second Floor, Sunway Carnival Mall 3068, Jalan Todak, Pusat Bandar Seberang Jaya 13700 Seberang Jaya, Pulau Pinang, PULAU PINANG, Malaysia",
+    "latitude": 5.3899036,
+    "longitude": 100.4018158,
+    "geocoded_label": "13700, Seberang Jaya, Permatang Pauh, Seberang Perai Tengah, Seberang Perai, Pulau Pinang, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "SARAWAK",
+    "name": "Triple-C Recycle Sdn Bhd",
+    "address": "S/L6, Lot 1625, Batu 10 Light Industrial Park, Lorong Jalan Kuap, 93250 Kuching, Sarawak, SARAWAK, Malaysia",
+    "latitude": 1.493522,
+    "longitude": 110.3208825,
+    "geocoded_label": "93250, Kuching, Bahagian Kuching, Sarawak, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "SARAWAK",
+    "name": "Green Earth Metal Industrial Sdn Bhd",
+    "address": "Lot 2501, Block 226, 5th Mile, Jalan Kong Ping, 93350 Kuching Sarawak, SARAWAK, Malaysia",
+    "latitude": 1.5146043,
+    "longitude": 110.3653185,
+    "geocoded_label": "93350, Kuching, Bahagian Kuching, Sarawak, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "PERLIS",
+    "name": "Iyan Trading Sdn Bhd",
+    "address": "Lot 5, Kawasan Perindustrian Mukim Jejawi, 02600 Arau, Perlis., PERLIS, Malaysia",
+    "latitude": 6.4474305,
+    "longitude": 100.2447219,
+    "geocoded_label": "Universiti Malaysia Perlis, Jalan Tuanku Syed Sirajuddin, Jejawi, Arau, Perlis, 02600, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "PERLIS",
+    "name": "Senheng Kangar",
+    "address": "No. 1A, Persiaran Jubli Emas, 01000 Kangar, Perlis., PERLIS, Malaysia",
+    "latitude": 6.4421718,
+    "longitude": 100.2007921,
+    "geocoded_label": "Persiaran Jubli Emas, Taman Bunga Padma, Kangar, Perlis, 01000, Malaysia",
+    "coordinate_quality": "address"
+  },
+  {
+    "state": "PERAK",
+    "name": "Senheng Ipoh Station",
+    "address": "18 No. 9 & 9A, 11 & 11A, 13 & 13A, Jalan Pengkalan Utama 1 Taman Pengkalan Utama 31650 Ipoh, Perak, PERAK, Malaysia",
+    "latitude": 4.5686171,
+    "longitude": 101.0827211,
+    "geocoded_label": "31650, Majlis Bandaraya Ipoh, Kinta, Perak, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "PERAK",
+    "name": "Senheng Silibin Ipoh",
+    "address": "431 & 432, Jalan Silibin Taman Seri Tahan, 30100 Ipoh, Perak, PERAK, Malaysia",
+    "latitude": 4.6055011,
+    "longitude": 101.0643135,
+    "geocoded_label": "30100, Majlis Bandaraya Ipoh, Kinta, Perak, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "PERAK",
+    "name": "Grand Senheng Pasir Puteh",
+    "address": "No. 505 – 507, Jalan Pasir Puteh, Pasir Puteh, 31650 Ipoh, Perak, PERAK, Malaysia",
+    "latitude": 4.5591338,
+    "longitude": 101.0760538,
+    "geocoded_label": "Jalan Pasir Puteh, Taman Shatin, Kampung Pasir Puteh, Majlis Bandaraya Ipoh, Kinta, Perak, 31650, Malaysia",
+    "coordinate_quality": "address"
+  },
+  {
+    "state": "PERAK",
+    "name": "Senheng Ipoh 40-42",
+    "address": "40 – 42, Lebuh Medan Ipoh, Bandar Baru Medan Ipoh 31400 Ipoh, Perak, PERAK, Malaysia",
+    "latitude": 4.6130078,
+    "longitude": 101.1179676,
+    "geocoded_label": "31400, Majlis Bandaraya Ipoh, Kinta, Perak, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "PERAK",
+    "name": "Senheng Taiping",
+    "address": "No. 1-3, Jalan Medan Taiping Medan Taiping 34000 Perak, PERAK, Malaysia",
+    "latitude": 4.8513667,
+    "longitude": 100.7406615,
+    "geocoded_label": "34000, Larut, Matang dan Selama, Perak, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "PERAK",
+    "name": "Senheng Parit Buntar",
+    "address": "No. 11A, 15, Jalan Keli, Taman Damai, 34200 Parit Buntar, Perak, PERAK, Malaysia",
+    "latitude": 5.1188374,
+    "longitude": 100.4785649,
+    "geocoded_label": "34200, Mukim Parit Buntar, Kerian, Perak, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "PERAK",
+    "name": "Senheng Teluk Intan",
+    "address": "Lot 1 & 2, Komplex Menara Condong Jalan Bandar 36000, Teluk Intan, Perak, PERAK, Malaysia",
+    "latitude": 4.0120198,
+    "longitude": 101.0184366,
+    "geocoded_label": "36000, Hilir Perak, Perak, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "PERAK",
+    "name": "Grand Senheng Sitiawan",
+    "address": "1D, Ground Floor Taman Sitiawan Maju II Jalan Lumut, 32000 Sitiwan, Perak, PERAK, Malaysia",
+    "latitude": 4.2152659,
+    "longitude": 100.7021839,
+    "geocoded_label": "32000, Manjung, Perak, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "PERAK",
+    "name": "Senheng Meru Bestari",
+    "address": "49,51 & 53, Ground Floor Jalan Meru Bestari A2, Meru Medan Bestari, 30200 Ipoh, Perak, PERAK, Malaysia",
+    "latitude": 4.5906864,
+    "longitude": 101.0705058,
+    "geocoded_label": "30200, Majlis Bandaraya Ipoh, Kinta, Perak, Malaysia",
+    "coordinate_quality": "postcode"
+  },
+  {
+    "state": "PERAK",
+    "name": "SenQ Ipoh Parade",
+    "address": "S22F, S23F, S23 & S24 Second Floor Ipoh Parade 105, Jln Sultan Abdul Jalil, Greentown 30450 Ipoh, Perak, PERAK, Malaysia",
+    "latitude": 4.6012764,
+    "longitude": 101.0929886,
+    "geocoded_label": "30450, Majlis Bandaraya Ipoh, Kinta, Perak, Malaysia",
+    "coordinate_quality": "postcode"
+  }
+]
