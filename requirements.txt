@@ -17,6 +17,7 @@ fonttools==4.62.1
 fsspec==2026.3.0
 greenlet==3.4.0
 idna==3.11
+ImageHash==4.3.2
 ipykernel==7.2.0
 ipython==9.12.0
 ipython_pygments_lexers==1.1.1

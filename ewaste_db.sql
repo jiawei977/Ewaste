@@ -32,6 +32,7 @@ CREATE TABLE `recycle_history` (
   `user_id` int(11) DEFAULT NULL,
   `item_type` varchar(255) DEFAULT NULL,
   `points` int(11) DEFAULT NULL,
+  `image_hash` varchar(64) DEFAULT NULL,
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -328,7 +329,8 @@ CREATE TABLE `user_profiles` (
 --
 ALTER TABLE `recycle_history`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`);
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `idx_recycle_history_image_hash` (`image_hash`);
 
 --
 -- Indexes for table `recycling_guidelines`

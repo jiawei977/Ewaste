@@ -8,6 +8,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import safe_join, secure_filename
 from ultralytics import YOLO
 from PIL import Image, ImageOps, UnidentifiedImageError
+import imagehash
 from urllib.parse import urlencode
 import mysql.connector
 
@@ -29,6 +30,7 @@ def get_db_connection():
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'change_this_secret')
 app.config['UPLOAD_FOLDER'] = 'uploads'
+app.config['DUPLICATE_HASH_DISTANCE'] = 3
 
 
 # 2. Load the YOLO Model (Loads once when server starts)
@@ -93,11 +95,44 @@ def fetch_guideline(class_id):
 
     return result
 
-def record_recycle_history(user_id, category, points):
+def generate_image_hash(image_path):
+    with Image.open(image_path) as uploaded_image:
+        normalized_image = ImageOps.exif_transpose(uploaded_image).convert('RGB')
+        return str(imagehash.phash(normalized_image))
+
+
+def find_duplicate_image(user_id, candidate_hash):
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(
+        """
+        SELECT id, image_hash
+        FROM recycle_history
+        WHERE user_id = %s AND image_hash IS NOT NULL
+        ORDER BY timestamp DESC
+        """,
+        (user_id,),
+    )
+    records = cursor.fetchall()
+    cursor.close()
+    conn.close()
+
+    candidate = imagehash.hex_to_hash(candidate_hash)
+    for record in records:
+        try:
+            distance = candidate - imagehash.hex_to_hash(record['image_hash'])
+        except (TypeError, ValueError):
+            continue
+        if distance <= app.config['DUPLICATE_HASH_DISTANCE']:
+            return {'history_id': record['id'], 'distance': distance}
+    return None
+
+
+def record_recycle_history(user_id, category, points, image_hash):
     conn = get_db_connection()
     cursor = conn.cursor()
-    query = "INSERT INTO recycle_history (user_id, item_type, points) VALUES (%s, %s, %s)"
-    cursor.execute(query, (user_id, category, points))
+    query = "INSERT INTO recycle_history (user_id, item_type, points, image_hash) VALUES (%s, %s, %s, %s)"
+    cursor.execute(query, (user_id, category, points, image_hash))
     conn.commit()
     cursor.close()
     conn.close()
@@ -436,6 +471,7 @@ def api_detect():
 
     session.pop('pending_item', None)
     session.pop('pending_points', None)
+    session.pop('pending_image_hash', None)
 
     image = request.files.get('image')
     if image is None or not image.filename:
@@ -449,6 +485,18 @@ def api_detect():
     upload_filename = f"{uuid.uuid4().hex}_{original_filename}"
     image_path = os.path.join(app.config['UPLOAD_FOLDER'], upload_filename)
     image.save(image_path)
+
+    try:
+        candidate_hash = generate_image_hash(image_path)
+    except (OSError, UnidentifiedImageError):
+        return jsonify(error='The uploaded file is not a valid image.'), 400
+
+    duplicate = find_duplicate_image(session['user_id'], candidate_hash)
+    if duplicate:
+        return jsonify(
+            error='This image appears to have already been used for a recycling record.',
+            duplicate=True,
+        ), 409
 
     results = model(image_path)
     boxes = results[0].boxes
@@ -473,6 +521,7 @@ def api_detect():
 
     session['pending_item'] = guideline['category']
     session['pending_points'] = guideline.get('points', 0)
+    session['pending_image_hash'] = candidate_hash
 
     return jsonify(
         category=guideline['category'],
@@ -491,12 +540,23 @@ def api_recycle():
 
     item_type = session.get('pending_item')
     points = session.get('pending_points', 0)
+    pending_image_hash = session.get('pending_image_hash')
     if not item_type:
         return jsonify(error='There is no pending detection to recycle.'), 400
+    if not pending_image_hash:
+        return jsonify(error='The pending detection has no image fingerprint. Please scan the item again.'), 400
 
-    record_recycle_history(session['user_id'], item_type, points)
+    duplicate = find_duplicate_image(session['user_id'], pending_image_hash)
+    if duplicate:
+        session.pop('pending_item', None)
+        session.pop('pending_points', None)
+        session.pop('pending_image_hash', None)
+        return jsonify(error='This image has already been used for a recycling record.'), 409
+
+    record_recycle_history(session['user_id'], item_type, points, pending_image_hash)
     session.pop('pending_item', None)
     session.pop('pending_points', None)
+    session.pop('pending_image_hash', None)
     return jsonify(
         message=f'Successfully recorded {item_type}. You earned {points} points.',
         category=item_type,

@@ -5,7 +5,7 @@ import PageLoading from '../components/PageLoading'
 
 export default function SettingsPage() {
   const { theme, updateTheme } = useAuth()
-  const [settings, setSettings] = useState({ location_enabled: false, preferred_language: 'en', theme })
+  const [settings, setSettings] = useState({ location_enabled: false, theme })
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState('')
@@ -99,11 +99,6 @@ export default function SettingsPage() {
             <i className={`bi ${theme === 'dark' ? 'bi-check-circle-fill' : 'bi-circle'} theme-check`} />
           </button>
         </div>
-      </section>
-
-      <section className="settings-card future-settings">
-        <div className="settings-section-heading"><div><h2>Language</h2><p>Language selection is prepared for a future update.</p></div><span className="coming-soon-badge">Coming soon</span></div>
-        <label className="future-setting"><span><i className="bi bi-translate" /><span><strong>Language</strong><small>Choose the language used by the app.</small></span></span><select value={settings.preferred_language} disabled><option value="en">English</option></select></label>
       </section>
     </div>
   )
