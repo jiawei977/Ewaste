@@ -31,6 +31,8 @@ app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'change_this_secret')
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['DUPLICATE_HASH_DISTANCE'] = 3
+app.config['CHAT_QUESTION_LIMIT'] = 30
+app.config['GEMINI_MODEL'] = os.environ.get('GEMINI_MODEL', 'gemini-3.7-flash')
 
 
 # 2. Load the YOLO Model (Loads once when server starts)
@@ -95,6 +97,101 @@ def fetch_guideline(class_id):
 
     return result
 
+
+def get_chat_recycling_context():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(
+        """
+        SELECT category, recycling_instruction, points
+        FROM recycling_guidelines
+        ORDER BY category
+        """
+    )
+    guidelines = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return '\n'.join(
+        f"- {row['category']}: {row['recycling_instruction']} ({int(row['points'] or 0)} impact points)"
+        for row in guidelines
+    )
+
+
+def generate_chat_answer(message, history):
+    api_key = os.environ.get('AI_API_KEY')
+    if not api_key:
+        raise RuntimeError('AI_API_KEY is not configured.')
+
+    system_instruction = f"""
+You are the E-Waste Scanner assistant for a Malaysian recycling application.
+Answer only questions related to e-waste, recycling, safe device disposal,
+environmental impact, recycling centres, or features of this application.
+Politely decline unrelated questions. Keep answers concise, friendly, factual,
+and easy to read on a phone. Use plain text, not Markdown tables. Never invent
+centre names, addresses, opening hours, laws, or accepted materials. If exact
+information is unavailable, say so. For nearest-centre questions, tell the user
+to use the app's Find Nearest Verified Centres feature and location permission.
+
+Available application features:
+- Scanner: identifies an e-waste item from an uploaded photo.
+- Recycling guide: shows disposal instructions and impact points.
+- Find Nearest Verified Centres: uses the user's location.
+- View Disposal Center List: opens the official government PDF.
+- My Impact: shows recycling history and statistics.
+- Global Ranking: displays leading users.
+- Profiles and badges: show public recycling achievements.
+- Settings: controls theme and location permission.
+
+Application recycling guidelines:
+{get_chat_recycling_context()}
+""".strip()
+
+    contents = [
+        {
+            'role': 'model' if entry['role'] == 'assistant' else 'user',
+            'parts': [{'text': entry['content']}],
+        }
+        for entry in history[-10:]
+    ]
+    contents.append({'role': 'user', 'parts': [{'text': message}]})
+    try:
+        response = requests.post(
+            f"https://generativelanguage.googleapis.com/v1beta/models/{app.config['GEMINI_MODEL']}:generateContent",
+            headers={
+                'Content-Type': 'application/json',
+                'x-goog-api-key': api_key,
+            },
+            json={
+                'systemInstruction': {'parts': [{'text': system_instruction}]},
+                'contents': contents,
+                'generationConfig': {
+                    'temperature': 0.35,
+                    'maxOutputTokens': 600,
+                },
+            },
+            timeout=60,
+        )
+    except requests.Timeout as error:
+        raise RuntimeError('The assistant took too long to respond. Please try again.') from error
+
+    if response.status_code == 401:
+        raise RuntimeError('The Gemini API key is invalid or unavailable.')
+    if response.status_code == 429:
+        raise RuntimeError('The assistant is busy or has reached its API quota. Please try again later.')
+    if not response.ok:
+        print(f"Gemini API error: status {response.status_code} - {response.text[:500]}")
+        raise RuntimeError('The assistant is temporarily unavailable. Please try again later.')
+
+    data = response.json()
+    candidates = data.get('candidates') or []
+    if not candidates:
+        raise RuntimeError('The assistant could not answer that question. Please try rephrasing it.')
+    parts = candidates[0].get('content', {}).get('parts', [])
+    answer = ''.join(part.get('text', '') for part in parts).strip()
+    if not answer:
+        raise RuntimeError('The assistant could not answer that question. Please try rephrasing it.')
+    return answer
+
 def generate_image_hash(image_path):
     with Image.open(image_path) as uploaded_image:
         normalized_image = ImageOps.exif_transpose(uploaded_image).convert('RGB')
@@ -136,6 +233,29 @@ def record_recycle_history(user_id, category, points, image_hash):
     conn.commit()
     cursor.close()
     conn.close()
+
+
+BADGE_DEFINITIONS = (
+    {'key': 'first_step', 'name': 'First Step', 'description': 'Recycle your first e-waste item.', 'icon': 'bi-recycle', 'color': '#198754', 'metric': 'items', 'target': 1},
+    {'key': 'eco_starter', 'name': 'Eco Starter', 'description': 'Recycle 5 e-waste items.', 'icon': 'bi-flower1', 'color': '#20a464', 'metric': 'items', 'target': 5},
+    {'key': 'century_club', 'name': 'Century Club', 'description': 'Earn 100 impact points.', 'icon': 'bi-stars', 'color': '#e0a800', 'metric': 'points', 'target': 100},
+    {'key': 'category_explorer', 'name': 'Category Explorer', 'description': 'Recycle items from 5 different categories.', 'icon': 'bi-grid-fill', 'color': '#0d6efd', 'metric': 'categories', 'target': 5},
+    {'key': 'eco_champion', 'name': 'Eco Champion', 'description': 'Recycle 25 e-waste items.', 'icon': 'bi-trophy-fill', 'color': '#9b59b6', 'metric': 'items', 'target': 25},
+)
+
+
+def build_badges(metrics):
+    badges = []
+    for definition in BADGE_DEFINITIONS:
+        current = metrics[definition['metric']]
+        target = definition['target']
+        badges.append({
+            **definition,
+            'current': current,
+            'earned': current >= target,
+            'progress': min(round(current / target * 100), 100),
+        })
+    return badges
 
 
 def find_user_by_email(email):
@@ -607,7 +727,7 @@ def api_leaderboard():
     cursor = conn.cursor(dictionary=True)
     cursor.execute(
         """
-        SELECT u.username, u.avatar_url, SUM(rh.points) AS total_score
+        SELECT u.user_id, u.username, u.avatar_url, SUM(rh.points) AS total_score
         FROM users u
         JOIN recycle_history rh ON u.user_id = rh.user_id
         GROUP BY u.user_id, u.username, u.avatar_url
@@ -623,12 +743,98 @@ def api_leaderboard():
         leaders=[
             {
                 'rank': index,
+                'user_id': leader['user_id'],
                 'username': leader['username'],
                 'avatar_url': leader['avatar_url'],
                 'total_score': int(leader['total_score'] or 0),
             }
             for index, leader in enumerate(leaders, start=1)
         ]
+    )
+
+
+@app.route('/api/badges')
+def api_badges():
+    if 'user_id' not in session:
+        return jsonify(error='Authentication required.'), 401
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(
+        """
+        SELECT COUNT(*) AS item_count,
+               COALESCE(SUM(points), 0) AS total_points,
+               COUNT(DISTINCT LOWER(item_type)) AS category_count
+        FROM recycle_history
+        WHERE user_id = %s
+        """,
+        (session['user_id'],),
+    )
+    totals = cursor.fetchone()
+    cursor.close()
+    conn.close()
+
+    metrics = {
+        'items': int(totals['item_count'] or 0),
+        'points': int(totals['total_points'] or 0),
+        'categories': int(totals['category_count'] or 0),
+    }
+    badges = build_badges(metrics)
+
+    return jsonify(
+        badges=badges,
+        earned_count=sum(1 for badge in badges if badge['earned']),
+        total_count=len(badges),
+    )
+
+
+@app.route('/api/users/<int:user_id>/profile')
+def api_public_profile(user_id):
+    if 'user_id' not in session:
+        return jsonify(error='Authentication required.'), 401
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(
+        """
+        SELECT u.user_id, u.username, u.avatar_url, COALESCE(p.bio, '') AS bio
+        FROM users u
+        LEFT JOIN user_profiles p ON p.user_id = u.user_id
+        WHERE u.user_id = %s
+        """,
+        (user_id,),
+    )
+    public_profile = cursor.fetchone()
+    if public_profile is None:
+        cursor.close()
+        conn.close()
+        return jsonify(error='User profile not found.'), 404
+
+    cursor.execute(
+        """
+        SELECT COUNT(*) AS item_count,
+               COALESCE(SUM(points), 0) AS total_points,
+               COUNT(DISTINCT LOWER(item_type)) AS category_count
+        FROM recycle_history
+        WHERE user_id = %s
+        """,
+        (user_id,),
+    )
+    totals = cursor.fetchone()
+    cursor.close()
+    conn.close()
+
+    metrics = {
+        'items': int(totals['item_count'] or 0),
+        'points': int(totals['total_points'] or 0),
+        'categories': int(totals['category_count'] or 0),
+    }
+    badges = build_badges(metrics)
+    return jsonify(
+        profile=public_profile,
+        stats=metrics,
+        badges=badges,
+        earned_count=sum(1 for badge in badges if badge['earned']),
     )
 
 
@@ -676,6 +882,50 @@ def api_guidelines():
             for guideline in guidelines
         ]
     )
+
+
+@app.route('/api/chat', methods=['GET', 'POST'])
+def api_chat():
+    if 'user_id' not in session:
+        return jsonify(error='Authentication required.'), 401
+
+    limit = app.config['CHAT_QUESTION_LIMIT']
+    used = int(session.get('chat_question_count', 0))
+    if request.method == 'GET':
+        return jsonify(limit=limit, used=used, remaining=max(limit - used, 0))
+
+    if used >= limit:
+        return jsonify(error='You have reached the 30-question limit for this login session.', limit=limit, used=used, remaining=0), 429
+
+    payload = request.get_json(silent=True) or {}
+    message = payload.get('message', '')
+    history = payload.get('history', [])
+    if not isinstance(message, str) or not message.strip():
+        return jsonify(error='Please enter a question.'), 400
+    message = message.strip()
+    if len(message) > 500:
+        return jsonify(error='Please keep your question under 500 characters.'), 400
+    if not isinstance(history, list):
+        return jsonify(error='Chat history must be a list.'), 400
+
+    clean_history = []
+    for entry in history[-10:]:
+        if not isinstance(entry, dict):
+            continue
+        role = entry.get('role')
+        content = entry.get('content')
+        if role not in {'user', 'assistant'} or not isinstance(content, str):
+            continue
+        clean_history.append({'role': role, 'content': content[:1000]})
+
+    try:
+        answer = generate_chat_answer(message, clean_history)
+    except (requests.RequestException, RuntimeError) as error:
+        return jsonify(error=str(error)), 503
+
+    used += 1
+    session['chat_question_count'] = used
+    return jsonify(answer=answer, limit=limit, used=used, remaining=limit - used)
 
 
 @app.route('/api/centres/nearest')

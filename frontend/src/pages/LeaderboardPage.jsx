@@ -3,6 +3,7 @@ import { apiRequest } from '../api'
 import PageLoading from '../components/PageLoading'
 import UserAvatar from '../components/UserAvatar'
 import EmptyState from '../components/EmptyState'
+import { Link } from 'react-router-dom'
 
 export default function LeaderboardPage() {
   const [leaders, setLeaders] = useState([])
@@ -40,13 +41,13 @@ export default function LeaderboardPage() {
                 <tr key={`${leader.rank}-${leader.username}`}>
                   <td className="leaderboard-rank-cell" data-label="Rank"><span className={`rank-badge rank-${Math.min(leader.rank, 4)}`}>{leader.rank}</span></td>
                   <td className="leaderboard-user-cell fw-semibold" data-label="Eco-Warrior">
-                    <div className="leaderboard-user">
+                    <Link className="leaderboard-user leaderboard-profile-link" to={`/users/${leader.user_id}`} aria-label={`View ${leader.username}'s profile`}>
                       <div className={`leaderboard-avatar-frame frame-rank-${Math.min(leader.rank, 4)}`}>
                         {leader.rank <= 3 && <i className="bi bi-crown-fill medal-crown" aria-hidden="true" />}
                         <UserAvatar user={leader} className="leaderboard-avatar" />
                       </div>
                       <span>{leader.username}</span>
-                    </div>
+                    </Link>
                   </td>
                   <td className="leaderboard-score-cell text-end" data-label="Impact Score"><span className="leaderboard-score fw-bold text-success">{leader.total_score.toLocaleString()}</span><small className="text-secondary ms-1">pts</small></td>
                 </tr>
@@ -65,7 +66,7 @@ function Podium({ leaders }) {
   return (
     <section className="podium" aria-label="Top three eco-warriors">
       {orderedLeaders.map((leader) => (
-        <article className={`podium-place podium-place-${leader.rank}`} key={leader.rank}>
+        <Link className={`podium-place podium-place-${leader.rank} podium-profile-link`} to={`/users/${leader.user_id}`} aria-label={`View ${leader.username}'s profile`} key={leader.rank}>
           <span className="podium-crown"><i className="bi bi-crown-fill" /></span>
           <div className={`podium-avatar-frame frame-rank-${leader.rank}`}>
             <UserAvatar user={leader} className="podium-avatar" />
@@ -73,7 +74,7 @@ function Podium({ leaders }) {
           <strong className="podium-name">{leader.username}</strong>
           <span className="podium-score">{leader.total_score.toLocaleString()} pts</span>
           <div className="podium-step"><span>{leader.rank}</span></div>
-        </article>
+        </Link>
       ))}
     </section>
   )

@@ -9,7 +9,9 @@ import RegisterPage from './pages/RegisterPage'
 import GuidePage from './pages/GuidePage'
 import ProfilePage from './pages/ProfilePage'
 import SettingsPage from './pages/SettingsPage'
+import UserProfilePage from './pages/UserProfilePage'
 import ProfileMenu from './components/ProfileMenu'
+import ChatAssistant from './components/ChatAssistant'
 import './App.css'
 
 function LoadingPage() {
@@ -51,6 +53,7 @@ function Layout({ children }) {
         </nav>
       )}
       <main className="container app-main py-3 py-md-5">{children}</main>
+      {user && <ChatAssistant />}
     </div>
   )
 }
@@ -77,6 +80,7 @@ function AppRoutes() {
         <Route path="/leaderboard" element={<ProtectedRoute><LeaderboardPage /></ProtectedRoute>} />
         <Route path="/guide" element={<ProtectedRoute><GuidePage /></ProtectedRoute>} />
         <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+        <Route path="/users/:userId" element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>} />
         <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

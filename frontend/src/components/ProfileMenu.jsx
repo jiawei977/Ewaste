@@ -39,7 +39,7 @@ export default function ProfileMenu() {
             <div><strong>{user.username}</strong><span>Eco-warrior account</span></div>
           </div>
           <div className="profile-dropdown-divider" />
-          <Link to="/profile" role="menuitem" onClick={() => setOpen(false)}><i className="bi bi-person-gear" /><span><strong>Edit profile</strong><small>Photo and personal information</small></span></Link>
+          <Link to={`/users/${user.user_id}`} role="menuitem" onClick={() => setOpen(false)}><i className="bi bi-person-circle" /><span><strong>My Profile</strong><small>Profile, stats and achievements</small></span></Link>
           <Link to="/settings" role="menuitem" onClick={() => setOpen(false)}><i className="bi bi-gear" /><span><strong>Settings</strong><small>Location and preferences</small></span></Link>
           <div className="profile-dropdown-divider" />
           <button className="profile-dropdown-logout" type="button" role="menuitem" onClick={handleLogout}><i className="bi bi-box-arrow-right" /><span><strong>Logout</strong><small>Sign out of this account</small></span></button>
