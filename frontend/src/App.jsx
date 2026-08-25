@@ -7,7 +7,9 @@ import LeaderboardPage from './pages/LeaderboardPage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import GuidePage from './pages/GuidePage'
-import AvatarUploader from './components/AvatarUploader'
+import ProfilePage from './pages/ProfilePage'
+import SettingsPage from './pages/SettingsPage'
+import ProfileMenu from './components/ProfileMenu'
 import './App.css'
 
 function LoadingPage() {
@@ -21,7 +23,7 @@ function ProtectedRoute({ children }) {
 }
 
 function Layout({ children }) {
-  const { user, logout } = useAuth()
+  const { user } = useAuth()
   return (
     <div className="app-shell">
       <nav className="navbar navbar-dark bg-success shadow-sm top-nav">
@@ -35,11 +37,7 @@ function Layout({ children }) {
                 <NavItem to="/leaderboard" icon="bi-trophy">Global Ranking</NavItem>
                 <NavItem to="/guide" icon="bi-journal-check">Guide</NavItem>
               </div>
-              <AvatarUploader />
-              <button className="btn btn-sm btn-light fw-semibold logout-button" type="button" onClick={logout}>
-                <i className="bi bi-box-arrow-right d-sm-none" aria-hidden="true" />
-                <span className="d-none d-sm-inline">Logout</span>
-              </button>
+              <ProfileMenu />
             </div>
           )}
         </div>
@@ -78,6 +76,8 @@ function AppRoutes() {
         <Route path="/history" element={<ProtectedRoute><HistoryPage /></ProtectedRoute>} />
         <Route path="/leaderboard" element={<ProtectedRoute><LeaderboardPage /></ProtectedRoute>} />
         <Route path="/guide" element={<ProtectedRoute><GuidePage /></ProtectedRoute>} />
+        <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+        <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Layout>

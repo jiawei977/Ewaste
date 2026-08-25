@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import { useAuth } from '../auth-context'
 import UserAvatar from './UserAvatar'
 
-export default function AvatarUploader() {
+export default function AvatarUploader({ variant = 'navbar' }) {
   const { user, uploadAvatar } = useAuth()
   const inputRef = useRef(null)
   const [uploading, setUploading] = useState(false)
@@ -37,16 +37,16 @@ export default function AvatarUploader() {
   }
 
   return (
-    <div className="avatar-uploader">
+    <div className={`avatar-uploader avatar-uploader-${variant}`}>
       <button
-        className="avatar-upload-button"
+        className={`avatar-upload-button avatar-upload-button-${variant}`}
         type="button"
         title="Change profile picture"
         aria-label="Change profile picture"
         disabled={uploading}
         onClick={() => inputRef.current?.click()}
       >
-        <UserAvatar user={user} className="navbar-avatar" />
+        <UserAvatar user={user} className={variant === 'profile' ? 'profile-avatar' : 'navbar-avatar'} />
         <span className="avatar-edit-badge" aria-hidden="true">
           {uploading ? <span className="spinner-border spinner-border-sm" /> : <i className="bi bi-camera-fill" />}
         </span>
@@ -59,6 +59,7 @@ export default function AvatarUploader() {
         onChange={handleAvatarChange}
       />
       {error && <span className="avatar-upload-error" role="alert">{error}</span>}
+      {variant === 'profile' && <span className="avatar-upload-hint">Choose a JPEG, PNG, or WebP image up to 5 MB</span>}
     </div>
   )
 }

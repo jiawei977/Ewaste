@@ -37,5 +37,14 @@ export default function AuthProvider({ children }) {
     return data.message
   }
 
-  return <AuthContext.Provider value={{ user, loading, login, logout, uploadAvatar }}>{children}</AuthContext.Provider>
+  async function updateProfile(profile) {
+    const data = await apiRequest('/api/profile', {
+      method: 'PATCH',
+      body: JSON.stringify(profile),
+    })
+    setUser(data.user)
+    return data
+  }
+
+  return <AuthContext.Provider value={{ user, loading, login, logout, uploadAvatar, updateProfile }}>{children}</AuthContext.Provider>
 }

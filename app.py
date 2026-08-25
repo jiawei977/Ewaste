@@ -143,7 +143,17 @@ def find_user_for_login(identifier):
 def find_user_by_id(user_id):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT user_id, username, avatar_url FROM users WHERE user_id = %s", (user_id,))
+    cursor.execute(
+        """
+        SELECT u.user_id, u.username, u.email, u.avatar_url,
+               p.full_name, p.bio, p.gender, p.address, p.city, p.state,
+               p.postcode, p.location_enabled, p.preferred_language, p.theme
+        FROM users u
+        LEFT JOIN user_profiles p ON p.user_id = u.user_id
+        WHERE u.user_id = %s
+        """,
+        (user_id,),
+    )
     user = cursor.fetchone()
     cursor.close()
     conn.close()
@@ -155,6 +165,20 @@ def public_user(user):
         'user_id': user['user_id'],
         'username': user['username'],
         'avatar_url': user.get('avatar_url'),
+    }
+
+
+def profile_user(user):
+    return {
+        **public_user(user),
+        'email': user['email'],
+        'full_name': user.get('full_name') or '',
+        'bio': user.get('bio') or '',
+        'gender': user.get('gender') or '',
+        'address': user.get('address') or '',
+        'city': user.get('city') or '',
+        'state': user.get('state') or '',
+        'postcode': user.get('postcode') or '',
     }
 
 
@@ -300,6 +324,98 @@ def api_upload_avatar():
 
     user = find_user_by_id(session['user_id'])
     return jsonify(message='Profile picture updated.', user=public_user(user))
+
+
+@app.route('/api/profile', methods=['GET', 'PATCH'])
+def api_profile():
+    if 'user_id' not in session:
+        return jsonify(error='Authentication required.'), 401
+
+    user_id = session['user_id']
+    if request.method == 'GET':
+        user = find_user_by_id(user_id)
+        return jsonify(profile=profile_user(user))
+
+    payload = request.get_json(silent=True) or {}
+    username = str(payload.get('username', '')).strip()
+    full_name = str(payload.get('full_name', '')).strip()
+    bio = str(payload.get('bio', '')).strip()
+    gender = str(payload.get('gender', '')).strip()
+    address = str(payload.get('address', '')).strip()
+    city = str(payload.get('city', '')).strip()
+    state = str(payload.get('state', '')).strip()
+    postcode = str(payload.get('postcode', '')).strip()
+
+    if not username:
+        return jsonify(error='Username is required.'), 400
+    if len(username) > 100 or len(full_name) > 120 or len(bio) > 500:
+        return jsonify(error='One or more profile fields are too long.'), 400
+    if len(address) > 255 or len(city) > 100 or len(state) > 100 or len(postcode) > 20:
+        return jsonify(error='One or more address fields are too long.'), 400
+    if gender not in {'', 'female', 'male', 'non_binary', 'prefer_not_to_say'}:
+        return jsonify(error='Please choose a valid gender option.'), 400
+
+    existing_user = find_user_by_username(username)
+    if existing_user and existing_user['user_id'] != user_id:
+        return jsonify(error='Username is already taken.'), 409
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE users SET username = %s WHERE user_id = %s", (username, user_id))
+    cursor.execute(
+        """
+        INSERT INTO user_profiles
+            (user_id, full_name, bio, gender, address, city, state, postcode)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+        ON DUPLICATE KEY UPDATE
+            full_name = VALUES(full_name), bio = VALUES(bio), gender = VALUES(gender),
+            address = VALUES(address), city = VALUES(city), state = VALUES(state),
+            postcode = VALUES(postcode)
+        """,
+        (user_id, full_name or None, bio or None, gender or None, address or None,
+         city or None, state or None, postcode or None),
+    )
+    conn.commit()
+    cursor.close()
+    conn.close()
+    session['username'] = username
+
+    user = find_user_by_id(user_id)
+    return jsonify(message='Profile updated successfully.', profile=profile_user(user), user=public_user(user))
+
+
+@app.route('/api/settings', methods=['GET', 'PATCH'])
+def api_settings():
+    if 'user_id' not in session:
+        return jsonify(error='Authentication required.'), 401
+
+    user_id = session['user_id']
+    if request.method == 'GET':
+        user = find_user_by_id(user_id)
+        return jsonify(settings={
+            'location_enabled': bool(user.get('location_enabled')),
+            'preferred_language': user.get('preferred_language') or 'en',
+            'theme': user.get('theme') or 'system',
+        })
+
+    payload = request.get_json(silent=True) or {}
+    location_enabled = payload.get('location_enabled')
+    if not isinstance(location_enabled, bool):
+        return jsonify(error='Location preference must be true or false.'), 400
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        INSERT INTO user_profiles (user_id, location_enabled)
+        VALUES (%s, %s)
+        ON DUPLICATE KEY UPDATE location_enabled = VALUES(location_enabled)
+        """,
+        (user_id, location_enabled),
+    )
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return jsonify(message='Location preference updated.', settings={'location_enabled': location_enabled})
 
 
 @app.route('/api/detect', methods=['POST'])

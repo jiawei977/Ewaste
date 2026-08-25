@@ -69,6 +69,12 @@ Users can upload JPEG, PNG, or WebP profile pictures up to 5 MB. Flask crops the
 
 The local avatar folder is ignored by Git. Before deploying this feature to Railway, mount persistent storage for `static/avatars` or move avatar files to object storage; files written only to a service's temporary filesystem can disappear after a redeploy.
 
+## Profiles and settings
+
+The current `ewaste_db.sql` creates the optional `user_profiles` table used by the profile and settings pages. When upgrading an existing database without re-importing the full dump, run `migrations/003_add_user_profiles.sql` once instead.
+
+Profile email addresses are read-only. Optional profile information is stored separately from login credentials, and the location setting stores only an enabled/disabled preference—not browser coordinates.
+
 To enable Flask debug mode temporarily in PowerShell:
 
 ```powershell
