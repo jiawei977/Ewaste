@@ -315,7 +315,7 @@ CREATE TABLE `user_profiles` (
   `postcode` varchar(20) DEFAULT NULL,
   `location_enabled` tinyint(1) NOT NULL DEFAULT 0,
   `preferred_language` varchar(10) NOT NULL DEFAULT 'en',
-  `theme` enum('system','light','dark') NOT NULL DEFAULT 'system',
+  `theme` enum('system','light','dark') NOT NULL DEFAULT 'light',
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

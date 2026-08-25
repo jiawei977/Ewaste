@@ -520,6 +520,72 @@
   opacity: 0.86;
 }
 
+.theme-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.theme-option {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 13px;
+  padding: 14px;
+  border: 2px solid #e2e9e5;
+  border-radius: 16px;
+  color: #27342d;
+  background: #fafcfb;
+  text-align: left;
+  transition: border-color 0.2s, background 0.2s, transform 0.2s;
+}
+
+.theme-option:hover:not(:disabled) {
+  transform: translateY(-2px);
+  border-color: #9acbb0;
+}
+
+.theme-option.active {
+  border-color: #40916c;
+  background: #f0f8f3;
+  box-shadow: 0 0 0 3px rgba(64, 145, 108, 0.09);
+}
+
+.theme-option > span:nth-child(2) {
+  display: grid;
+}
+
+.theme-option small {
+  color: #718078;
+  font-size: 0.7rem;
+}
+
+.theme-preview {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: 13px;
+  font-size: 1.1rem;
+}
+
+.theme-preview-light {
+  border: 1px solid #f2df9a;
+  color: #d99a00;
+  background: linear-gradient(145deg, #fff, #fff4c7);
+}
+
+.theme-preview-dark {
+  border: 1px solid #3e5369;
+  color: #a9ccff;
+  background: linear-gradient(145deg, #263545, #111a24);
+}
+
+.theme-check {
+  color: #40916c;
+  font-size: 1.05rem;
+}
+
 .future-setting {
   display: flex;
   align-items: center;
@@ -1560,6 +1626,10 @@
     width: 100%;
   }
 
+  .theme-options {
+    grid-template-columns: 1fr;
+  }
+
   .news-section {
     margin-top: 2rem !important;
     padding-top: 1rem !important;
@@ -1603,4 +1673,188 @@
   .detected-image {
     max-height: 35dvh;
   }
+}
+
+[data-theme="dark"] body,
+[data-theme="dark"] #root {
+  color: #e5eee8;
+  background: #101713;
+}
+
+[data-theme="dark"] .app-shell {
+  background: #101713;
+}
+
+[data-theme="dark"] .top-nav {
+  background-color: #174f38 !important;
+}
+
+[data-theme="dark"] .mobile-nav {
+  background: #123f2d;
+}
+
+[data-theme="dark"] .card,
+[data-theme="dark"] .settings-card,
+[data-theme="dark"] .dashboard-panel,
+[data-theme="dark"] .guide-card,
+[data-theme="dark"] .result-dialog,
+[data-theme="dark"] .profile-dropdown,
+[data-theme="dark"] .confidence-ring-inner,
+[data-theme="dark"] .nearest-centre {
+  color: #e5eee8;
+  border-color: #2b3b32;
+  background: #19221d;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.25);
+}
+
+[data-theme="dark"] .profile-dropdown::before {
+  border-color: #2b3b32;
+  background: #19221d;
+}
+
+[data-theme="dark"] .profile-dropdown-divider,
+[data-theme="dark"] .profile-address-heading,
+[data-theme="dark"] .guide-tip,
+[data-theme="dark"] .future-setting {
+  border-color: #2c3a32;
+  background-color: transparent;
+}
+
+[data-theme="dark"] .profile-dropdown a,
+[data-theme="dark"] .profile-dropdown button,
+[data-theme="dark"] .theme-option {
+  color: #e3ece6;
+}
+
+[data-theme="dark"] .profile-dropdown a:hover,
+[data-theme="dark"] .profile-dropdown a:focus,
+[data-theme="dark"] .profile-dropdown button:hover,
+[data-theme="dark"] .profile-dropdown button:focus {
+  background: #223129;
+}
+
+[data-theme="dark"] .upload-area,
+[data-theme="dark"] .guideline-box,
+[data-theme="dark"] .nearest-centres,
+[data-theme="dark"] .settings-note,
+[data-theme="dark"] .mission-card .progress {
+  border-color: #304239;
+  background: #202c25;
+}
+
+[data-theme="dark"] .upload-area:hover {
+  border-color: #52b788;
+  background: #24352b;
+}
+
+[data-theme="dark"] .impact-stat:not(.impact-stat-primary) {
+  color: #e5eee8;
+  border-color: #2b3b32;
+  background: #19221d;
+}
+
+[data-theme="dark"] .activity-track,
+[data-theme="dark"] .category-bar-track {
+  background: #2a3931;
+}
+
+[data-theme="dark"] .guide-search input,
+[data-theme="dark"] .profile-field input,
+[data-theme="dark"] .profile-field select,
+[data-theme="dark"] .profile-field textarea {
+  color: #e5eee8;
+  border-color: #34463c;
+  background: #151e19;
+}
+
+[data-theme="dark"] .profile-field input:focus,
+[data-theme="dark"] .profile-field select:focus,
+[data-theme="dark"] .profile-field textarea:focus,
+[data-theme="dark"] .guide-search input:focus {
+  border-color: #52b788;
+  background: #18231d;
+}
+
+[data-theme="dark"] .profile-field input:disabled,
+[data-theme="dark"] .future-setting select {
+  color: #92a098;
+  border-color: #344139;
+  background: #222c27;
+}
+
+[data-theme="dark"] .theme-option {
+  border-color: #334239;
+  background: #141d18;
+}
+
+[data-theme="dark"] .theme-option:hover:not(:disabled) {
+  border-color: #5d9e79;
+}
+
+[data-theme="dark"] .theme-option.active {
+  border-color: #52b788;
+  background: #203429;
+  box-shadow: 0 0 0 3px rgba(82, 183, 136, 0.1);
+}
+
+[data-theme="dark"] .leaderboard-card,
+[data-theme="dark"] .leaderboard-table tbody tr:not(.empty-row) {
+  color: #e5eee8;
+  border-color: #2b3b32;
+  background: #19221d;
+}
+
+[data-theme="dark"] .leaderboard-table tbody tr:nth-child(1) {
+  border-color: rgba(244, 180, 0, 0.42);
+  background: linear-gradient(135deg, #292619, #332d18);
+}
+
+[data-theme="dark"] .leaderboard-table tbody tr:nth-child(2) {
+  background: linear-gradient(135deg, #20272a, #252d30);
+}
+
+[data-theme="dark"] .leaderboard-table tbody tr:nth-child(3) {
+  background: linear-gradient(135deg, #2b211b, #35251c);
+}
+
+[data-theme="dark"] .leaderboard-table tbody td,
+[data-theme="dark"] .table > :not(caption) > * > * {
+  color: #e1ebe5;
+  border-color: #2b3931;
+  background-color: transparent;
+}
+
+[data-theme="dark"] .news-card,
+[data-theme="dark"] .content-card {
+  background: #19221d;
+}
+
+[data-theme="dark"] .empty-state-icon,
+[data-theme="dark"] .impact-stat-icon,
+[data-theme="dark"] .profile-dropdown a > i,
+[data-theme="dark"] .profile-dropdown button > i {
+  color: #7bd3a5;
+  background: #263b30;
+}
+
+[data-theme="dark"] .nearest-centres-error {
+  border-color: #6a3737;
+  color: #f3b5b5;
+  background: #321f1f;
+}
+
+[data-theme="dark"] .loading-skeleton i {
+  background: linear-gradient(90deg, #25332b, #34473c, #25332b);
+  background-size: 200% 100%;
+}
+
+[data-theme="dark"] .text-secondary,
+[data-theme="dark"] .profile-dropdown-user span,
+[data-theme="dark"] .profile-dropdown a small,
+[data-theme="dark"] .profile-dropdown button small,
+[data-theme="dark"] .profile-photo-section p,
+[data-theme="dark"] .settings-section-heading p,
+[data-theme="dark"] .setting-copy p,
+[data-theme="dark"] .theme-option small {
+  color: #9ba9a1 !important;
 }

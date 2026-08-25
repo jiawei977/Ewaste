@@ -167,6 +167,7 @@ def public_user(user):
         'user_id': user['user_id'],
         'username': user['username'],
         'avatar_url': user.get('avatar_url'),
+        'theme': 'dark' if user.get('theme') == 'dark' else 'light',
     }
 
 
@@ -267,7 +268,7 @@ def api_login():
     session['username'] = user['username']
     return jsonify(
         message='Signed in successfully.',
-        user=public_user(user),
+        user=public_user(find_user_by_id(user['user_id'])),
     )
 
 
@@ -397,27 +398,35 @@ def api_settings():
         return jsonify(settings={
             'location_enabled': bool(user.get('location_enabled')),
             'preferred_language': user.get('preferred_language') or 'en',
-            'theme': user.get('theme') or 'system',
+            'theme': 'dark' if user.get('theme') == 'dark' else 'light',
         })
 
     payload = request.get_json(silent=True) or {}
-    location_enabled = payload.get('location_enabled')
+    current_user = find_user_by_id(user_id)
+    location_enabled = payload.get('location_enabled', bool(current_user.get('location_enabled')))
+    theme = payload.get('theme', 'dark' if current_user.get('theme') == 'dark' else 'light')
     if not isinstance(location_enabled, bool):
         return jsonify(error='Location preference must be true or false.'), 400
+    if theme not in {'light', 'dark'}:
+        return jsonify(error='Theme must be light or dark.'), 400
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute(
         """
-        INSERT INTO user_profiles (user_id, location_enabled)
-        VALUES (%s, %s)
-        ON DUPLICATE KEY UPDATE location_enabled = VALUES(location_enabled)
+        INSERT INTO user_profiles (user_id, location_enabled, theme)
+        VALUES (%s, %s, %s)
+        ON DUPLICATE KEY UPDATE
+            location_enabled = VALUES(location_enabled), theme = VALUES(theme)
         """,
-        (user_id, location_enabled),
+        (user_id, location_enabled, theme),
     )
     conn.commit()
     cursor.close()
     conn.close()
-    return jsonify(message='Location preference updated.', settings={'location_enabled': location_enabled})
+    return jsonify(
+        message='Settings updated.',
+        settings={'location_enabled': location_enabled, 'theme': theme},
+    )
 
 
 @app.route('/api/detect', methods=['POST'])

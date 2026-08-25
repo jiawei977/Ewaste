@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
 import { apiRequest } from '../api'
+import { useAuth } from '../auth-context'
 import PageLoading from '../components/PageLoading'
 
 export default function SettingsPage() {
-  const [settings, setSettings] = useState({ location_enabled: false, preferred_language: 'en', theme: 'system' })
+  const { theme, updateTheme } = useAuth()
+  const [settings, setSettings] = useState({ location_enabled: false, preferred_language: 'en', theme })
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState('')
@@ -48,6 +50,22 @@ export default function SettingsPage() {
     }
   }
 
+  async function changeTheme(nextTheme) {
+    if (nextTheme === theme || saving) return
+    setSaving(true)
+    setMessage('')
+    setError('')
+    try {
+      await updateTheme(nextTheme)
+      setSettings((current) => ({ ...current, theme: nextTheme }))
+      setMessage(`${nextTheme === 'dark' ? 'Dark' : 'Light'} theme applied.`)
+    } catch (requestError) {
+      setError(requestError.message)
+    } finally {
+      setSaving(false)
+    }
+  }
+
   return (
     <div className="settings-layout">
       <header className="settings-header">
@@ -67,10 +85,25 @@ export default function SettingsPage() {
         <div className="settings-note"><i className="bi bi-info-circle" /> To fully revoke browser permission, use the site controls in your browser’s address bar.</div>
       </section>
 
+      <section className="settings-card">
+        <div className="settings-section-heading"><div><h2>Appearance</h2><p>Choose how E-Waste Scanner looks on this account.</p></div></div>
+        <div className="theme-options" role="radiogroup" aria-label="Color theme">
+          <button className={`theme-option ${theme === 'light' ? 'active' : ''}`} type="button" role="radio" aria-checked={theme === 'light'} disabled={saving} onClick={() => changeTheme('light')}>
+            <span className="theme-preview theme-preview-light"><i className="bi bi-sun-fill" /></span>
+            <span><strong>Light</strong><small>Bright and clean</small></span>
+            <i className={`bi ${theme === 'light' ? 'bi-check-circle-fill' : 'bi-circle'} theme-check`} />
+          </button>
+          <button className={`theme-option ${theme === 'dark' ? 'active' : ''}`} type="button" role="radio" aria-checked={theme === 'dark'} disabled={saving} onClick={() => changeTheme('dark')}>
+            <span className="theme-preview theme-preview-dark"><i className="bi bi-moon-stars-fill" /></span>
+            <span><strong>Dark</strong><small>Comfortable in low light</small></span>
+            <i className={`bi ${theme === 'dark' ? 'bi-check-circle-fill' : 'bi-circle'} theme-check`} />
+          </button>
+        </div>
+      </section>
+
       <section className="settings-card future-settings">
-        <div className="settings-section-heading"><div><h2>Appearance & language</h2><p>These preferences are prepared for a future update.</p></div><span className="coming-soon-badge">Coming soon</span></div>
+        <div className="settings-section-heading"><div><h2>Language</h2><p>Language selection is prepared for a future update.</p></div><span className="coming-soon-badge">Coming soon</span></div>
         <label className="future-setting"><span><i className="bi bi-translate" /><span><strong>Language</strong><small>Choose the language used by the app.</small></span></span><select value={settings.preferred_language} disabled><option value="en">English</option></select></label>
-        <label className="future-setting"><span><i className="bi bi-circle-half" /><span><strong>Theme</strong><small>Use system, light, or dark appearance.</small></span></span><select value={settings.theme} disabled><option value="system">System default</option></select></label>
       </section>
     </div>
   )
