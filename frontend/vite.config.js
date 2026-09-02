@@ -12,6 +12,8 @@ export default defineConfig({
       includeAssets: [
         'favicon.svg',
         'apple-touch-icon.png',
+        'best.onnx',
+        'centers.pdf',
       ],
       manifest: {
         id: '/',
@@ -48,7 +50,8 @@ export default defineConfig({
       },
       workbox: {
         cleanupOutdatedCaches: true,
-        globPatterns: ['**/*.{js,css,html,svg,png,woff,woff2}'],
+        globPatterns: ['**/*.{js,css,html,svg,png,pdf,woff,woff2,wasm,onnx}'],
+        maximumFileSizeToCacheInBytes: 32 * 1024 * 1024,
         navigateFallback: '/index.html',
         navigateFallbackDenylist: [
           /^\/api\//,

@@ -4,6 +4,7 @@ import { apiRequest } from '../api'
 import MonthlyMission from '../components/MonthlyMission'
 import NewsSection from '../components/NewsSection'
 import ConfidenceRing from '../components/ConfidenceRing'
+import { detectOffline } from '../offlineDetector'
 
 export default function HomePage() {
   const { user } = useAuth()
@@ -91,11 +92,15 @@ export default function HomePage() {
     setAnalyzing(true)
     setError('')
     setSuccess('')
-    const formData = new FormData()
-    formData.append('image', image)
-
     try {
-      const detection = await apiRequest('/api/detect', { method: 'POST', body: formData })
+      let detection
+      if (navigator.onLine) {
+        const formData = new FormData()
+        formData.append('image', image)
+        detection = await apiRequest('/api/detect', { method: 'POST', body: formData })
+      } else {
+        detection = await detectOffline(image)
+      }
       resetFeedback()
       setResult(detection)
     } catch (requestError) {
@@ -234,6 +239,7 @@ export default function HomePage() {
               <button className="btn-close" type="button" aria-label="Close" onClick={() => setResult(null)} />
             </div>
             <div className="text-center">
+              {result.offline && <div className="offline-detection-notice text-start mb-3"><i className="bi bi-wifi-off" /><div><strong>Offline detection</strong><span>The cached model analyzed this image on your device. Connect and scan again to record points or feedback.</span></div></div>}
               <img className="detected-image img-fluid rounded-4 shadow-sm mb-3" src={result.annotated_image_url} alt={`Detected ${result.category}`} />
               <div className="scan-result-summary mb-3">
                 <div className="text-start">
@@ -247,7 +253,7 @@ export default function HomePage() {
                 <h4 className="small text-uppercase text-secondary fw-bold">How to recycle</h4>
                 <p className="mb-0">{result.guideline}</p>
               </div>
-              <div className="detection-feedback text-start mb-4">
+              {!result.offline && <div className="detection-feedback text-start mb-4">
                 {feedbackMode === 'submitted' ? (
                   <div className="detection-feedback-thanks"><i className="bi bi-check-circle-fill" /><div><strong>Thank you for your feedback</strong><span>Your response will help evaluate future model improvements.</span></div></div>
                 ) : (
@@ -265,7 +271,7 @@ export default function HomePage() {
                     {feedbackError && <div className="detection-feedback-error" role="alert"><i className="bi bi-exclamation-circle" /> {feedbackError}</div>}
                   </>
                 )}
-              </div>
+              </div>}
               {centreError && (
                 <div className="nearest-centres-error text-start" role="alert">
                   <i className="bi bi-exclamation-circle" />
@@ -274,11 +280,11 @@ export default function HomePage() {
               )}
               {nearestCentres && <NearestCentres data={nearestCentres} />}
               <div className="d-grid gap-2">
-                <button className="btn btn-success py-3 fw-bold" type="button" onClick={confirmRecycle} disabled={recording || feedbackSaving}>
-                  <i className="bi bi-recycle me-2" />{recording ? 'Recording…' : `Recycle It! (+${result.points} points)`}
+                <button className="btn btn-success py-3 fw-bold" type="button" onClick={confirmRecycle} disabled={result.offline || recording || feedbackSaving}>
+                  <i className="bi bi-recycle me-2" />{result.offline ? 'Reconnect to record recycling' : recording ? 'Recording…' : `Recycle It! (+${result.points} points)`}
                 </button>
-                <button className="btn btn-outline-success py-3 fw-bold" type="button" onClick={findNearestCentres} disabled={findingCentres}>
-                  {findingCentres ? <><span className="spinner-border spinner-border-sm me-2" />Finding nearby centres…</> : <><i className="bi bi-geo-alt me-2" />Find Nearest Verified Centres</>}
+                <button className="btn btn-outline-success py-3 fw-bold" type="button" onClick={findNearestCentres} disabled={result.offline || findingCentres}>
+                  {result.offline ? <><i className="bi bi-wifi-off me-2" />Reconnect to find nearest centres</> : findingCentres ? <><span className="spinner-border spinner-border-sm me-2" />Finding nearby centres…</> : <><i className="bi bi-geo-alt me-2" />Find Nearest Verified Centres</>}
                 </button>
                 <a className="btn btn-outline-success py-3 fw-bold" href={result.centers_pdf_url} target="_blank" rel="noreferrer"><i className="bi bi-file-earmark-pdf me-2" />View Disposal Center List</a>
               </div>
