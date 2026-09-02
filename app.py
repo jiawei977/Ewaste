@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from flask import Flask, request, session, jsonify, abort, send_from_directory
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import safe_join, secure_filename
+from werkzeug.middleware.proxy_fix import ProxyFix
 from ultralytics import YOLO
 from PIL import Image, ImageOps, UnidentifiedImageError
 import imagehash
@@ -13,31 +14,45 @@ from urllib.parse import urlencode
 import mysql.connector
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-FRONTEND_DIST = os.path.join(BASE_DIR, 'frontend', 'dist')
-AVATAR_FOLDER = os.path.join(BASE_DIR, 'static', 'avatars')
-MAX_AVATAR_UPLOAD_SIZE = 5 * 1024 * 1024
 load_dotenv(os.path.join(BASE_DIR, '.env'))
+FRONTEND_DIST = os.path.join(BASE_DIR, 'frontend', 'dist')
+AVATAR_FOLDER = os.environ.get('AVATAR_FOLDER', os.path.join(BASE_DIR, 'static', 'avatars'))
+DETECTION_FOLDER = os.path.join(BASE_DIR, 'static', 'detections')
+UPLOAD_FOLDER = os.environ.get('UPLOAD_FOLDER', os.path.join(BASE_DIR, 'uploads'))
+MAX_AVATAR_UPLOAD_SIZE = 5 * 1024 * 1024
 
 # MySQL database configuration
 def get_db_connection():
     return mysql.connector.connect(
-        host='localhost',
-        user='root',
-        password='',
-        database='ewaste_db'
+        host=os.environ.get('MYSQLHOST', 'localhost'),
+        port=int(os.environ.get('MYSQLPORT', '3306')),
+        user=os.environ.get('MYSQLUSER', 'root'),
+        password=os.environ.get('MYSQLPASSWORD', ''),
+        database=os.environ.get('MYSQLDATABASE', 'ewaste_db'),
+        connection_timeout=10,
     )
 
 app = Flask(__name__)
-app.secret_key = os.environ.get('SECRET_KEY', 'change_this_secret')
-app.config['UPLOAD_FOLDER'] = 'uploads'
+if os.environ.get('RAILWAY_ENVIRONMENT') and not os.environ.get('SECRET_KEY'):
+    raise RuntimeError('SECRET_KEY must be configured in Railway before deployment.')
+app.secret_key = os.environ.get('SECRET_KEY', 'local-development-secret-change-me')
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+app.config['SESSION_COOKIE_SECURE'] = os.environ.get('SESSION_COOKIE_SECURE', '0') == '1'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['DUPLICATE_HASH_DISTANCE'] = 3
 app.config['CHAT_QUESTION_LIMIT'] = 30
 app.config['GEMINI_MODEL'] = os.environ.get('GEMINI_MODEL', 'gemini-3.7-flash')
-app.config['MODEL_FILENAME'] = 'best.pt'
+app.config['MODEL_FILENAME'] = os.environ.get('MODEL_FILENAME', 'best.pt')
 
 
 # 2. Load the YOLO Model (Loads once when server starts)
-model = YOLO(app.config['MODEL_FILENAME'])
+model = YOLO(os.path.join(BASE_DIR, app.config['MODEL_FILENAME']))
+
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+os.makedirs(DETECTION_FOLDER, exist_ok=True)
+os.makedirs(AVATAR_FOLDER, exist_ok=True)
 
 def get_ewaste_news():
     """Fetches latest e-waste and recycling news from NewsData.io."""
@@ -480,7 +495,7 @@ def api_upload_avatar():
     os.replace(temporary_path, avatar_path)
 
     avatar_version = uuid.uuid4().hex
-    avatar_url = f'/static/avatars/{avatar_filename}?v={avatar_version}'
+    avatar_url = f'/media/avatars/{avatar_filename}?v={avatar_version}'
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute(
@@ -493,6 +508,11 @@ def api_upload_avatar():
 
     user = find_user_by_id(session['user_id'])
     return jsonify(message='Profile picture updated.', user=public_user(user))
+
+
+@app.route('/media/avatars/<path:filename>')
+def serve_avatar(filename):
+    return send_from_directory(AVATAR_FOLDER, filename)
 
 
 @app.route('/api/profile', methods=['GET', 'PATCH'])
@@ -648,10 +668,8 @@ def api_detect():
         return jsonify(error='No recycling guideline was found for the detected item.'), 422
 
     results[0].boxes = boxes[best_idx:best_idx + 1]
-    detections_folder = os.path.join('static', 'detections')
-    os.makedirs(detections_folder, exist_ok=True)
     annotated_filename = f"detected_{uuid.uuid4().hex}_{original_filename}"
-    results[0].save(filename=os.path.join(detections_folder, annotated_filename))
+    results[0].save(filename=os.path.join(DETECTION_FOLDER, annotated_filename))
 
     session['pending_item'] = guideline['category']
     session['pending_points'] = guideline.get('points', 0)
@@ -1136,6 +1154,8 @@ def serve_react_app(path):
 
 
 if __name__ == '__main__':
-    if not os.path.exists('uploads'): os.makedirs('uploads')
-    if not os.path.exists('static/detections'): os.makedirs('static/detections')
-    app.run(debug=os.environ.get('FLASK_DEBUG') == '1', port=5000)
+    app.run(
+        debug=os.environ.get('FLASK_DEBUG') == '1',
+        host='0.0.0.0',
+        port=int(os.environ.get('PORT', '5000')),
+    )

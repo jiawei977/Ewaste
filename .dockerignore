@@ -1,0 +1,16 @@
+.git
+.gitignore
+.env
+.venv
+venv
+__pycache__
+*.py[cod]
+frontend/node_modules
+frontend/dist
+uploads
+static/avatars
+static/detections
+runs
+test.jpg
+/best.onnx
+FYP_POSTER
