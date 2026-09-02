@@ -33,10 +33,11 @@ app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['DUPLICATE_HASH_DISTANCE'] = 3
 app.config['CHAT_QUESTION_LIMIT'] = 30
 app.config['GEMINI_MODEL'] = os.environ.get('GEMINI_MODEL', 'gemini-3.7-flash')
+app.config['MODEL_FILENAME'] = 'best.pt'
 
 
 # 2. Load the YOLO Model (Loads once when server starts)
-model = YOLO('best.pt') 
+model = YOLO(app.config['MODEL_FILENAME'])
 
 def get_ewaste_news():
     """Fetches latest e-waste and recycling news from NewsData.io."""
@@ -96,6 +97,16 @@ def fetch_guideline(class_id):
     conn.close()
 
     return result
+
+
+def fetch_detection_categories():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT DISTINCT category FROM recycling_guidelines ORDER BY category")
+    categories = [row[0] for row in cursor.fetchall()]
+    cursor.close()
+    conn.close()
+    return categories
 
 
 def get_chat_recycling_context():
@@ -592,6 +603,9 @@ def api_detect():
     session.pop('pending_item', None)
     session.pop('pending_points', None)
     session.pop('pending_image_hash', None)
+    session.pop('pending_detection_token', None)
+    session.pop('pending_confidence', None)
+    session.pop('pending_feedback_submitted', None)
 
     image = request.files.get('image')
     if image is None or not image.filename:
@@ -642,6 +656,9 @@ def api_detect():
     session['pending_item'] = guideline['category']
     session['pending_points'] = guideline.get('points', 0)
     session['pending_image_hash'] = candidate_hash
+    session['pending_detection_token'] = uuid.uuid4().hex
+    session['pending_confidence'] = confidence
+    session['pending_feedback_submitted'] = False
 
     return jsonify(
         category=guideline['category'],
@@ -650,7 +667,81 @@ def api_detect():
         points=guideline.get('points', 0),
         annotated_image_url=f'/static/detections/{annotated_filename}',
         centers_pdf_url='/static/centers.pdf',
+        feedback_token=session['pending_detection_token'],
+        feedback_categories=fetch_detection_categories(),
     )
+
+
+@app.route('/api/detection-feedback', methods=['POST'])
+def api_detection_feedback():
+    if 'user_id' not in session:
+        return jsonify(error='Authentication required.'), 401
+
+    payload = request.get_json(silent=True) or {}
+    feedback_token = payload.get('feedback_token')
+    is_correct = payload.get('is_correct')
+    if not feedback_token or feedback_token != session.get('pending_detection_token'):
+        return jsonify(error='This detection is no longer available for feedback.'), 400
+    if session.get('pending_feedback_submitted'):
+        return jsonify(error='Feedback has already been submitted for this detection.'), 409
+    if not isinstance(is_correct, bool):
+        return jsonify(error='Please indicate whether the detection was correct.'), 400
+
+    predicted_category = session.get('pending_item')
+    confidence = session.get('pending_confidence')
+    if not predicted_category or confidence is None:
+        return jsonify(error='The pending detection is incomplete. Please scan the item again.'), 400
+
+    corrected_category = None
+    if not is_correct:
+        requested_category = str(payload.get('corrected_category') or '').strip()
+        if not requested_category:
+            return jsonify(error='Please choose the correct category.'), 400
+        if requested_category.lower() == 'other':
+            other_category = str(payload.get('other_category') or '').strip()
+            if not other_category:
+                return jsonify(error='Please briefly describe the item.'), 400
+            if len(other_category) > 80:
+                return jsonify(error='The item description must be 80 characters or fewer.'), 400
+            corrected_category = f'Other: {other_category}'
+        else:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            cursor.execute(
+                "SELECT category FROM recycling_guidelines WHERE LOWER(category) = LOWER(%s) LIMIT 1",
+                (requested_category,),
+            )
+            category_row = cursor.fetchone()
+            cursor.close()
+            conn.close()
+            if category_row is None:
+                return jsonify(error='The selected correction category is not supported.'), 400
+            corrected_category = category_row[0]
+            if corrected_category.lower() == predicted_category.lower():
+                return jsonify(error='Please choose a category different from the prediction.'), 400
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        INSERT INTO detection_feedback
+            (user_id, predicted_category, corrected_category, confidence, is_correct, model_name)
+        VALUES (%s, %s, %s, %s, %s, %s)
+        """,
+        (
+            session['user_id'],
+            predicted_category,
+            corrected_category,
+            confidence,
+            is_correct,
+            app.config['MODEL_FILENAME'],
+        ),
+    )
+    conn.commit()
+    cursor.close()
+    conn.close()
+    session['pending_feedback_submitted'] = True
+    return jsonify(message='Thank you. Your feedback has been recorded.')
 
 
 @app.route('/api/recycle', methods=['POST'])
@@ -671,12 +762,18 @@ def api_recycle():
         session.pop('pending_item', None)
         session.pop('pending_points', None)
         session.pop('pending_image_hash', None)
+        session.pop('pending_detection_token', None)
+        session.pop('pending_confidence', None)
+        session.pop('pending_feedback_submitted', None)
         return jsonify(error='This image has already been used for a recycling record.'), 409
 
     record_recycle_history(session['user_id'], item_type, points, pending_image_hash)
     session.pop('pending_item', None)
     session.pop('pending_points', None)
     session.pop('pending_image_hash', None)
+    session.pop('pending_detection_token', None)
+    session.pop('pending_confidence', None)
+    session.pop('pending_feedback_submitted', None)
     return jsonify(
         message=f'Successfully recorded {item_type}. You earned {points} points.',
         category=item_type,

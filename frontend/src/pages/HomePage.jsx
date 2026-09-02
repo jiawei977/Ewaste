@@ -20,6 +20,11 @@ export default function HomePage() {
   const [nearestCentres, setNearestCentres] = useState(null)
   const [centreError, setCentreError] = useState('')
   const [missionRefresh, setMissionRefresh] = useState(0)
+  const [feedbackMode, setFeedbackMode] = useState('idle')
+  const [feedbackCategory, setFeedbackCategory] = useState('')
+  const [feedbackOtherCategory, setFeedbackOtherCategory] = useState('')
+  const [feedbackSaving, setFeedbackSaving] = useState(false)
+  const [feedbackError, setFeedbackError] = useState('')
 
   useEffect(() => () => {
     if (previewUrl) URL.revokeObjectURL(previewUrl)
@@ -31,7 +36,7 @@ export default function HomePage() {
     const previousFocus = document.activeElement
     const previousOverflow = document.body.style.overflow
     const dialog = resultDialogRef.current
-    const focusableSelector = 'button:not([disabled]), a[href], input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    const focusableSelector = 'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
     document.body.style.overflow = 'hidden'
     dialog?.querySelector(focusableSelector)?.focus()
 
@@ -72,6 +77,7 @@ export default function HomePage() {
     setSuccess('')
     setNearestCentres(null)
     setCentreError('')
+    resetFeedback()
     setPreviewUrl(selectedImage ? URL.createObjectURL(selectedImage) : '')
   }
 
@@ -89,12 +95,53 @@ export default function HomePage() {
     formData.append('image', image)
 
     try {
-      setResult(await apiRequest('/api/detect', { method: 'POST', body: formData }))
+      const detection = await apiRequest('/api/detect', { method: 'POST', body: formData })
+      resetFeedback()
+      setResult(detection)
     } catch (requestError) {
       setResult(null)
       setError(requestError.message)
     } finally {
       setAnalyzing(false)
+    }
+  }
+
+  function resetFeedback() {
+    setFeedbackMode('idle')
+    setFeedbackCategory('')
+    setFeedbackOtherCategory('')
+    setFeedbackSaving(false)
+    setFeedbackError('')
+  }
+
+  async function submitDetectionFeedback(isCorrect) {
+    if (!result || feedbackSaving) return
+    if (!isCorrect && !feedbackCategory) {
+      setFeedbackError('Please choose the correct category.')
+      return
+    }
+    if (!isCorrect && feedbackCategory === 'Other' && !feedbackOtherCategory.trim()) {
+      setFeedbackError('Please briefly describe the item.')
+      return
+    }
+
+    setFeedbackSaving(true)
+    setFeedbackError('')
+    try {
+      await apiRequest('/api/detection-feedback', {
+        method: 'POST',
+        body: JSON.stringify({
+          feedback_token: result.feedback_token,
+          is_correct: isCorrect,
+          corrected_category: isCorrect ? null : feedbackCategory,
+          other_category: feedbackCategory === 'Other' ? feedbackOtherCategory.trim() : null,
+        }),
+      })
+      setFeedbackMode('submitted')
+    } catch (requestError) {
+      setFeedbackError(requestError.message)
+    } finally {
+      setFeedbackSaving(false)
     }
   }
 
@@ -200,6 +247,25 @@ export default function HomePage() {
                 <h4 className="small text-uppercase text-secondary fw-bold">How to recycle</h4>
                 <p className="mb-0">{result.guideline}</p>
               </div>
+              <div className="detection-feedback text-start mb-4">
+                {feedbackMode === 'submitted' ? (
+                  <div className="detection-feedback-thanks"><i className="bi bi-check-circle-fill" /><div><strong>Thank you for your feedback</strong><span>Your response will help evaluate future model improvements.</span></div></div>
+                ) : (
+                  <>
+                    <div className="detection-feedback-heading"><div><strong>Was this detection correct?</strong><span>Your feedback does not affect your points.</span></div><div className="detection-feedback-actions">
+                      <button type="button" disabled={feedbackSaving} onClick={() => submitDetectionFeedback(true)}><i className="bi bi-hand-thumbs-up" /> Yes</button>
+                      <button className={feedbackMode === 'correcting' ? 'active' : ''} type="button" disabled={feedbackSaving} onClick={() => { setFeedbackMode('correcting'); setFeedbackError('') }}><i className="bi bi-hand-thumbs-down" /> No</button>
+                    </div></div>
+                    {feedbackMode === 'correcting' && (
+                      <div className="detection-correction">
+                        <label htmlFor="correctedCategory">What should it be?</label>
+                        <div><select id="correctedCategory" value={feedbackCategory} disabled={feedbackSaving} onChange={(event) => { setFeedbackCategory(event.target.value); setFeedbackOtherCategory(''); setFeedbackError('') }}><option value="">Choose a category</option>{result.feedback_categories.filter((category) => category.toLowerCase() !== result.category.toLowerCase()).map((category) => <option value={category} key={category}>{category.replaceAll('_', ' ')}</option>)}<option value="Other">Other / Not listed</option></select>{feedbackCategory === 'Other' && <input type="text" value={feedbackOtherCategory} maxLength="80" disabled={feedbackSaving} onChange={(event) => setFeedbackOtherCategory(event.target.value)} placeholder="Describe the item" aria-label="Describe the correct item" />}<button type="button" disabled={feedbackSaving || !feedbackCategory || (feedbackCategory === 'Other' && !feedbackOtherCategory.trim())} onClick={() => submitDetectionFeedback(false)}>{feedbackSaving ? <span className="spinner-border spinner-border-sm" /> : 'Submit correction'}</button></div>
+                      </div>
+                    )}
+                    {feedbackError && <div className="detection-feedback-error" role="alert"><i className="bi bi-exclamation-circle" /> {feedbackError}</div>}
+                  </>
+                )}
+              </div>
               {centreError && (
                 <div className="nearest-centres-error text-start" role="alert">
                   <i className="bi bi-exclamation-circle" />
@@ -208,7 +274,7 @@ export default function HomePage() {
               )}
               {nearestCentres && <NearestCentres data={nearestCentres} />}
               <div className="d-grid gap-2">
-                <button className="btn btn-success py-3 fw-bold" type="button" onClick={confirmRecycle} disabled={recording}>
+                <button className="btn btn-success py-3 fw-bold" type="button" onClick={confirmRecycle} disabled={recording || feedbackSaving}>
                   <i className="bi bi-recycle me-2" />{recording ? 'Recording…' : `Recycle It! (+${result.points} points)`}
                 </button>
                 <button className="btn btn-outline-success py-3 fw-bold" type="button" onClick={findNearestCentres} disabled={findingCentres}>

@@ -90,6 +90,21 @@ INSERT INTO `recycle_history` (`id`, `user_id`, `item_type`, `points`, `timestam
 (47, 5, 'battery', 15, '2026-08-24 08:39:33'),
 (48, 2, 'battery', 15, '2026-08-24 15:06:34');
 
+--
+-- Table structure for table `detection_feedback`
+--
+
+CREATE TABLE `detection_feedback` (
+  `feedback_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `predicted_category` varchar(100) NOT NULL,
+  `corrected_category` varchar(100) DEFAULT NULL,
+  `confidence` decimal(6,5) NOT NULL,
+  `is_correct` tinyint(1) NOT NULL,
+  `model_name` varchar(100) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 -- Official household e-waste collection centres (government list updated 5 February 2021).
 CREATE TABLE `recycling_centres` (
   `centre_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -325,6 +340,14 @@ CREATE TABLE `user_profiles` (
 --
 
 --
+-- Indexes for table `detection_feedback`
+--
+ALTER TABLE `detection_feedback`
+  ADD PRIMARY KEY (`feedback_id`),
+  ADD KEY `idx_detection_feedback_user` (`user_id`),
+  ADD KEY `idx_detection_feedback_created_at` (`created_at`);
+
+--
 -- Indexes for table `recycle_history`
 --
 ALTER TABLE `recycle_history`
@@ -357,6 +380,12 @@ ALTER TABLE `user_profiles`
 --
 
 --
+-- AUTO_INCREMENT for table `detection_feedback`
+--
+ALTER TABLE `detection_feedback`
+  MODIFY `feedback_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `recycle_history`
 --
 ALTER TABLE `recycle_history`
@@ -377,6 +406,12 @@ ALTER TABLE `users`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `detection_feedback`
+--
+ALTER TABLE `detection_feedback`
+  ADD CONSTRAINT `detection_feedback_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `recycle_history`
