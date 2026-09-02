@@ -91,7 +91,7 @@ export default function ChatAssistant() {
           </div>
 
           <form className="chat-compose" onSubmit={sendMessage}>
-            <div className="chat-limit"><span>{remaining} of {QUESTION_LIMIT} questions remaining</span><span>Clears when signed out</span></div>
+            <div className="chat-limit"><span>{remaining} of {QUESTION_LIMIT} questions remaining</span></div>
             <div className="chat-input-row">
               <textarea ref={inputRef} value={input} onChange={(event) => setInput(event.target.value)} onKeyDown={(event) => { if (event.key === 'Enter' && !event.shiftKey) sendMessage(event) }} maxLength="500" rows="1" placeholder={remaining ? 'Ask an e-waste question…' : 'Question limit reached'} disabled={sending || remaining <= 0} aria-label="Chat message" />
               <button type="submit" disabled={!input.trim() || sending || remaining <= 0} aria-label="Send message"><i className="bi bi-send-fill" /></button>
