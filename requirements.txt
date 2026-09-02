@@ -36,7 +36,7 @@ mysql-connector-python==9.6.0
 nest-asyncio==1.6.0
 networkx==3.6.1
 numpy==2.4.4
-opencv-python==4.13.0.92
+opencv-python-headless==4.13.0.92
 packaging==26.1
 parso==0.8.6
 pillow==12.2.0
