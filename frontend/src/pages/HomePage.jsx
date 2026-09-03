@@ -224,7 +224,7 @@ export default function HomePage() {
               </div>
             )}
           </label>
-          <input ref={imageInputRef} className="d-none" id="imageInput" type="file" accept="image/*" capture="environment" onChange={selectImage} />
+          <input ref={imageInputRef} className="d-none" id="imageInput" type="file" accept="image/*" onChange={selectImage} />
           <button className="btn btn-success btn-lg w-100" type="submit" disabled={!image || analyzing}>
             {analyzing ? <><span className="spinner-border spinner-border-sm me-2" />Analyzing…</> : <><i className="bi bi-search me-2" />Analyze Object</>}
           </button>
