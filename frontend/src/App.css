@@ -661,6 +661,12 @@
 .auth-panel .btn-success:focus {
   background: #2d6a4f;
 }
+.auth-divider { display: flex; align-items: center; gap: 12px; margin: 2px 0 16px; color: #7a8780; font-size: 0.78rem; text-transform: uppercase; }
+.auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: #dce5df; }
+.guest-mode-notice { max-width: 760px; display: flex; gap: 12px; align-items: flex-start; padding: 13px 16px; border: 1px solid #bcdcca; border-radius: 14px; color: #245c3d; background: #edf8f1; }
+.guest-mode-notice > i { font-size: 1.2rem; }
+.guest-mode-notice div { display: grid; gap: 2px; }
+.guest-mode-notice span { font-size: 0.85rem; line-height: 1.4; }
 
 .brand-icon {
   color: #40916c;
@@ -1829,6 +1835,8 @@
 [data-theme="dark"] .mobile-nav {
   background: #123f2d;
 }
+[data-theme="dark"] .auth-divider::before, [data-theme="dark"] .auth-divider::after { background: #3a4c42; }
+[data-theme="dark"] .guest-mode-notice { color: #bfe4ce; border-color: #345f47; background: #182a20; }
 
 [data-theme="dark"] .card,
 [data-theme="dark"] .settings-card,

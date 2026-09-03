@@ -617,8 +617,7 @@ def api_settings():
 
 @app.route('/api/detect', methods=['POST'])
 def api_detect():
-    if 'user_id' not in session:
-        return jsonify(error='Authentication required.'), 401
+    authenticated = 'user_id' in session
 
     session.pop('pending_item', None)
     session.pop('pending_points', None)
@@ -645,8 +644,8 @@ def api_detect():
     except (OSError, UnidentifiedImageError):
         return jsonify(error='The uploaded file is not a valid image.'), 400
 
-    duplicate = find_duplicate_image(session['user_id'], candidate_hash)
-    if duplicate:
+    duplicate = find_duplicate_image(session['user_id'], candidate_hash) if authenticated else None
+    if authenticated and duplicate:
         return jsonify(
             error='This image appears to have already been used for a recycling record.',
             duplicate=True,
@@ -671,12 +670,15 @@ def api_detect():
     annotated_filename = f"detected_{uuid.uuid4().hex}_{original_filename}"
     results[0].save(filename=os.path.join(DETECTION_FOLDER, annotated_filename))
 
-    session['pending_item'] = guideline['category']
-    session['pending_points'] = guideline.get('points', 0)
-    session['pending_image_hash'] = candidate_hash
-    session['pending_detection_token'] = uuid.uuid4().hex
-    session['pending_confidence'] = confidence
-    session['pending_feedback_submitted'] = False
+    feedback_token = None
+    if authenticated:
+        session['pending_item'] = guideline['category']
+        session['pending_points'] = guideline.get('points', 0)
+        session['pending_image_hash'] = candidate_hash
+        session['pending_detection_token'] = uuid.uuid4().hex
+        session['pending_confidence'] = confidence
+        session['pending_feedback_submitted'] = False
+        feedback_token = session['pending_detection_token']
 
     return jsonify(
         category=guideline['category'],
@@ -685,8 +687,9 @@ def api_detect():
         points=guideline.get('points', 0),
         annotated_image_url=f'/static/detections/{annotated_filename}',
         centers_pdf_url='/static/centers.pdf',
-        feedback_token=session['pending_detection_token'],
-        feedback_categories=fetch_detection_categories(),
+        feedback_token=feedback_token,
+        feedback_categories=fetch_detection_categories() if authenticated else [],
+        guest=not authenticated,
     )
 
 
@@ -835,9 +838,6 @@ def api_history():
 
 @app.route('/api/leaderboard')
 def api_leaderboard():
-    if 'user_id' not in session:
-        return jsonify(error='Authentication required.'), 401
-
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
     cursor.execute(
@@ -905,9 +905,6 @@ def api_badges():
 
 @app.route('/api/users/<int:user_id>/profile')
 def api_public_profile(user_id):
-    if 'user_id' not in session:
-        return jsonify(error='Authentication required.'), 401
-
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
     cursor.execute(
@@ -970,9 +967,6 @@ def api_mission():
 
 @app.route('/api/guidelines')
 def api_guidelines():
-    if 'user_id' not in session:
-        return jsonify(error='Authentication required.'), 401
-
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
     cursor.execute(
@@ -1001,16 +995,13 @@ def api_guidelines():
 
 @app.route('/api/chat', methods=['GET', 'POST'])
 def api_chat():
-    if 'user_id' not in session:
-        return jsonify(error='Authentication required.'), 401
-
     limit = app.config['CHAT_QUESTION_LIMIT']
     used = int(session.get('chat_question_count', 0))
     if request.method == 'GET':
         return jsonify(limit=limit, used=used, remaining=max(limit - used, 0))
 
     if used >= limit:
-        return jsonify(error='You have reached the 30-question limit for this login session.', limit=limit, used=used, remaining=0), 429
+        return jsonify(error='You have reached the 30-question limit for this browser session.', limit=limit, used=used, remaining=0), 429
 
     payload = request.get_json(silent=True) or {}
     message = payload.get('message', '')
@@ -1045,9 +1036,6 @@ def api_chat():
 
 @app.route('/api/centres/nearest')
 def api_nearest_centres():
-    if 'user_id' not in session:
-        return jsonify(error='Authentication required.'), 401
-
     try:
         latitude = float(request.args.get('latitude', ''))
         longitude = float(request.args.get('longitude', ''))
@@ -1125,9 +1113,6 @@ def haversine_distance(latitude_one, longitude_one, latitude_two, longitude_two)
 
 @app.route('/api/news')
 def api_news():
-    if 'user_id' not in session:
-        return jsonify(error='Authentication required.'), 401
-
     return jsonify(articles=get_ewaste_news())
 
 

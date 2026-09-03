@@ -4,6 +4,7 @@ import { AuthContext } from './auth-context'
 
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
+  const [isGuest, setIsGuest] = useState(() => sessionStorage.getItem('ewaste-guest') === '1')
   const [loading, setLoading] = useState(true)
   const [theme, setTheme] = useState(() => localStorage.getItem('ewaste-theme') === 'dark' ? 'dark' : 'light')
 
@@ -19,6 +20,10 @@ export default function AuthProvider({ children }) {
       .then((data) => {
         const sessionUser = data.authenticated ? data.user : null
         setUser(sessionUser)
+        if (sessionUser) {
+          setIsGuest(false)
+          sessionStorage.removeItem('ewaste-guest')
+        }
         if (sessionUser?.theme) setTheme(sessionUser.theme)
       })
       .catch(() => setUser(null))
@@ -31,12 +36,22 @@ export default function AuthProvider({ children }) {
       body: JSON.stringify(credentials),
     })
     setUser(data.user)
+    setIsGuest(false)
+    sessionStorage.removeItem('ewaste-guest')
     if (data.user?.theme) setTheme(data.user.theme)
   }
 
   async function logout() {
     await apiRequest('/api/auth/logout', { method: 'POST' })
     setUser(null)
+    setIsGuest(false)
+    sessionStorage.removeItem('ewaste-guest')
+  }
+
+  function continueAsGuest() {
+    setUser(null)
+    setIsGuest(true)
+    sessionStorage.setItem('ewaste-guest', '1')
   }
 
   async function uploadAvatar(file) {
@@ -76,5 +91,5 @@ export default function AuthProvider({ children }) {
     }
   }
 
-  return <AuthContext.Provider value={{ user, loading, theme, login, logout, uploadAvatar, updateProfile, updateTheme }}>{children}</AuthContext.Provider>
+  return <AuthContext.Provider value={{ user, isGuest, loading, theme, login, logout, continueAsGuest, uploadAvatar, updateProfile, updateTheme }}>{children}</AuthContext.Provider>
 }

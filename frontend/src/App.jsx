@@ -24,36 +24,43 @@ function ProtectedRoute({ children }) {
   return user ? children : <Navigate to="/login" replace />
 }
 
+function GuestAccessibleRoute({ children }) {
+  const { user, isGuest, loading } = useAuth()
+  if (loading) return <LoadingPage />
+  return user || isGuest ? children : <Navigate to="/login" replace />
+}
+
 function Layout({ children }) {
-  const { user } = useAuth()
+  const { user, isGuest } = useAuth()
+  const hasAccess = user || isGuest
   return (
     <div className="app-shell">
       <nav className="navbar navbar-dark bg-success shadow-sm top-nav">
         <div className="container">
           <Link className="navbar-brand fw-bold" to="/"><i className="bi bi-recycle me-2" />E-Waste Scanner</Link>
-          {user && (
+          {hasAccess && (
             <div className="d-flex align-items-center gap-2 gap-md-3">
               <div className="d-none d-md-flex gap-1">
                 <NavItem to="/" icon="bi-camera">Scanner</NavItem>
-                <NavItem to="/history" icon="bi-graph-up-arrow">My Impact</NavItem>
+                {user && <NavItem to="/history" icon="bi-graph-up-arrow">My Impact</NavItem>}
                 <NavItem to="/leaderboard" icon="bi-trophy">Global Ranking</NavItem>
                 <NavItem to="/guide" icon="bi-journal-check">Guide</NavItem>
               </div>
-              <ProfileMenu />
+              {user ? <ProfileMenu /> : <Link className="btn btn-light btn-sm fw-bold px-3" to="/login">Sign In</Link>}
             </div>
           )}
         </div>
       </nav>
-      {user && (
+      {hasAccess && (
         <nav className="mobile-nav d-flex d-md-none justify-content-around shadow-lg" aria-label="Primary navigation">
           <NavItem to="/" icon="bi-camera">Scanner</NavItem>
-          <NavItem to="/history" icon="bi-graph-up-arrow">My Impact</NavItem>
+          {user && <NavItem to="/history" icon="bi-graph-up-arrow">My Impact</NavItem>}
           <NavItem to="/leaderboard" icon="bi-trophy">Ranking</NavItem>
           <NavItem to="/guide" icon="bi-journal-check">Guide</NavItem>
         </nav>
       )}
       <main className="container app-main py-3 py-md-5">{children}</main>
-      {user && <ChatAssistant />}
+      {hasAccess && <ChatAssistant key={user ? `user-${user.user_id}` : 'guest'} />}
     </div>
   )
 }
@@ -75,12 +82,12 @@ function AppRoutes() {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
+        <Route path="/" element={<GuestAccessibleRoute><HomePage /></GuestAccessibleRoute>} />
         <Route path="/history" element={<ProtectedRoute><HistoryPage /></ProtectedRoute>} />
-        <Route path="/leaderboard" element={<ProtectedRoute><LeaderboardPage /></ProtectedRoute>} />
-        <Route path="/guide" element={<ProtectedRoute><GuidePage /></ProtectedRoute>} />
+        <Route path="/leaderboard" element={<GuestAccessibleRoute><LeaderboardPage /></GuestAccessibleRoute>} />
+        <Route path="/guide" element={<GuestAccessibleRoute><GuidePage /></GuestAccessibleRoute>} />
         <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-        <Route path="/users/:userId" element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>} />
+        <Route path="/users/:userId" element={<GuestAccessibleRoute><UserProfilePage /></GuestAccessibleRoute>} />
         <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

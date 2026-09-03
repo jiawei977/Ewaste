@@ -16,7 +16,7 @@ export function AuthCard({ icon, title, subtitle, children }) {
 }
 
 export default function LoginPage() {
-  const { user, login } = useAuth()
+  const { user, login, continueAsGuest } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
   const [form, setForm] = useState({ identifier: '', password: '' })
@@ -43,6 +43,11 @@ export default function LoginPage() {
     }
   }
 
+  function handleGuest() {
+    continueAsGuest()
+    navigate('/', { replace: true })
+  }
+
   return (
     <AuthCard icon="bi-box-arrow-in-right" title="Welcome Back" subtitle="Log in to track your recycling impact">
       {location.state?.message && <div className="alert alert-success py-2">{location.state.message}</div>}
@@ -52,6 +57,9 @@ export default function LoginPage() {
         <input className="form-control mb-4" type="password" name="password" value={form.password} onChange={updateField} placeholder="Password" autoComplete="current-password" required />
         <button className="btn btn-success w-100 mb-3" type="submit" disabled={submitting}>{submitting ? 'Signing in…' : 'Sign In'}</button>
       </form>
+      <div className="auth-divider"><span>or</span></div>
+      <button className="btn btn-outline-success w-100 mb-3" type="button" onClick={handleGuest}><i className="bi bi-person me-2" />Continue as Guest</button>
+      <p className="text-center small text-secondary">Guests can scan and use the guide, centres, ranking and assistant. Sign in to earn points and save progress.</p>
       <p className="text-center small text-secondary mb-0">
         New here? <Link className="text-success fw-bold text-decoration-none" to="/register">Create Account</Link>
       </p>

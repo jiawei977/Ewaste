@@ -23,7 +23,7 @@ export default function UserProfilePage() {
   if (loading) return <PageLoading message="Loading eco-warrior profile…" />
   if (error) return <div className="alert alert-danger" role="alert">{error}</div>
 
-  const isOwnProfile = Number(userId) === user.user_id
+  const isOwnProfile = Boolean(user && Number(userId) === user.user_id)
   return (
     <div className="public-profile-layout">
       <section className="public-profile-hero">

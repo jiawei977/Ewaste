@@ -7,7 +7,7 @@ import ConfidenceRing from '../components/ConfidenceRing'
 import { detectOffline } from '../offlineDetector'
 
 export default function HomePage() {
-  const { user } = useAuth()
+  const { user, isGuest } = useAuth()
   const imageInputRef = useRef(null)
   const resultDialogRef = useRef(null)
   const [image, setImage] = useState(null)
@@ -191,10 +191,12 @@ export default function HomePage() {
     <>
       <header className="scanner-header text-center mb-4 mb-md-5">
         <h1 className="display-5 fw-bold">Sustainable AI <span className="text-success">Scanning</span></h1>
-        <p className="lead text-secondary">Hello, {user.username}. Upload an item to find the right disposal path.</p>
+        <p className="lead text-secondary">Hello, {isGuest ? 'Guest' : user.username}. Upload an item to find the right disposal path.</p>
       </header>
 
-      <MonthlyMission refreshToken={missionRefresh} />
+      {user && <MonthlyMission refreshToken={missionRefresh} />}
+
+      {isGuest && <div className="guest-mode-notice mx-auto mb-4"><i className="bi bi-person" /><div><strong>You are exploring as a guest</strong><span>Detection and guidance are available. Sign in to earn points, save history and submit feedback.</span></div></div>}
 
       <section className="scanner-card card border-0 shadow-sm p-4 p-md-5 mx-auto">
         {error && <div className="alert alert-danger" role="alert"><i className="bi bi-exclamation-circle me-2" />{error}</div>}
@@ -253,7 +255,7 @@ export default function HomePage() {
                 <h4 className="small text-uppercase text-secondary fw-bold">How to recycle</h4>
                 <p className="mb-0">{result.guideline}</p>
               </div>
-              {!result.offline && <div className="detection-feedback text-start mb-4">
+              {!result.offline && !isGuest && <div className="detection-feedback text-start mb-4">
                 {feedbackMode === 'submitted' ? (
                   <div className="detection-feedback-thanks"><i className="bi bi-check-circle-fill" /><div><strong>Thank you for your feedback</strong><span>Your response will help evaluate future model improvements.</span></div></div>
                 ) : (
@@ -280,8 +282,8 @@ export default function HomePage() {
               )}
               {nearestCentres && <NearestCentres data={nearestCentres} />}
               <div className="d-grid gap-2">
-                <button className="btn btn-success py-3 fw-bold" type="button" onClick={confirmRecycle} disabled={result.offline || recording || feedbackSaving}>
-                  <i className="bi bi-recycle me-2" />{result.offline ? 'Reconnect to record recycling' : recording ? 'Recording…' : `Recycle It! (+${result.points} points)`}
+                <button className="btn btn-success py-3 fw-bold" type="button" onClick={confirmRecycle} disabled={isGuest || result.offline || recording || feedbackSaving}>
+                  <i className="bi bi-recycle me-2" />{isGuest ? 'Sign in to record recycling' : result.offline ? 'Reconnect to record recycling' : recording ? 'Recording…' : `Recycle It! (+${result.points} points)`}
                 </button>
                 <button className="btn btn-outline-success py-3 fw-bold" type="button" onClick={findNearestCentres} disabled={result.offline || findingCentres}>
                   {result.offline ? <><i className="bi bi-wifi-off me-2" />Reconnect to find nearest centres</> : findingCentres ? <><span className="spinner-border spinner-border-sm me-2" />Finding nearby centres…</> : <><i className="bi bi-geo-alt me-2" />Find Nearest Verified Centres</>}
